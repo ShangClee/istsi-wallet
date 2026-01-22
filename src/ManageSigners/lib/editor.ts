@@ -10,7 +10,7 @@ export namespace MultisigPresets {
   }
 
   export interface Custom {
-    thresholds: Horizon.AccountThresholds
+    thresholds: Horizon.HorizonApi.AccountThresholds
     type: Type.Custom
   }
 
@@ -36,8 +36,8 @@ export type MultisigPreset =
 
 export interface SignersEditorState {
   preset: MultisigPreset
-  signersToAdd: Horizon.AccountSigner[]
-  signersToRemove: Horizon.AccountSigner[]
+  signersToAdd: Horizon.HorizonApi.AccountSigner[]
+  signersToRemove: Horizon.HorizonApi.AccountSigner[]
 }
 
 export function initializeEditorState(accountData: AccountData): SignersEditorState {

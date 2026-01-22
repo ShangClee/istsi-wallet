@@ -32,7 +32,7 @@ function SignerStatus(props: { hasSigned: boolean; style?: React.CSSProperties }
 // tslint:disable-next-line no-shadowed-variable
 const Signer = React.memo(function Signer(props: {
   hasSigned: boolean
-  signer: Horizon.AccountSigner | { key: string; weight: number }
+  signer: Horizon.HorizonApi.AccountSigner | { key: string; weight: number }
   style?: React.CSSProperties
   transaction: Transaction
 }) {

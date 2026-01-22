@@ -55,13 +55,13 @@ interface DetailsEditorProps {
   actionsRef: RefStateObject | undefined
   disabled?: boolean
   onSubmit: () => Promise<any>
-  signers: Horizon.AccountSigner[]
+  signers: Horizon.HorizonApi.AccountSigner[]
   showKeyWeights?: boolean
   testnet: boolean
 }
 
 function DetailsEditor(props: DetailsEditorProps) {
-  const [selectedSigner, setSelectedSigner] = React.useState<Horizon.AccountSigner | undefined>()
+  const [selectedSigner, setSelectedSigner] = React.useState<Horizon.HorizonApi.AccountSigner | undefined>()
   const { t } = useTranslation()
   const { accounts } = React.useContext(AccountsContext)
   const { accountID, editorState, setEditorState, testnet } = React.useContext(MultisigEditorContext)
@@ -72,7 +72,7 @@ function DetailsEditor(props: DetailsEditorProps) {
     editorState.preset.type === MultisigPresets.Type.SingleSignature && accountData.signers.length > 1
 
   const selectSingleSigner = React.useCallback(
-    (newlySelectedSigner: Horizon.AccountSigner) => {
+    (newlySelectedSigner: Horizon.HorizonApi.AccountSigner) => {
       setSelectedSigner(newlySelectedSigner)
       setEditorState(prev => ({
         ...prev,

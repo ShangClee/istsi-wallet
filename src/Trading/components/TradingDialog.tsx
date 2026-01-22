@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Horizon, Server, Transaction } from "stellar-sdk"
+import { Asset, Horizon, Transaction } from "stellar-sdk"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { Account } from "~App/contexts/accounts"
@@ -54,7 +54,9 @@ function TradingDialog(props: TradingDialogProps) {
 
   const trustlines = React.useMemo(
     () =>
-      accountData.balances.filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native"),
+      accountData.balances.filter(
+        (balance): balance is Horizon.HorizonApi.BalanceLineAsset => balance.asset_type !== "native"
+      ),
     [accountData.balances]
   )
 

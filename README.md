@@ -103,9 +103,9 @@ docker run --rm -ti \
  -v ~/.cache/electron-builder:/root/.cache/electron-builder \
  -v /Volumes/Certificates/solar:/root/Certs \
  electronuserland/builder:wine-mono bash -c 'npm config set script-shell bash && npm install && npm run build:win:signed'
- ```
- 
- **Note:** We have seen weird module resolution troubles with Parcel. In this case make sure to `rm -rf node_modules/` **on the host**, then try again.
+```
+
+**Note:** We have seen weird module resolution troubles with Parcel. In this case make sure to `rm -rf node_modules/` **on the host**, then try again.
 
 ### Signed binaries
 

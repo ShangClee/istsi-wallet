@@ -11,7 +11,8 @@ import {
   LiquidityPoolAsset,
   getLiquidityPoolId
 } from "stellar-sdk"
-import { OfferAsset } from "stellar-sdk/lib/types/offer"
+// TODO: Fix import after Stellar SDK v11 migration complete
+// import type { OfferAsset } from "stellar-sdk/lib/horizon/types/offer"
 import { AssetRecord } from "../hooks/stellar-ecosystem"
 import { AccountData, BalanceLine } from "./account"
 
@@ -118,7 +119,7 @@ export function getAssetsFromBalances(balances: BalanceLine[]) {
   return balances.map(balance =>
     balance.asset_type === "native"
       ? Asset.native()
-      : new Asset((balance as Horizon.BalanceLineAsset).asset_code, (balance as Horizon.BalanceLineAsset).asset_issuer)
+      : new Asset((balance as Horizon.HorizonApi.BalanceLineAsset).asset_code, (balance as Horizon.HorizonApi.BalanceLineAsset).asset_issuer)
   )
 }
 
@@ -126,7 +127,7 @@ export function findMatchingBalanceLine(balances: AccountData["balances"], asset
   return balances.find((balance): balance is BalanceLine => balancelineToAsset(balance).equals(asset))
 }
 
-export function getHorizonURL(horizon: Server) {
+export function getHorizonURL(horizon: Horizon.Server) {
   return horizon.serverURL.toString()
 }
 

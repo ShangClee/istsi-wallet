@@ -30,7 +30,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
   const removeAsset = async () => {
     try {
       setTxCreationPending(true)
-      const operations = [Operation.changeTrust({ asset: props.asset, limit: "0", withMuxing: true })]
+      const operations = [Operation.changeTrust({ asset: props.asset, limit: "0" })]
       const transaction = await createTransaction(operations, {
         accountData: props.accountData,
         horizon: props.horizon,
@@ -45,7 +45,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
     }
   }
 
-  const assetBalance = (props.accountData.balances as Horizon.BalanceLineAsset[]).find(
+  const assetBalance = (props.accountData.balances as Horizon.HorizonApi.BalanceLineAsset[]).find(
     balance => balance.asset_code === props.asset.getCode() && balance.asset_issuer === props.asset.getIssuer()
   )
   const stillOwnsTokens = assetBalance && parseFloat(assetBalance.balance) > 0

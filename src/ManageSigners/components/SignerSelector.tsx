@@ -12,9 +12,9 @@ import { Address } from "~Generic/components/PublicKey"
 
 interface SignerSelectorProps {
   accounts: Account[]
-  onSelect: (signer: Horizon.AccountSigner) => void
-  selected: Horizon.AccountSigner | undefined
-  signers: Horizon.AccountSigner[]
+  onSelect: (signer: Horizon.HorizonApi.AccountSigner) => void
+  selected: Horizon.HorizonApi.AccountSigner | undefined
+  signers: Horizon.HorizonApi.AccountSigner[]
   testnet: boolean
 }
 

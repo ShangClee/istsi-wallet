@@ -494,7 +494,7 @@ interface TransactionListProps {
   onFetchMoreTransactions: () => void
   testnet: boolean
   title: React.ReactNode
-  transactions: Horizon.TransactionResponse[]
+  transactions: Horizon.HorizonApi.TransactionResponse[]
 }
 
 function TransactionList(props: TransactionListProps) {

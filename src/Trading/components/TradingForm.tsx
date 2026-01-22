@@ -73,7 +73,7 @@ interface Props {
   primaryAction: "buy" | "sell"
   sendTransaction: (transaction: Transaction) => void
   style?: React.CSSProperties
-  trustlines: Horizon.BalanceLineAsset[]
+  trustlines: Horizon.HorizonApi.BalanceLineAsset[]
 }
 
 function TradingForm(props: Props) {
@@ -185,16 +185,14 @@ function TradingForm(props: Props) {
                 buying: primaryAsset,
                 offerId: 0,
                 price: effectivePrice.toFixed(7),
-                selling: secondaryAsset,
-                withMuxing: true
+                selling: secondaryAsset
               })
             : Operation.manageSellOffer({
                 amount: primaryAmount.toFixed(7),
                 buying: secondaryAsset,
                 offerId: 0,
                 price: effectivePrice.toFixed(7),
-                selling: primaryAsset,
-                withMuxing: true
+                selling: primaryAsset
               })
         ],
         {

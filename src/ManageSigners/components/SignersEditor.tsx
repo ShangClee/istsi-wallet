@@ -37,7 +37,7 @@ function useFormValidation() {
   const { t } = useTranslation()
   return function validateNewSignerValues(
     values: SignerFormValues,
-    signers: Horizon.AccountSigner[]
+    signers: Horizon.HorizonApi.AccountSigner[]
   ): SignerFormErrors {
     const errors: SignerFormErrors = {}
 
@@ -62,7 +62,7 @@ const listItemStyles: React.CSSProperties = {
 }
 
 interface SignersEditorProps {
-  signers: Horizon.AccountSigner[]
+  signers: Horizon.HorizonApi.AccountSigner[]
   showKeyWeights?: boolean
   testnet: boolean
 }
@@ -87,13 +87,13 @@ function SignersEditor(props: SignersEditorProps) {
 
   const editNewSigner = React.useCallback(() => setIsEditingNewSigner(true), [setIsEditingNewSigner])
 
-  const addSigner = (signer: Horizon.AccountSigner) =>
+  const addSigner = (signer: Horizon.HorizonApi.AccountSigner) =>
     setEditorState(prev => ({
       ...prev,
       signersToAdd: [...prev.signersToAdd, signer]
     }))
 
-  const removeSigner = (signer: Horizon.AccountSigner) => {
+  const removeSigner = (signer: Horizon.HorizonApi.AccountSigner) => {
     setEditorState(prev => ({
       ...prev,
       signersToAdd: prev.signersToAdd.filter(someSignerToBeAddd => someSignerToBeAddd.key !== signer.key),

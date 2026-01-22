@@ -9,7 +9,7 @@ function addSigner(
 ): OptimisticUpdate<Horizon.AccountResponse> {
   return {
     apply(prevAccountData) {
-      const allOtherSigners = prevAccountData.signers.filter((existing) => {
+      const allOtherSigners = prevAccountData.signers.filter(existing => {
         return existing.key !== signer.ed25519PublicKey
       })
       return {

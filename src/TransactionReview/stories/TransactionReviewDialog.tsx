@@ -1,13 +1,13 @@
 import React from "react"
 import Async from "react-promise"
-import { xdr, AccountResponse, Asset, Memo, Networks, Operation, Server, TransactionBuilder } from "stellar-sdk"
+import { xdr, Asset, Memo, Networks, Operation, Horizon, TransactionBuilder } from "stellar-sdk"
 import { storiesOf } from "@storybook/react"
 import { TransactionReviewDialogBody } from "../components/TransactionReviewDialog"
 import { Account } from "~App/contexts/accounts"
 import { useWebAuth } from "~Generic/hooks/stellar"
 
 const eurt = new Asset("EURT", "GAP5LETOV6YIE62YAM56STDANPRDO7ZFDBGSNHJQIYGGKSMOZAHOOS2S")
-const testnetHorizon = new Server("https://horizon-testnet.stellar.org")
+const testnetHorizon = new Horizon.Server("https://horizon-testnet.stellar.org")
 
 const doNothing = () => undefined
 
@@ -27,7 +27,7 @@ const accountStub: Account = {
 }
 
 function buildTransaction(
-  account: AccountResponse,
+  account: Horizon.AccountResponse,
   operations: xdr.Operation[],
   options?: Partial<TransactionBuilder.TransactionBuilderOptions>
 ) {
@@ -49,7 +49,7 @@ interface SampleWebAuthProps {
 }
 
 function SampleWebAuth(props: SampleWebAuthProps) {
-  const horizon = new Server("https://horizon.stellar.org")
+  const horizon = new Horizon.Server("https://horizon.stellar.org")
   const WebAuth = useWebAuth()
 
   const promise = React.useMemo(
@@ -80,8 +80,7 @@ storiesOf("TransactionReviewDialog", module)
         Operation.payment({
           amount: "1.5",
           asset: Asset.native(),
-          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT",
-          withMuxing: true
+          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT"
         })
       ])
     })()
@@ -111,8 +110,7 @@ storiesOf("TransactionReviewDialog", module)
           Operation.payment({
             amount: "20",
             asset: Asset.native(),
-            destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT",
-            withMuxing: true
+            destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT"
           })
         ],
         { memo: Memo.text("Demo transaction") }
@@ -141,12 +139,10 @@ storiesOf("TransactionReviewDialog", module)
       return buildTransaction(account, [
         Operation.createAccount({
           startingBalance: "1.0",
-          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT",
-          withMuxing: true
+          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT"
         }),
         Operation.setOptions({
-          inflationDest: "GCCD6AJOYZCUAQLX32ZJF2MKFFAUJ53PVCFQI3RHWKL3V47QYE2BNAUT",
-          withMuxing: true
+          inflationDest: "GCCD6AJOYZCUAQLX32ZJF2MKFFAUJ53PVCFQI3RHWKL3V47QYE2BNAUT"
         })
       ])
     })()
@@ -172,8 +168,7 @@ storiesOf("TransactionReviewDialog", module)
       const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(account, [
         Operation.changeTrust({
-          asset: eurt,
-          withMuxing: true
+          asset: eurt
         })
       ])
     })()
@@ -224,8 +219,7 @@ storiesOf("TransactionReviewDialog", module)
       return buildTransaction(account, [
         Operation.accountMerge({
           source: "GCCD6AJOYZCUAQLX32ZJF2MKFFAUJ53PVCFQI3RHWKL3V47QYE2BNAUT",
-          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT",
-          withMuxing: true
+          destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT"
         })
       ])
     })()

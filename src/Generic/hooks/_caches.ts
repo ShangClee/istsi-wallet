@@ -100,12 +100,12 @@ function createAssetPairCacheKey([horizonURLs, selling, buying]: readonly [strin
 
 export interface TransactionHistory {
   olderTransactionsAvailable: boolean
-  transactions: Horizon.TransactionResponse[]
+  transactions: Horizon.HorizonApi.TransactionResponse[]
 }
 
 export interface OfferHistory {
   olderOffersAvailable: boolean
-  offers: ServerApi.OfferRecord[]
+  offers: Horizon.ServerApi.OfferRecord[]
 }
 
 function areTransactionsNewer(prev: TransactionHistory, next: TransactionHistory) {
@@ -152,15 +152,16 @@ export const accountHomeDomainCache = createCache<
   AccountData["home_domain"]
 >(createAccountCacheKey)
 
-export const accountOpenOrdersCache = createCache<readonly [string[], string], OfferHistory, ServerApi.OfferRecord[]>(
-  createAccountCacheKey,
-  areOffersNewer
-)
+export const accountOpenOrdersCache = createCache<
+  readonly [string[], string],
+  OfferHistory,
+  Horizon.ServerApi.OfferRecord[]
+>(createAccountCacheKey, areOffersNewer)
 
 export const accountTransactionsCache = createCache<
   readonly [string[], string],
   TransactionHistory,
-  Horizon.TransactionResponse
+  Horizon.HorizonApi.TransactionResponse
 >(createAccountCacheKey, areTransactionsNewer)
 
 export const orderbookCache = createCache<

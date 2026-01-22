@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, AssetType, Horizon, Operation, Server, Transaction } from "stellar-sdk"
+import { Asset, AssetType, Horizon, Operation, Transaction } from "stellar-sdk"
 import Dialog from "@mui/material/Dialog"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
@@ -39,7 +39,7 @@ function issuerMatches(issuerDetails: AssetRecord["issuer_detail"], search: stri
   return issuerDetails.name.toLowerCase().startsWith(search)
 }
 
-function assetToBalance(asset: Asset): Horizon.BalanceLineAsset {
+function assetToBalance(asset: Asset): Horizon.HorizonApi.BalanceLineAsset {
   return {
     asset_code: asset.getCode(),
     asset_issuer: asset.getIssuer(),
@@ -257,7 +257,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
   const closeCustomTrustlineDialog = () => setCustomTrustlineDialogOpen(false)
 
   const createAddAssetTransaction = async (asset: Asset, options: { limit?: string } = {}) => {
-    const operations = [Operation.changeTrust({ asset, limit: options.limit, withMuxing: true })]
+    const operations = [Operation.changeTrust({ asset, limit: options.limit })]
     return createTransaction(operations, {
       accountData: props.accountData,
       horizon: props.horizon,

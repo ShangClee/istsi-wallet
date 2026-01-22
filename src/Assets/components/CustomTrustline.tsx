@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Server, Transaction } from "stellar-sdk"
+import { Asset, Horizon, Transaction } from "stellar-sdk"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import TextField from "@mui/material/TextField"
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"

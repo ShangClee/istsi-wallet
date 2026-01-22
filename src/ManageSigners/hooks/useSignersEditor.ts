@@ -1,5 +1,5 @@
 import React from "react"
-import { Horizon, Operation, Server, Transaction, xdr } from "stellar-sdk"
+import { Horizon, Operation, Horizon, Transaction, xdr } from "stellar-sdk"
 import { trackError } from "~App/contexts/notifications"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext, SettingsContextType } from "~App/contexts/settings"
@@ -15,8 +15,8 @@ export interface SignersEditorOptions {
 }
 
 export interface SignersUpdate {
-  signersToAdd: Horizon.AccountSigner[]
-  signersToRemove: Horizon.AccountSigner[]
+  signersToAdd: Horizon.HorizonApi.AccountSigner[]
+  signersToRemove: Horizon.HorizonApi.AccountSigner[]
   weightThreshold: number
 }
 
@@ -30,8 +30,7 @@ function createTxOperations(
     ...update.signersToRemove.map(signer => {
       if (signer.key === accountData.account_id) {
         return Operation.setOptions({
-          masterWeight: 0,
-          withMuxing: true
+          masterWeight: 0
         })
       } else {
         return Operation.setOptions({
@@ -41,8 +40,7 @@ function createTxOperations(
     }),
     ...update.signersToAdd.map(signer =>
       Operation.setOptions({
-        signer: { ed25519PublicKey: signer.key, weight: signer.weight },
-        withMuxing: true
+        signer: { ed25519PublicKey: signer.key, weight: signer.weight }
       })
     )
   ]
@@ -51,8 +49,7 @@ function createTxOperations(
     operations.push(
       Operation.manageData({
         name: "config.multisig.coordinator",
-        value: settings.multiSignatureCoordinator,
-        withMuxing: true
+        value: settings.multiSignatureCoordinator
       })
     )
   }
@@ -66,8 +63,7 @@ function createTxOperations(
       Operation.setOptions({
         lowThreshold: update.weightThreshold,
         medThreshold: update.weightThreshold,
-        highThreshold: update.weightThreshold,
-        withMuxing: true
+        highThreshold: update.weightThreshold
       })
     )
   }

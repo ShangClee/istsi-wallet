@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Operation, Server, Transaction } from "stellar-sdk"
+import { Asset, Operation, Horizon, Transaction } from "stellar-sdk"
 import Dialog from "@mui/material/Dialog"
 import ClearIcon from "@mui/icons-material/Clear"
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
@@ -41,7 +41,7 @@ function AssetDetailsActions(props: Props) {
   )
 
   const createAddAssetTransaction = async (options: { limit?: string } = {}) => {
-    const operations = [Operation.changeTrust({ asset, limit: options.limit, withMuxing: true })]
+    const operations = [Operation.changeTrust({ asset, limit: options.limit })]
     return createTransaction(operations, {
       accountData,
       horizon: props.horizon,

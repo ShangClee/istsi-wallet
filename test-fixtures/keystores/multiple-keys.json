@@ -1,0 +1,41 @@
+{
+  "test-key-4a": {
+    "metadata": {
+      "nonce": "VphVyLDIshScY69uk8iiXFzyJEYE3ia0",
+      "iterations": 10000
+    },
+    "public": {
+      "name": "Test Account 1",
+      "publicKey": "GDHX7FB4V6SVUKA52CPSQIRVKDJ553VXFY7W6GPX75VB47JSWIC7IRGY",
+      "testnet": true,
+      "password": true
+    },
+    "private": "qXENGKF2V1DUc5rFmA44PyYC0p3zmPw0mBfgSiKw7GtPLUQbMNlfrjPWKlyidGNsH38RGUa5BbQsCD5tSaEx4LDqHJL04f5IA2rEcodfGjVlamTj/SvnSKQ="
+  },
+  "test-key-4b": {
+    "metadata": {
+      "nonce": "OlHbYujf2IyFOLW10MXsbHIEw7W9o1NT",
+      "iterations": 10000
+    },
+    "public": {
+      "name": "Test Account 2",
+      "publicKey": "GDJGS5K4UHFF5FVGSMWNT6JQQY5DKDPHHMKAE7QLWEG2PQANPWQAFF5N",
+      "testnet": true,
+      "password": true
+    },
+    "private": "fFAWw5HvovDbX3Kx56ETK4p8Bk6BI6iOhitOKkIpu9SlffPVxKPMGvj9ZUgE8zD4AJHWbqiYnu11bNFVfWu6YKswHCvfeqA8AQlVEPwPPMK54cMKVJ8QzmQ="
+  },
+  "test-key-4c": {
+    "metadata": {
+      "nonce": "j/Tj0YlnyXTkM3sYkvI9D+RWIgWVa4Tj",
+      "iterations": 10000
+    },
+    "public": {
+      "name": "Test Account 3",
+      "publicKey": "GCLMXZHZYAH6SPAFHR2QUM2TMUGAI4DPDDCFFZXUDOXCVH5LETMOONID",
+      "testnet": false,
+      "password": true
+    },
+    "private": "+VWzHh55a3SIoINhJogafqW88eldRzDul6Y+8sZyNi++7ulnXN8s2aVlrJ5jjGlOU/9AGjOuUWuJSPraQ2CCvI9YnpDe21dI7UPXqpQghVnI15u1vKSJfus="
+  }
+}

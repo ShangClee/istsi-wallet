@@ -123,8 +123,7 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
         [
           Operation.accountMerge({
             source: props.account.accountID,
-            destination: selectedMergeAccount.publicKey,
-            withMuxing: true
+            destination: selectedMergeAccount.publicKey
           })
         ],
         { accountData, horizon, walletAccount: props.account }

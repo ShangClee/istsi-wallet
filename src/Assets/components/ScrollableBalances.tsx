@@ -128,8 +128,8 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
   const [currentStep, setCurrentStep] = React.useState(0)
   const [spring, setSpring] = useSpring(() => ({ x: 0 }))
 
-  const nativeBalance: Horizon.BalanceLineNative = accountData.balances.find(
-    (balance): balance is Horizon.BalanceLineNative => balance.asset_type === "native"
+  const nativeBalance: Horizon.HorizonApi.BalanceLineNative = accountData.balances.find(
+    (balance): balance is Horizon.HorizonApi.BalanceLineNative => balance.asset_type === "native"
   ) || {
     asset_type: "native",
     balance: "0",
@@ -140,7 +140,7 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
   const isAccountActivated = Number.parseFloat(nativeBalance.balance) > 0
 
   const trustedAssets = sortBalances(accountData.balances)
-    .filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native")
+    .filter((balance): balance is Horizon.HorizonApi.BalanceLineAsset => balance.asset_type !== "native")
     .map(balance => new Asset(balance.asset_code, balance.asset_issuer))
 
   const balancesPerStep = Math.max(Math.floor((window.innerWidth - 32 - 32) / getBalanceItemMinMaxWidth()[1]), 2)

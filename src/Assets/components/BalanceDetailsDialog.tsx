@@ -37,7 +37,7 @@ interface TrustedAssetsProps {
   hmargin: string | number
   hpadding: string | number
   onOpenAssetDetails: (asset: Asset) => void
-  openOffers: ServerApi.OfferRecord[]
+  openOffers: Horizon.ServerApi.OfferRecord[]
   olderOffersAvailable?: boolean
 }
 
@@ -75,7 +75,7 @@ const TrustedAssets = React.memo(function TrustedAssets(props: TrustedAssetsProp
 interface NativeBalanceItemsProps {
   account: Account
   accountData: AccountData
-  balance: Horizon.BalanceLineNative
+  balance: Horizon.HorizonApi.BalanceLineNative
   hmargin: string | number
   hpadding: string | number
   onOpenAssetDetails: (asset: Asset) => void
@@ -153,11 +153,11 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
     router.history.push(routes.assetDetails(props.account.id, stringifyAsset(asset)))
 
   const trustedAssets = sortBalances(accountData.balances)
-    .filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native")
+    .filter((balance): balance is Horizon.HorizonApi.BalanceLineAsset => balance.asset_type !== "native")
     .map(balance => new Asset(balance.asset_code, balance.asset_issuer))
 
   const nativeBalance = accountData.balances.find(
-    (balance): balance is Horizon.BalanceLineNative => balance.asset_type === "native"
+    (balance): balance is Horizon.HorizonApi.BalanceLineNative => balance.asset_type === "native"
   )
 
   const hpadding = isSmallScreen ? 0 : 8
