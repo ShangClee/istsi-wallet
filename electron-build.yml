@@ -50,5 +50,5 @@ linux:
   artifactName: Solar-Wallet-${version}.${ext}
   category: Utility
 
-afterPack: ./scripts/electron-builder-afterpack.js
-afterSign: ./scripts/electron-builder-aftersign.js
+afterPack: ./scripts/electron-builder-afterpack.cjs
+afterSign: ./scripts/electron-builder-aftersign.cjs

@@ -15,6 +15,12 @@ function handleSplashScreen() {
     }
 
     window.addEventListener("message", listener, false)
+  } else {
+    // For desktop/web: ensure splash screen hides after a maximum delay
+    // This is a fallback in case appIsLoaded() is never called
+    setTimeout(() => {
+      hideSplashScreen()
+    }, 3000)
   }
 }
 
@@ -52,6 +58,9 @@ export function appIsLoaded() {
       hideSplashScreen()
     }, 5000)
   } else {
-    setTimeout(() => hideSplashScreen(), hideSplashScreenDelay)
+    // For desktop/web: hide splash screen after a short delay to ensure app has rendered
+    setTimeout(() => {
+      hideSplashScreen()
+    }, hideSplashScreenDelay)
   }
 }

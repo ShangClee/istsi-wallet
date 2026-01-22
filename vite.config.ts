@@ -20,6 +20,12 @@ export default defineConfig({
             rollupOptions: {
               external: ["electron", "electron-updater"]
             }
+          },
+          resolve: {
+            alias: [
+              // Replace deprecated built-in punycode with userland version
+              { find: /^punycode$/, replacement: "punycode/" }
+            ]
           }
         }
       },
@@ -48,7 +54,11 @@ export default defineConfig({
     }
   ],
   resolve: {
-    alias: [{ find: /^~/, replacement: resolve(__dirname, "src") + "/" }]
+    alias: [
+      { find: /^~/, replacement: resolve(__dirname, "src") + "/" },
+      // Replace deprecated built-in punycode with userland version
+      { find: /^punycode$/, replacement: "punycode/" }
+    ]
   },
   build: {
     outDir: "dist",

@@ -1,5 +1,9 @@
 import { BrowserWindow, Menu, nativeImage, shell } from "electron"
 import path from "path"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 let openWindows: BrowserWindow[] = []
 
@@ -8,11 +12,8 @@ import * as protocolHandler from "./protocol-handler"
 import { Messages } from "./shared/ipc"
 
 export function createMainWindow() {
-  if (process.platform !== "darwin") {
-    // Need to set menu to null before creating the window
-    // See <https://github.com/electron/electron/issues/16521#issuecomment-458035634>
-    Menu.setApplicationMenu(null)
-  }
+  // Menu will be set in app.ts after window creation
+  // Don't set to null here as we want the menu to be visible
 
   const window = new BrowserWindow({
     width: 800,
@@ -34,7 +35,8 @@ export function createMainWindow() {
     }
   })
 
-  window.removeMenu()
+  // Keep menu bar for better UX (user can access settings, etc.)
+  // window.removeMenu()
 
   if (process.env.VITE_DEV_SERVER_URL) {
     window.loadURL(process.env.VITE_DEV_SERVER_URL)

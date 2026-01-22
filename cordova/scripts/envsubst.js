@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // source: https://github.com/jumoel/env-subst
 
-const fs = require("fs")
+import fs from "fs"
+import process from "process"
 
 function envsubst(stringContent) {
   const regex = /\$(?:(\w+)|{(\w+)})/g

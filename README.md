@@ -40,8 +40,8 @@ The encryption key is derived from the password using `PBKDF2` with `SHA256` (10
 
 ### Prerequisites
 
-- **Node.js**: Version 16.x or higher
-- **npm**: Version 8.x or higher
+- **Node.js**: Latest LTS (v22.x or higher)
+- **npm**: Version 10.x or higher
 - **TypeScript**: Version 5.7.x (installed as dev dependency)
 - **React**: Version 18.3.x
 - **Electron**: Version 40.x (for desktop builds)
