@@ -1,9 +1,9 @@
 import React from "react"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
-import IconButton from "@material-ui/core/IconButton"
-import MenuIcon from "@material-ui/icons/Menu"
-import makeStyles from "@material-ui/core/styles/makeStyles"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import IconButton from "@mui/material/IconButton"
+import MenuIcon from "@mui/icons-material/Menu"
+import makeStyles from "@mui/styles/makeStyles"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
@@ -90,7 +90,12 @@ function AccountHeaderCard(props: Props) {
             showingSettings={showingSettings}
           >
             {({ onOpen }) => (
-              <IconButton className={`${classes.button} ${classes.menuButton}`} color="inherit" onClick={onOpen}>
+              <IconButton
+                className={`${classes.button} ${classes.menuButton}`}
+                color="inherit"
+                onClick={onOpen}
+                size="large"
+              >
                 <MenuIcon style={{ fontSize: "inherit" }} />
               </IconButton>
             )}

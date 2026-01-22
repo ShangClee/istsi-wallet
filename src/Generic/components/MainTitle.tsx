@@ -1,7 +1,7 @@
 import React from "react"
-import IconButton from "@material-ui/core/IconButton"
-import Typography, { TypographyProps } from "@material-ui/core/Typography"
-import ArrowBackIcon from "@material-ui/icons/KeyboardArrowLeft"
+import IconButton from "@mui/material/IconButton"
+import Typography, { TypographyProps } from "@mui/material/Typography"
+import ArrowBackIcon from "@mui/icons-material/KeyboardArrowLeft"
 import { useIsMobile } from "../hooks/userinterface"
 import { Box, HorizontalLayout } from "~Layout/components/Box"
 
@@ -18,7 +18,7 @@ const BackButton = React.memo(function BackButton(props: BackButtonProps) {
     ...props.style
   }
   return (
-    <IconButton color="inherit" onClick={props.onClick} style={style}>
+    <IconButton color="inherit" onClick={props.onClick} style={style} size="large">
       <ArrowBackIcon style={{ fontSize: 32 }} />
     </IconButton>
   )

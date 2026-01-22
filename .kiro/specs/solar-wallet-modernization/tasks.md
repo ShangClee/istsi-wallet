@@ -125,7 +125,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify no console errors during rendering
     - Run 100+ iterations per component
 
-- [~] 5. Update Material-UI to MUI v5
+- [ ] 5. Update Material-UI to MUI v5
 
   - [x] 5.1 Update MUI dependencies
 
@@ -137,7 +137,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run npm install
     - _Requirements: 4.1, 4.2_
 
-  - [~] 5.2 Run MUI codemod for automated migration
+  - [ ] 5.2 Run MUI codemod for automated migration
 
     - Install @mui/codemod globally or as dev dependency
     - Run codemod for preset-safe transformations
@@ -146,7 +146,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Review and commit automated changes
     - _Requirements: 4.4_
 
-  - [~] 5.3 Manually update remaining MUI imports and APIs
+  - [ ] 5.3 Manually update remaining MUI imports and APIs
 
     - Search for remaining @material-ui imports
     - Update to @mui/material or @mui/icons-material
@@ -162,9 +162,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify theme is applied correctly
     - Check that styled components work as expected
 
-- [~] 6. Update Electron to version 28+
+- [ ] 6. Update Electron to version 28+
 
-  - [~] 6.1 Update Electron and related dependencies
+  - [ ] 6.1 Update Electron and related dependencies
 
     - Update electron to version 28.x or latest stable
     - Update electron-builder to compatible version
@@ -173,7 +173,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run npm install
     - _Requirements: 5.1, 5.4_
 
-  - [~] 6.2 Update Electron security configuration
+  - [ ] 6.2 Update Electron security configuration
 
     - Update BrowserWindow webPreferences in electron/src/index.\*.ts
     - Set contextIsolation: true
@@ -181,7 +181,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Add preload script path
     - _Requirements: 5.3_
 
-  - [~] 6.3 Create Electron preload script with contextBridge
+  - [ ] 6.3 Create Electron preload script with contextBridge
 
     - Create electron/src/preload.ts
     - Import contextBridge and ipcRenderer
@@ -189,7 +189,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Define interfaces for all IPC methods (signTransaction, getKeystore, etc.)
     - _Requirements: 5.3_
 
-  - [~] 6.4 Update renderer process to use exposed Electron API
+  - [ ] 6.4 Update renderer process to use exposed Electron API
 
     - Update src/Platform/ipc/web.ts to use window.electronAPI
     - Remove direct ipcRenderer usage from renderer
@@ -197,7 +197,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Update TypeScript types for window.electronAPI
     - _Requirements: 5.3, 5.5_
 
-  - [~] 6.5 Update electron-builder configuration
+  - [ ] 6.5 Update electron-builder configuration
 
     - Update electron-build.yml for Electron 28 compatibility
     - Verify build configuration for all platforms (Mac, Windows, Linux)
@@ -212,7 +212,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify responses match expected format
     - Run 100+ iterations
 
-- [~] 7. Checkpoint - Verify Phase 2 completion
+- [ ] 7. Checkpoint - Verify Phase 2 completion
   - Ensure all tests pass, ask the user if questions arise.
   - Verify React 18 app renders correctly
   - Verify MUI v5 components display properly
@@ -222,9 +222,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
 
 ### Phase 3: Security and SDK Updates
 
-- [~] 8. Update Stellar SDK to version 11+
+- [ ] 8. Update Stellar SDK to version 11+
 
-  - [~] 8.1 Update Stellar SDK dependency
+  - [ ] 8.1 Update Stellar SDK dependency
 
     - Update stellar-sdk to version 11.x or latest stable
     - Update @types/stellar-base if needed
@@ -232,7 +232,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run npm install
     - _Requirements: 6.1_
 
-  - [~] 8.2 Update Stellar SDK API usage
+  - [ ] 8.2 Update Stellar SDK API usage
 
     - Review Stellar SDK v11 changelog for breaking changes
     - Update transaction building code for API changes
@@ -259,9 +259,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run 100+ iterations
     - CRITICAL: This test must pass before deployment
 
-- [~] 9. Validate keystore backward compatibility
+- [ ] 9. Validate keystore backward compatibility
 
-  - [~] 9.1 Create test keystores from previous versions
+  - [ ] 9.1 Create test keystores from previous versions
 
     - Generate keystores using Solar Wallet v0.28.1
     - Create keystores with various passwords and key types
@@ -290,7 +290,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify output matches input
     - Run 100+ iterations
 
-  - [~] 9.4 Validate PBKDF2 and xsalsa20-poly1305 parameters unchanged
+  - [ ] 9.4 Validate PBKDF2 and xsalsa20-poly1305 parameters unchanged
     - Review key-store library configuration
     - Verify PBKDF2 iterations = 100000
     - Verify PBKDF2 digest = SHA256
@@ -298,9 +298,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Document that encryption parameters are unchanged
     - _Requirements: 7.2, 7.3_
 
-- [~] 10. Security audit and vulnerability fixes
+- [ ] 10. Security audit and vulnerability fixes
 
-  - [~] 10.1 Run npm audit and fix vulnerabilities
+  - [ ] 10.1 Run npm audit and fix vulnerabilities
 
     - Run npm audit to identify vulnerabilities
     - Update dependencies with security fixes
@@ -308,7 +308,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Manually update dependencies with breaking changes
     - _Requirements: 9.1_
 
-  - [~] 10.2 Document remaining vulnerabilities
+  - [ ] 10.2 Document remaining vulnerabilities
 
     - Run npm audit after fixes
     - Document any remaining low/moderate vulnerabilities
@@ -323,7 +323,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Test error handling for invalid keystores
     - _Requirements: 10.1, 10.2_
 
-- [~] 11. Comprehensive testing and validation
+- [ ] 11. Comprehensive testing and validation
 
   - [ ]\* 11.1 Write unit tests for UI components
 
@@ -341,14 +341,14 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Test IPC communication end-to-end
     - _Requirements: 5.2, 10.4_
 
-  - [~] 11.3 Manual testing on all platforms
+  - [ ] 11.3 Manual testing on all platforms
     - Test desktop app on Mac OS
     - Test desktop app on Windows
     - Test desktop app on Linux
     - Document any platform-specific issues
     - _Requirements: 5.1_
 
-- [~] 12. Checkpoint - Verify Phase 3 completion
+- [ ] 12. Checkpoint - Verify Phase 3 completion
   - Ensure all tests pass, ask the user if questions arise.
   - Verify all 6 property tests pass with 100+ iterations
   - Verify keystore backward compatibility (CRITICAL)
@@ -358,9 +358,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
 
 ### Post-Modernization Documentation
 
-- [~] 13. Update project documentation
+- [ ] 13. Update project documentation
 
-  - [~] 13.1 Update README.md
+  - [ ] 13.1 Update README.md
 
     - Update dependency version requirements
     - Update development setup instructions
@@ -368,14 +368,14 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Document new npm scripts
     - _Requirements: 12.1_
 
-  - [~] 13.2 Update package.json scripts with descriptions
+  - [ ] 13.2 Update package.json scripts with descriptions
 
     - Add comments or update script names for clarity
     - Document what each script does
     - Update any changed build commands
     - _Requirements: 12.2_
 
-  - [~] 13.3 Create migration guide for developers
+  - [ ] 13.3 Create migration guide for developers
 
     - Document all breaking changes
     - Provide code examples for common migrations
@@ -383,7 +383,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Document new security practices (Electron contextBridge)
     - _Requirements: 12.4_
 
-  - [~] 13.4 Update CONTRIBUTING.md
+  - [ ] 13.4 Update CONTRIBUTING.md
     - Update linting instructions (ESLint instead of tslint)
     - Update TypeScript version requirements
     - Update testing instructions

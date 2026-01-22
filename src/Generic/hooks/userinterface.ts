@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { __RouterContext, RouteComponentProps } from "react-router"
-import useMediaQuery from "@material-ui/core/useMediaQuery"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { NotificationsContext } from "~App/contexts/notifications"
 import * as Clipboard from "~Platform/clipboard"
 

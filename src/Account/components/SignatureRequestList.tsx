@@ -1,4 +1,4 @@
-import ListSubheader from "@material-ui/core/ListSubheader"
+import ListSubheader from "@mui/material/ListSubheader"
 import { TransactionStellarUri } from "@stellarguard/stellar-uri"
 import React from "react"
 import { Transaction } from "stellar-sdk"

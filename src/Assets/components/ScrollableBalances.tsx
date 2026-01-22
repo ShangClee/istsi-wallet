@@ -2,10 +2,10 @@ import React from "react"
 import { animated, useSpring } from "react-spring"
 import { useDrag } from "react-use-gesture"
 import { Asset, Horizon } from "stellar-sdk"
-import IconButton from "@material-ui/core/IconButton"
-import makeStyles from "@material-ui/core/styles/makeStyles"
-import LeftIcon from "@material-ui/icons/ArrowLeft"
-import RightIcon from "@material-ui/icons/ArrowRight"
+import IconButton from "@mui/material/IconButton"
+import makeStyles from "@mui/styles/makeStyles"
+import LeftIcon from "@mui/icons-material/ArrowLeft"
+import RightIcon from "@mui/icons-material/ArrowRight"
 import { Account } from "~App/contexts/accounts"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { stringifyAsset } from "~Generic/lib/stellar"
@@ -261,6 +261,7 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
         className={`${classes.scrollButton} ${classes.scrollButtonLeft}`}
         onClick={scrollLeft}
         style={{ display: canScrollLeft ? undefined : "none" }}
+        size="large"
       >
         <LeftIcon className={classes.scrollButtonIcon} />
       </IconButton>
@@ -268,6 +269,7 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
         className={`${classes.scrollButton} ${classes.scrollButtonRight}`}
         onClick={scrollRight}
         style={{ display: canScrollRight ? undefined : "none" }}
+        size="large"
       >
         <RightIcon className={classes.scrollButtonIcon} />
       </IconButton>

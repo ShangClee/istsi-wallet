@@ -1,5 +1,5 @@
-import Fade from "@material-ui/core/Fade"
-import LinearProgress from "@material-ui/core/LinearProgress"
+import Fade from "@mui/material/Fade"
+import LinearProgress from "@mui/material/LinearProgress"
 
 const InlineLoader = () => {
   return (

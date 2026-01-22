@@ -1,13 +1,13 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import IconButton from "@material-ui/core/IconButton"
-import makeStyles from "@material-ui/core/styles/makeStyles"
-import SettingsIcon from "@material-ui/icons/Settings"
-import Switch from "@material-ui/core/Switch"
-import Tooltip from "@material-ui/core/Tooltip"
-import useMediaQuery from "@material-ui/core/useMediaQuery"
-import UpdateIcon from "@material-ui/icons/SystemUpdateAlt"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import IconButton from "@mui/material/IconButton"
+import makeStyles from "@mui/styles/makeStyles"
+import SettingsIcon from "@mui/icons-material/Settings"
+import Switch from "@mui/material/Switch"
+import Tooltip from "@mui/material/Tooltip"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import UpdateIcon from "@mui/icons-material/SystemUpdateAlt"
 import DialogBody from "~Layout/components/DialogBody"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 import { Section } from "~Layout/components/Page"
@@ -69,6 +69,7 @@ function AllAccountsPage() {
         onClick={startUpdate}
         color="secondary"
         style={{ marginLeft: isWidthMax450 ? 0 : 8, marginRight: -12, color: "inherit" }}
+        size="large"
       >
         <UpdateIcon className={styles.icon}></UpdateIcon>
       </IconButton>
@@ -105,6 +106,7 @@ function AllAccountsPage() {
             <IconButton
               onClick={() => router.history.push(routes.settings())}
               style={{ marginLeft: isWidthMax450 ? 0 : 8, marginRight: -12, color: "inherit" }}
+              size="large"
             >
               <SettingsIcon />
             </IconButton>

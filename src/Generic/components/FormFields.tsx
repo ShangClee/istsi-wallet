@@ -1,11 +1,11 @@
 import React from "react"
-import IconButton from "@material-ui/core/IconButton"
-import { InputProps } from "@material-ui/core/Input"
-import InputAdornment from "@material-ui/core/InputAdornment"
-import TextField, { OutlinedTextFieldProps, TextFieldProps } from "@material-ui/core/TextField"
-import { makeStyles } from "@material-ui/core/styles"
-import useMediaQuery from "@material-ui/core/useMediaQuery"
-import SearchIcon from "@material-ui/icons/Search"
+import IconButton from "@mui/material/IconButton"
+import { InputProps } from "@mui/material/Input"
+import InputAdornment from "@mui/material/InputAdornment"
+import TextField, { OutlinedTextFieldProps, TextFieldProps } from "@mui/material/TextField"
+import makeStyles from "@mui/styles/makeStyles"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import SearchIcon from "@mui/icons-material/Search"
 import { trackError } from "~App/contexts/notifications"
 import QRImportDialog from "~Generic/components/QRImport"
 import QRReaderIcon from "~Icons/components/QRReader"
@@ -36,7 +36,7 @@ export const QRReader = React.memo(function QRReader(props: Props) {
 
   return (
     <>
-      <IconButton onClick={openQRReader} tabIndex={99}>
+      <IconButton onClick={openQRReader} tabIndex={99} size="large">
         <QRReaderIcon style={isTouchScreen ? mobileQRIconStyle : desktopQRIconStyle} />
       </IconButton>
       <QRImportDialog open={isQRReaderOpen} onClose={closeQRReader} onError={trackError} onScan={handleQRScan} />

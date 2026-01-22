@@ -1,5 +1,5 @@
 import React from "react"
-import Button from "@material-ui/core/Button"
+import Button from "@mui/material/Button"
 import { storiesOf } from "@storybook/react"
 import { Asset, Server, Transaction } from "stellar-sdk"
 import TransactionReviewDialog from "../components/TransactionReviewDialog"
