@@ -90,6 +90,7 @@ function MultisigAccountPubKey(props: MultisigAccountPubKeyProps) {
         <AccountSettingsItem icon={null} subItem>
           <ListItemText style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
             <TextField
+              variant="standard"
               error={Boolean(props.error)}
               helperText={props.error ? t("create-account.inputs.multisig-account.helper-text") : ""}
               label={props.error || t("create-account.inputs.multisig-account.label")}

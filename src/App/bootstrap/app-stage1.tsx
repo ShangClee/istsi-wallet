@@ -13,16 +13,21 @@ declare module "@mui/styles/defaultTheme" {
   interface DefaultTheme extends Theme {}
 }
 
+declare module "@mui/styles/defaultTheme" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
 const Stage2 = React.lazy(() => import("./app-stage2"))
 
 export const Providers = (props: { children: React.ReactNode }) => (
-  <Router>
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>
+      <Router>
         <ContextProviders>{props.children}</ContextProviders>
-      </ThemeProvider>
-    </StyledEngineProvider>
-  </Router>
+      </Router>
+    </ThemeProvider>
+  </StyledEngineProvider>
 )
 
 const App = () => (

@@ -17,8 +17,8 @@ export function mapSuspendables<In, Out>(
     try {
       return mapper(element, index)
     } catch (thrown) {
-      if (thrown && typeof thrown.then === "function") {
-        pendingSuspenses.push(thrown)
+      if (thrown && typeof (thrown as any).then === "function") {
+        pendingSuspenses.push(thrown as Promise<any>)
       } else {
         throw thrown
       }

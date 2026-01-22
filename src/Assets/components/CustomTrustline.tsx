@@ -37,6 +37,7 @@ function CustomTrustlineDialog(props: Props) {
     >
       <form noValidate style={{ display: "block", width: "100%" }}>
         <TextField
+          variant="standard"
           label={t("account-settings.custom-trustline.textfield.code.label")}
           placeholder="EURT, USDT, BTC, ..."
           autoFocus={process.env.PLATFORM !== "ios"}
@@ -46,6 +47,7 @@ function CustomTrustlineDialog(props: Props) {
           onChange={event => setCode(event.target.value)}
         />
         <TextField
+          variant="standard"
           fullWidth
           label={t("account-settings.custom-trustline.textfield.issuer.label")}
           placeholder={t("account-settings.custom-trustline.textfield.issuer.placeholder")}
@@ -55,6 +57,7 @@ function CustomTrustlineDialog(props: Props) {
           onChange={event => setIssuerPublicKey(event.target.value)}
         />
         <TextField
+          variant="standard"
           inputProps={{
             pattern: "^[0-9]*(.[0-9]+)?$",
             inputMode: "decimal"

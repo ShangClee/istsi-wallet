@@ -4,14 +4,14 @@ function setDisplayName(Component: React.ComponentType<any>, name: string) {
   ;(Component as any).displayName = name
 }
 
-function withFallback<Props>(
+function withFallback<Props extends Record<string, any>>(
   Component: React.ComponentType<Props>,
   fallback: React.ReactNode
 ): React.ComponentType<Props> {
   const AugmentedComponent = (props: Props) => {
     return (
       <React.Suspense fallback={fallback || null}>
-        <Component {...props} />
+        <Component {...(props as any)} />
       </React.Suspense>
     )
   }

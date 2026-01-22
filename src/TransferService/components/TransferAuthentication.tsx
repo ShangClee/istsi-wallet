@@ -52,7 +52,7 @@ function WithdrawalAuthentication(props: WithdrawalAuthenticationProps) {
           )
         } catch (error) {
           if (isWrongPasswordError(error)) {
-            setPasswordError(error)
+            setPasswordError(error instanceof Error ? error : new Error(String(error)))
           } else {
             throw error
           }

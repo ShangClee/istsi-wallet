@@ -203,7 +203,7 @@ class TransactionSender extends React.Component<Props, State> {
       return this.submitSignedTransaction(signedTx, unsignedTx)
     } catch (error) {
       if (isWrongPasswordError(error)) {
-        this.setState({ passwordError: error })
+        this.setState({ passwordError: error instanceof Error ? error : new Error(String(error)) })
         return
       } else {
         throw error
@@ -249,7 +249,7 @@ class TransactionSender extends React.Component<Props, State> {
       }, completionCallbackDelay)
     } catch (error) {
       if (onSubmissionFailure) {
-        onSubmissionFailure(error, signedTx)
+        onSubmissionFailure(error instanceof Error ? error : new Error(String(error)), signedTx)
       }
     }
   }
@@ -332,7 +332,7 @@ class TransactionSender extends React.Component<Props, State> {
       return result
     } catch (error) {
       // re-throw refined error
-      throw explainSubmissionErrorResponse(error, this.props.t)
+      throw explainSubmissionErrorResponse(error as any, this.props.t)
     }
   }
 
@@ -344,7 +344,7 @@ class TransactionSender extends React.Component<Props, State> {
       this.setState({ submissionType: SubmissionType.thirdParty })
       return await promise
     } catch (error) {
-      throw explainSubmissionErrorResponse(error, this.props.t)
+      throw explainSubmissionErrorResponse(error as any, this.props.t)
     }
   }
 

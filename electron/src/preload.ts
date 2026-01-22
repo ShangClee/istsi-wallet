@@ -1,5 +1,5 @@
-// tslint:disable-next-line: no-var-requires
-const { contextBridge, ipcRenderer } = require("electron")
+import { contextBridge, ipcRenderer } from "electron"
+
 const electronProcess = process
 
 function sendMessage<Message extends keyof IPC.MessageType>(
@@ -21,7 +21,7 @@ function sendMessage<Message extends keyof IPC.MessageType>(
         } else if (data.result) {
           resolve(data.result)
         } else {
-          resolve()
+          resolve(undefined as any)
         }
       }
     }
@@ -55,6 +55,7 @@ const electron: ElectronContext = {
   subscribeToIPCMessages
 }
 
+// Expose secure API to renderer process using contextBridge
 contextBridge.exposeInMainWorld("electron", electron)
 
 process.once("loaded", () => {

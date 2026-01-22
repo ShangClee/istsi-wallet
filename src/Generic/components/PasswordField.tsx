@@ -14,6 +14,7 @@ function PasswordField(props: Omit<StandardTextFieldProps, "type">) {
 
   return (
     <TextField
+      variant="standard"
       {...props}
       InputProps={{
         ...props.InputProps,

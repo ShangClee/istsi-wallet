@@ -81,7 +81,10 @@ function TxConfirmationForm(props: Props) {
     )
   }, [props.account.testnet, props.transaction])
 
-  const handleTextFieldChange = React.useCallback(event => setFormValue("password", event.target.value), [])
+  const handleTextFieldChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setFormValue("password", event.target.value),
+    []
+  )
 
   const handleFormSubmission = React.useCallback(
     async (event: React.SyntheticEvent) => {

@@ -59,8 +59,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
             <>{t("account.remove-trustline.text.warning")}</>
           ) : (
             <Trans i18nKey="account.remove-trustline.text.info">
-              You are about to remove <b>{{ asset: props.asset.code }}</b> from account "
-              {{ accountName: props.account.name }}".
+              You are about to remove <b>{props.asset.code}</b> from account "{props.account.name}".
             </Trans>
           )}
         </DialogContentText>

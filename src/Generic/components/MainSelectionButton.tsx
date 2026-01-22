@@ -123,8 +123,7 @@ function MainSelectionButton(props: MainSelectionButtonProps) {
           props.dense ? classes.dense : "",
           props.gutterBottom ? classes.gutterBottom : "",
           props.variant === "primary" ? classes.primary : ""
-        ].join(" "),
-        label: classes.buttonLabel
+        ].join(" ")
       }}
       onClick={props.onClick}
       style={props.style}

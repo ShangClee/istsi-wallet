@@ -33,6 +33,7 @@ const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceP
   const endAdornment = (
     <InputAdornment position="end">
       <Select
+        variant="standard"
         disabled={isDisabled}
         disableUnderline
         onChange={event => props.onSetPriceDenotedIn(event.target.value as any)}
@@ -51,6 +52,7 @@ const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceP
 
   return (
     <TextField
+      variant="standard"
       inputProps={{
         pattern: "^[0-9]*(.[0-9]+)?$",
         inputMode: "decimal",

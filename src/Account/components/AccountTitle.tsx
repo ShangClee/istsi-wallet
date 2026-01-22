@@ -143,6 +143,7 @@ function TitleTextField(props: TitleTextFieldProps) {
   const length = props.value.length || props.placeholder?.length || 0
   return (
     <TextField
+      variant="standard"
       error={Boolean(props.error)}
       inputProps={{
         className: classes.input,

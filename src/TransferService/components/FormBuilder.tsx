@@ -27,6 +27,7 @@ export function FormBuilderField(props: FormBuilderFieldProps) {
   if (choices) {
     return (
       <TextField
+        variant="standard"
         helperText={formattedDescription}
         label={formattedName}
         onChange={props.onChange}
@@ -45,6 +46,7 @@ export function FormBuilderField(props: FormBuilderFieldProps) {
   } else {
     return (
       <TextField
+        variant="standard"
         helperText={formattedDescription}
         label={formattedName}
         onChange={props.onChange}

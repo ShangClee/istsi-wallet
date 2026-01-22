@@ -125,7 +125,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify no console errors during rendering
     - Run 100+ iterations per component
 
-- [ ] 5. Update Material-UI to MUI v5
+- [x] 5. Update Material-UI to MUI v5
 
   - [x] 5.1 Update MUI dependencies
 
@@ -137,7 +137,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run npm install
     - _Requirements: 4.1, 4.2_
 
-  - [ ] 5.2 Run MUI codemod for automated migration
+  - [x] 5.2 Run MUI codemod for automated migration
 
     - Install @mui/codemod globally or as dev dependency
     - Run codemod for preset-safe transformations
@@ -146,7 +146,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Review and commit automated changes
     - _Requirements: 4.4_
 
-  - [ ] 5.3 Manually update remaining MUI imports and APIs
+  - [x] 5.3 Manually update remaining MUI imports and APIs
 
     - Search for remaining @material-ui imports
     - Update to @mui/material or @mui/icons-material
@@ -162,9 +162,9 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify theme is applied correctly
     - Check that styled components work as expected
 
-- [ ] 6. Update Electron to version 28+
+- [x] 6. Update Electron to version 28+
 
-  - [ ] 6.1 Update Electron and related dependencies
+  - [x] 6.1 Update Electron and related dependencies
 
     - Update electron to version 28.x or latest stable
     - Update electron-builder to compatible version
@@ -173,7 +173,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Run npm install
     - _Requirements: 5.1, 5.4_
 
-  - [ ] 6.2 Update Electron security configuration
+  - [x] 6.2 Update Electron security configuration
 
     - Update BrowserWindow webPreferences in electron/src/index.\*.ts
     - Set contextIsolation: true
@@ -181,7 +181,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Add preload script path
     - _Requirements: 5.3_
 
-  - [ ] 6.3 Create Electron preload script with contextBridge
+  - [x] 6.3 Create Electron preload script with contextBridge
 
     - Create electron/src/preload.ts
     - Import contextBridge and ipcRenderer
@@ -189,7 +189,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Define interfaces for all IPC methods (signTransaction, getKeystore, etc.)
     - _Requirements: 5.3_
 
-  - [ ] 6.4 Update renderer process to use exposed Electron API
+  - [x] 6.4 Update renderer process to use exposed Electron API
 
     - Update src/Platform/ipc/web.ts to use window.electronAPI
     - Remove direct ipcRenderer usage from renderer
@@ -197,7 +197,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Update TypeScript types for window.electronAPI
     - _Requirements: 5.3, 5.5_
 
-  - [ ] 6.5 Update electron-builder configuration
+  - [x] 6.5 Update electron-builder configuration
 
     - Update electron-build.yml for Electron 28 compatibility
     - Verify build configuration for all platforms (Mac, Windows, Linux)
@@ -212,7 +212,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Verify responses match expected format
     - Run 100+ iterations
 
-- [ ] 7. Checkpoint - Verify Phase 2 completion
+- [x] 7. Checkpoint - Verify Phase 2 completion
   - Ensure all tests pass, ask the user if questions arise.
   - Verify React 18 app renders correctly
   - Verify MUI v5 components display properly

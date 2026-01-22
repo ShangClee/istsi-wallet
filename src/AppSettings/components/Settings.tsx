@@ -116,7 +116,7 @@ export const LanguageSetting = React.memo(function LanguageSetting(props: Langua
   const browserLanguage = navigator.language.substr(0, 2)
 
   const handleChange = React.useCallback(
-    (event: React.ChangeEvent<{ value: unknown }>) => {
+    (event: any) => {
       onSelect(event.target.value as string)
     },
     [onSelect]
@@ -126,6 +126,7 @@ export const LanguageSetting = React.memo(function LanguageSetting(props: Langua
     <AppSettingsItem
       actions={
         <Select
+          variant="standard"
           onChange={handleChange}
           style={{ marginLeft: 8 }}
           value={props.value}

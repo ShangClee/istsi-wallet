@@ -131,7 +131,7 @@ export function useLoadingState<T = any>(
     } catch (error) {
       setLoadingState({
         type: "rejected",
-        error
+        error: error instanceof Error ? error : new Error(String(error))
       })
     }
   }, [])

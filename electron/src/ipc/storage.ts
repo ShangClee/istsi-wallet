@@ -8,14 +8,26 @@ import { Keypair, Networks, Transaction } from "stellar-sdk"
 import { expose } from "./_ipc"
 import { Messages } from "../shared/ipc"
 
+// Define the store schema for TypeScript
+interface StoreSchema {
+  keys?: Record<string, any>
+  "installation-id"?: string
+  settings?: Partial<Platform.SettingsData>
+  ignoredSignatureRequests?: string[]
+}
+
 // Use legacy path to not break backwards-compatibility
 const storeDirectoryPath = path.join(app.getPath("appData"), "satoshipay-stellar-wallet")
 
 // Use different key stores for development and production
-const mainStore = new Store({
+const mainStore = new Store<StoreSchema>({
   cwd: storeDirectoryPath,
   name: isDev ? "development" : "config"
-})
+}) as Store<StoreSchema> & {
+  has(key: keyof StoreSchema): boolean
+  get<K extends keyof StoreSchema>(key: K): StoreSchema[K]
+  set<K extends keyof StoreSchema>(key: K, value: StoreSchema[K]): void
+}
 
 const readKeys = () => {
   return mainStore.has("keys") ? mainStore.get("keys") : {}
@@ -32,7 +44,7 @@ export function readInstallationID() {
     const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 8)
     mainStore.set("installation-id", nanoid())
   }
-  return mainStore.get("installation-id")
+  return mainStore.get("installation-id")!
 }
 
 /////////////
@@ -85,11 +97,11 @@ expose(Messages.SignTransaction, function signTransaction(internalAccountID, tra
 // Settings:
 
 expose(Messages.ReadSettings, function readSettings() {
-  return mainStore.has("settings") ? mainStore.get("settings") : {}
+  return mainStore.has("settings") ? mainStore.get("settings")! : {}
 })
 
 expose(Messages.StoreSettings, function storeSettings(updatedSettings: Partial<Platform.SettingsData>) {
-  const prevSettings = mainStore.has("settings") ? mainStore.get("settings") : {}
+  const prevSettings = mainStore.has("settings") ? mainStore.get("settings")! : {}
   mainStore.set("settings", { ...prevSettings, ...updatedSettings })
   return true
 })
@@ -98,7 +110,7 @@ expose(Messages.StoreSettings, function storeSettings(updatedSettings: Partial<P
 // Dismissed txs:
 
 expose(Messages.ReadIgnoredSignatureRequestHashes, function readIgnoredSignatureRequestHashes() {
-  return mainStore.has("ignoredSignatureRequests") ? mainStore.get("ignoredSignatureRequests") : []
+  return mainStore.has("ignoredSignatureRequests") ? mainStore.get("ignoredSignatureRequests")! : []
 })
 
 expose(Messages.StoreIgnoredSignatureRequestHashes, function storeIgnoredSignatureRequestHashes(

@@ -48,6 +48,7 @@ const TrustedServiceListItem = React.memo(function TrustedServiceListItem(props:
   const stellarToml = useStellarToml(props.trustedService.domain)
   const imageURL = stellarToml && stellarToml.DOCUMENTATION && stellarToml.DOCUMENTATION.ORG_LOGO
   const orgName = stellarToml && stellarToml.DOCUMENTATION && stellarToml.DOCUMENTATION.ORG_NAME
+  const name = orgName || props.trustedService.domain
 
   return (
     <ListItem className={classes.listItem}>

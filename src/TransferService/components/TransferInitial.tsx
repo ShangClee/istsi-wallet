@@ -172,6 +172,7 @@ function TransferInitial(props: TransferInitialProps) {
         </AssetSelector>
         <Collapse in={showMethods}>
           <TextField
+            variant="standard"
             fullWidth
             label={
               props.type === "deposit"

@@ -113,6 +113,7 @@ export const ReadOnlyTextfield = React.memo(function ReadOnlyTextfield(props: Re
   }
   return (
     <TextField
+      variant="standard"
       {...textfieldProps}
       className={`${classes.root} ${props.className || ""}`}
       tabIndex={-1}

@@ -5,10 +5,9 @@ import { initReactI18next } from "react-i18next"
 import translationEN from "../../i18n/en"
 import translationES from "../../i18n/es"
 import translationIT from "../../i18n/it"
-
-i18n
-  .use(LanguageDetector)
+;(i18n as any)
   .use(initReactI18next)
+  .use(LanguageDetector)
   .init({
     debug: process.env.NODE_ENV === "development" ? true : false,
     fallbackLng: "en",

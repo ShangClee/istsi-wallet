@@ -62,7 +62,7 @@ export function subscribeToUpdatesAndPoll<ValueT, UpdateT = ValueT>(
             throw error
           }
         } catch (error) {
-          observer.error(error)
+          observer.error(error instanceof Error ? error : new Error(String(error)))
         }
       }
 
@@ -87,7 +87,7 @@ export function subscribeToUpdatesAndPoll<ValueT, UpdateT = ValueT>(
           try {
             update = await implementation.fetchUpdate(streamedUpdate)
           } catch (error) {
-            return handleConnectionError(error)
+            return handleConnectionError(error instanceof Error ? error : new Error(String(error)))
           }
 
           if (update && implementation.shouldApplyUpdate(update)) {

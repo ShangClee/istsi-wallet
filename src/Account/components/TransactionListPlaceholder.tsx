@@ -9,8 +9,8 @@ function SubtitlePlaceholder() {
       height={54}
       width={width}
       speed={2}
-      primaryColor="#e8e8e8"
-      secondaryColor="#e0e0e0"
+      backgroundColor="#e8e8e8"
+      foregroundColor="#e0e0e0"
       style={{ flex: "0 0 54px" }}
     >
       <rect x="16" y="22" rx="5" ry="5" width="140" height="16" />
@@ -26,8 +26,8 @@ function TransactionLoadingPlaceholder() {
       height={60}
       width={width}
       speed={2}
-      primaryColor="#e8e8e8"
-      secondaryColor="#e0e0e0"
+      backgroundColor="#e8e8e8"
+      foregroundColor="#e0e0e0"
       style={{ flex: "0 0 60px" }}
     >
       <circle cx="32" cy="32" r="14" />

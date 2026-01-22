@@ -270,6 +270,7 @@ function TradingForm(props: Props) {
             }}
           />
           <TextField
+            variant="standard"
             name="primaryAmountString"
             inputRef={form.register({
               required: t<string>("trading.validation.primary-amount-missing"),

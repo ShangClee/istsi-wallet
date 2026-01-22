@@ -161,6 +161,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
   const destinationInput = React.useMemo(
     () => (
       <TextField
+        variant="standard"
         autoFocus={process.env.PLATFORM !== "ios"}
         error={Boolean(form.errors.destination)}
         fullWidth
@@ -246,6 +247,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
   const memoInput = React.useMemo(
     () => (
       <TextField
+        variant="standard"
         error={Boolean(form.errors.memoValue)}
         inputProps={{ maxLength: 28 }}
         label={form.errors.memoValue ? form.errors.memoValue.message : memoMetadata.label}

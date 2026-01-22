@@ -110,7 +110,7 @@ export function getErrorTranslation(error: Error, t: TFunction): string {
   }
 
   const fallback = error.message
-  return prefix + t([key, fallback], params)
+  return prefix + t([key, fallback], params as any)
 }
 
 export function renderFormFieldError(error: any, t: TFunction) {

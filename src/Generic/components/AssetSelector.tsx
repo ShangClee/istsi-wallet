@@ -122,6 +122,7 @@ function AssetSelector(props: AssetSelectorProps) {
 
   return (
     <TextField
+      variant="standard"
       autoFocus={props.autoFocus}
       className={props.className}
       error={Boolean(props.inputError)}

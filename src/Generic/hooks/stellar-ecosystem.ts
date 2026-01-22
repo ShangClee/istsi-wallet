@@ -21,10 +21,10 @@ export function useWellKnownAccounts(testnet: boolean) {
   try {
     accounts = wellKnownAccountsCache.get(testnet) || wellKnownAccountsCache.suspend(testnet, fetchAccounts)
   } catch (thrown) {
-    if (thrown && typeof thrown.then === "function") {
+    if (thrown && typeof (thrown as any).then === "function") {
       // Promise thrown to suspend component – prevent suspension
       accounts = []
-      thrown.then(forceRerender, trackError)
+      ;(thrown as Promise<any>).then(forceRerender, trackError)
     } else {
       // It's an error – re-throw
       throw thrown

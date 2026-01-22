@@ -66,6 +66,7 @@ function AssetLogo(props: AssetLogoProps) {
     const applyPadding = props.imageURL && props.imageURL.match(paddedAssetIconsRegex)
     const assetCode =
       props.asset.code.length < 5 ? props.asset.code : props.asset.code.substr(0, 2) + props.asset.code.substr(-2)
+    const name = props.asset.code
 
     const avatarClassName = [
       className,
