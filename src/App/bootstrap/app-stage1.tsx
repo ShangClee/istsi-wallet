@@ -1,7 +1,7 @@
 /// <reference types="parcel-env" />
 
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import { HashRouter as Router } from "react-router-dom"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import ViewLoading from "~Generic/components/ViewLoading"
@@ -26,7 +26,12 @@ const App = () => (
   </Providers>
 )
 
-ReactDOM.render(<App />, document.getElementById("app"))
+const rootElement = document.getElementById("app")
+if (!rootElement) {
+  throw new Error("Failed to find the root element")
+}
+const root = createRoot(rootElement)
+root.render(<App />)
 
 // Hot Module Replacement
 if (module.hot) {
