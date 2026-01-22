@@ -1,4 +1,3 @@
-import React from "react"
 import "./animated-icons.css"
 
 // From <https://github.com/Kamonlojn/svg-icons-animate>

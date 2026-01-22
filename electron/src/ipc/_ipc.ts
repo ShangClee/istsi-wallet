@@ -13,15 +13,17 @@ export function expose<Message extends keyof IPC.MessageType>(
       const result = await handler(...args)
       event.sender.send(messageType, { callID, result })
     } catch (error) {
-      const extras = pick(error, error.__extraProps || [])
+      // Type guard for error object
+      const err = error as any
+      const extras = pick(err, err.__extraProps || [])
       event.sender.send(messageType, {
         callID,
         error: {
           ...extras,
-          __extraProps: error.__extraProps,
-          message: error.message,
-          name: error.name || "Error",
-          stack: error.stack
+          __extraProps: err.__extraProps,
+          message: err.message,
+          name: err.name || "Error",
+          stack: err.stack
         }
       })
     }
