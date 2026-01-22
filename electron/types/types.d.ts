@@ -45,3 +45,8 @@ declare module "electron-reload" {
     options?: { electron?: string; argv?: string[]; hardResetMethod?: "exit"; forceHardReset?: boolean }
   ): void
 }
+
+declare module "electron-squirrel-startup" {
+  const hasStartup: boolean
+  export default hasStartup
+}

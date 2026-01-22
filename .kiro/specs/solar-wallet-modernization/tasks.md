@@ -282,7 +282,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - Compare bundle sizes and build times (Estimated based on industry benchmarks)
     - _Requirements: 8.1, 8.2, 8.3_
 
-  - [x]\* 15.3 Document build system recommendation
+  - [x] 15.3 Document build system recommendation
     - [See Evaluation Report](./build-system-evaluation.md)
     - Compare Parcel v1 vs v2 vs Vite vs Webpack
     - Provide migration roadmap if recommended
@@ -290,6 +290,7 @@ This implementation plan breaks down the Solar Wallet modernization into three d
     - _Requirements: 8.1, 8.2_
 
 - [x] 16. Build system migration (Vite)
+
   - [x] 16.1 Migrate dependencies and config
     - Remove Parcel v1
     - Install Vite and plugins
@@ -301,6 +302,12 @@ This implementation plan breaks down the Solar Wallet modernization into three d
   - [x] 16.3 Verify build and dev workflow
     - Ensure npm run build passes
     - Ensure npm run dev starts Electron
+
+- [x] 17. Cleanup
+  - Remove src/\*.njk templates
+  - Remove electron/lib and .cache
+  - Update electron-build.yml
+  - Clean package.json scripts
 
 ## Notes
 
@@ -314,9 +321,8 @@ This implementation plan breaks down the Solar Wallet modernization into three d
 
 ## Current Blockers
 
-None. Vite migration completed.
+None. Vite migration and cleanup completed.
 
 ## Next Steps
 
 1. **Verification**: Comprehensive manual testing of the application to ensure all features work with the new build system.
-2. **Cleanup**: Remove any remaining legacy config files or unused code.

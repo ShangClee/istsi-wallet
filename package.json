@@ -33,33 +33,6 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "_scripts_description": {
-    "precommit": "Git pre-commit hook - runs lint-staged to format code before commit",
-    "lint": "Check TypeScript/TSX files for linting errors using ESLint",
-    "lint:fix": "Automatically fix linting errors in TypeScript/TSX files",
-    "prettier": "Format code with Prettier (TypeScript, Markdown files)",
-    "test": "Run all tests once using Vitest",
-    "test:watch": "Run tests in watch mode - reruns on file changes",
-    "test:ui": "Run tests with Vitest UI for interactive debugging",
-    "test:coverage": "Run tests and generate code coverage report",
-    "test:pbt": "Run property-based tests only (tests matching 'Property N:' pattern)",
-    "storybook": "Start Storybook server for component development on port 9001",
-    "clean:dist": "Remove all files from dist directory",
-    "clean:electron:ts": "Remove compiled TypeScript files from electron/lib",
-    "prebuild:electron:bundle": "Bundle React app for production using Parcel",
-    "prebuild:electron:ts": "Compile Electron TypeScript files to JavaScript",
-    "prebuild:electron:ts:watch": "Compile Electron TypeScript in watch mode",
-    "prebuild:electron": "Run all pre-build steps for Electron app",
-    "build:linux": "Build Linux desktop application (x64)",
-    "build:mac": "Build Mac OS desktop application (x64)",
-    "build:mac:signed": "Build and sign Mac OS app with code signing certificate and notarization",
-    "build:win": "Build Windows desktop application (ia32)",
-    "build:win:signed": "Build and sign Windows app with code signing certificate",
-    "dev": "Run app in development mode with hot reload (parallel: TS compilation, bundler, Electron)",
-    "dev:app": "Start Electron app in development mode with TypeScript support",
-    "dev:app:delayed": "Start Electron app after 2 second delay (allows bundler to initialize)",
-    "dev:bundle": "Run Parcel bundler in watch mode with HMR for development"
-  },
   "lint-staged": {
     "ignore": [
       "**/*.yml"
