@@ -76,7 +76,13 @@ export const MultipleBalances = React.memo(function MultipleBalances(props: Mult
       {balances.map((balance: BalanceLine, index) => (
         <React.Fragment key={stringifyAsset(balancelineToAsset(balance))}>
           <Balance
-            assetCode={balance.asset_type === "native" ? "XLM" : balance.asset_code}
+            assetCode={
+              balance.asset_type === "native"
+                ? "XLM"
+                : balance.asset_type === "liquidity_pool_shares"
+                ? "LP"
+                : balance.asset_code
+            }
             balance={balance.balance}
             inline={props.inline}
             style={{ marginRight: index < balances.length - 1 ? "1.2em" : undefined }}
@@ -99,9 +105,12 @@ function AccountBalances(props: {
   testnet: boolean
 }) {
   const accountData = useLiveAccountData(props.publicKey, props.testnet)
+  const balances = React.useMemo(() => accountData.balances.filter(b => b.asset_type !== "liquidity_pool_shares"), [
+    accountData.balances
+  ])
 
-  return accountData.balances.length > 0 ? (
-    <MultipleBalances balances={accountData.balances} component={props.component} onClick={props.onClick} />
+  return balances.length > 0 ? (
+    <MultipleBalances balances={balances} component={props.component} onClick={props.onClick} />
   ) : (
     <MultipleBalances balances={[zeroXLMBalance] as any} component={props.component} onClick={props.onClick} />
   )

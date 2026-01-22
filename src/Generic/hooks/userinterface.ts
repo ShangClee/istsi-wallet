@@ -47,7 +47,7 @@ export function useDialogActions(): RefStateObject {
 }
 
 // TODO: Get rid of this hook once react-router is shipped with a hook out-of-the-box
-export function useRouter<Params = {}>() {
+export function useRouter<Params extends { [K in keyof Params]?: string | undefined } = {}>() {
   const routerContext = React.useContext<RouteComponentProps<Params>>(__RouterContext)
   const [updateEnforcementState, setUpdateEnforcementState] = React.useState(0)
 

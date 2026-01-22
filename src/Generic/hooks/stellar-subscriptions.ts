@@ -88,7 +88,7 @@ export function useLiveAccountDataSet(accountIDs: string[], testnet: boolean): A
                 balances: account.balances.filter(
                   (balance): balance is BalanceLine => balance.asset_type !== "liquidity_pool_shares"
                 ),
-                data_attr: account.data
+                data_attr: (account as any).data_attr || account.data
               }
             : createEmptyAccountData(accountID)
         }

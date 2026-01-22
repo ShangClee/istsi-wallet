@@ -703,6 +703,8 @@ export interface PaginationOptions {
   order?: "asc" | "desc"
 }
 
+import { AccountData } from "../../Generic/lib/account"
+
 export async function fetchAccountData(
   horizonURLs: string | string[],
   accountID: string,
@@ -720,8 +722,20 @@ export async function fetchAccountData(
   const accountData = await parseJSONResponse<Horizon.AccountResponse & { home_domain: string | undefined }>(response)
   // FIXME: Add support for liquidity pools
   // Remove liquidity pools from account data
+  // @ts-ignore
   accountData.balances = accountData.balances.filter(b => b.asset_type !== "liquidity_pool_shares")
-  return optimisticallyUpdateAccountData(horizonURL, accountData)
+
+  // Adapt to AccountData interface
+  const adaptedAccountData: AccountData = {
+    ...accountData,
+    data_attr: accountData.data_attr || {},
+    balances: accountData.balances
+  }
+
+  return (optimisticallyUpdateAccountData(
+    horizonURL,
+    (adaptedAccountData as unknown) as Horizon.AccountResponse
+  ) as unknown) as Horizon.AccountResponse & { home_domain?: string | undefined }
 }
 
 export async function fetchLatestAccountEffect(horizonURL: string, accountID: string) {

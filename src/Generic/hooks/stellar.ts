@@ -146,7 +146,7 @@ export function useAccountData(accountID: string, testnet: boolean) {
           balances: account.balances.filter(
             (balance): balance is BalanceLine => balance.asset_type !== "liquidity_pool_shares"
           ),
-          data_attr: account.data
+          data_attr: (account as any).data_attr || account.data
         }
       : createEmptyAccountData(accountID)
 
@@ -189,7 +189,7 @@ export function useAccountHomeDomains(
         accountHomeDomainCache.suspend(selector, () => fetchHomeDomain(accountID)))[0]
     })
   } catch (thrown) {
-    if (allowIncompleteResult && thrown && typeof thrown.then === "function") {
+    if (allowIncompleteResult && thrown && typeof (thrown as any).then === "function") {
       const persistentlyCached = accountIDs.map(accountID =>
         (testnet ? homeDomainCacheTestnet : homeDomainCachePubnet).read(accountID)
       )

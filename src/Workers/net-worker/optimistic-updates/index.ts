@@ -1,4 +1,5 @@
 import { Horizon, Operation, Transaction } from "stellar-sdk"
+import { AccountData } from "../../../Generic/lib/account"
 import {
   accountDataUpdates,
   offerUpdates,
@@ -27,12 +28,12 @@ export function handleSubmittedTransaction(horizonURL: string, transaction: Tran
   }
 }
 
-export function optimisticallyUpdateAccountData(
-  horizonURL: string,
-  accountData: Horizon.AccountResponse
-): Horizon.AccountResponse {
+export function optimisticallyUpdateAccountData(horizonURL: string, accountData: Horizon.AccountResponse): AccountData {
   const optimisticUpdates = accountDataUpdates.getUpdates(horizonURL, accountData.account_id)
-  return optimisticUpdates.reduce((updatedAccountData, update) => update.apply(updatedAccountData), accountData)
+  return optimisticUpdates.reduce(
+    (updatedAccountData, update) => update.apply(updatedAccountData),
+    (accountData as unknown) as AccountData
+  )
 }
 
 export function optimisticallyUpdateOffers(

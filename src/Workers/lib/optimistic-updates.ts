@@ -1,6 +1,7 @@
 // tslint:disable member-ordering
 import { Observable, Subject } from "observable-fns"
 import { Horizon } from "stellar-sdk"
+import { AccountData } from "../../Generic/lib/account"
 
 export interface OptimisticUpdate<T> {
   apply(base: T): T
@@ -10,7 +11,7 @@ export interface OptimisticUpdate<T> {
   transactionHash: string
 }
 
-export type OptimisticAccountUpdate = OptimisticUpdate<Horizon.AccountResponse & { home_domain?: string }>
+export type OptimisticAccountUpdate = OptimisticUpdate<AccountData>
 export type OptimisticOfferUpdate = OptimisticUpdate<Horizon.ServerApi.OfferRecord[]>
 
 const createAccountCacheKeyByFilter = (horizonURL: string, accountID: string) => `${horizonURL}/accounts/${accountID}`

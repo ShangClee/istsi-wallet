@@ -12,6 +12,7 @@ import { bioAuthenticate, isBiometricAuthAvailable } from "./bio-auth"
 import { registerURLHandler } from "./protocol-handler"
 import { registerUpdateHandler } from "./updater"
 import { registerNotificationHandler } from "./notifications"
+import { KeyStore } from "key-store"
 
 const iframe = document.getElementById("walletframe") as HTMLIFrameElement
 
@@ -222,7 +223,10 @@ function setupLinkListener(contentWindow: Window) {
 }
 
 function setupBioAuthTestHandler() {
-  const messageHandler = async () => {
+  const messageHandler = async (
+    _secureStorage: CordovaSecureStorage,
+    _keyStore: KeyStore<PrivateKeyData, PublicKeyData>
+  ) => {
     try {
       // refresh before and afterwards to prevent splashscreen issues
       refreshLastNativeInteractionTime()
@@ -230,7 +234,7 @@ function setupBioAuthTestHandler() {
       refreshLastNativeInteractionTime()
       return undefined
     } catch (error) {
-      return error
+      return String(error)
     }
   }
 

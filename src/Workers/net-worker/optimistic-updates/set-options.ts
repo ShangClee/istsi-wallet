@@ -1,12 +1,12 @@
-import { Horizon, Operation, Signer, Transaction } from "stellar-sdk"
-import { OptimisticUpdate } from "../../lib/optimistic-updates"
+import { Operation, Signer, Transaction } from "stellar-sdk"
+import { OptimisticAccountUpdate } from "../../lib/optimistic-updates"
 
 function addSigner(
   horizonURL: string,
   operation: Operation.SetOptions,
   signer: Signer.Ed25519PublicKey,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticAccountUpdate {
   return {
     apply(prevAccountData) {
       const allOtherSigners = prevAccountData.signers.filter(existing => {
@@ -36,7 +36,7 @@ function removeSigner(
   operation: Operation.SetOptions,
   signer: Signer.Ed25519PublicKey,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticAccountUpdate {
   return {
     apply(prevAccountData) {
       return {
@@ -58,7 +58,7 @@ function setMasterWeight(
   operation: Operation.SetOptions,
   masterWeight: number,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticAccountUpdate {
   const accountID = operation.source || transaction.source
   return {
     apply(prevAccountData) {
@@ -87,7 +87,7 @@ function setThresholds(
   horizonURL: string,
   operation: Operation.SetOptions,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticAccountUpdate {
   return {
     apply(prevAccountData) {
       const thresholds = { ...prevAccountData.thresholds }
@@ -117,8 +117,8 @@ function setAccountOptions(
   horizonURL: string,
   operation: Operation.SetOptions,
   transaction: Transaction
-): Array<OptimisticUpdate<Horizon.AccountResponse>> {
-  const updates: Array<OptimisticUpdate<Horizon.AccountResponse>> = []
+): Array<OptimisticAccountUpdate> {
+  const updates: Array<OptimisticAccountUpdate> = []
   const { signer } = operation
 
   if (signer && "ed25519PublicKey" in signer && typeof signer.weight === "number" && signer.weight > 0) {

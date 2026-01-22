@@ -37,7 +37,11 @@ function AssetDetailsActions(props: Props) {
   const accountData = useLiveAccountData(account.accountID, account.testnet)
 
   const balance = accountData.balances.find(
-    bal => bal.asset_type !== "native" && bal.asset_issuer === asset.issuer && bal.asset_code === asset.code
+    bal =>
+      bal.asset_type !== "native" &&
+      bal.asset_type !== "liquidity_pool_shares" &&
+      bal.asset_issuer === asset.issuer &&
+      bal.asset_code === asset.code
   )
 
   const createAddAssetTransaction = async (options: { limit?: string } = {}) => {

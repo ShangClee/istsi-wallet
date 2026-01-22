@@ -1,7 +1,10 @@
 import { Horizon } from "stellar-sdk"
 
 // Horizon.HorizonApi.BalanceLine without Horizon.HorizonApi.BalanceLineLiquidityPool
-export type BalanceLine = Horizon.HorizonApi.BalanceLineAsset | Horizon.HorizonApi.BalanceLineNative
+export type BalanceLine =
+  | Horizon.HorizonApi.BalanceLineAsset
+  | Horizon.HorizonApi.BalanceLineNative
+  | Horizon.HorizonApi.BalanceLineLiquidityPool
 
 export interface AccountData {
   account_id: Horizon.AccountResponse["account_id"]

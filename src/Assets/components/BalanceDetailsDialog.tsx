@@ -23,6 +23,9 @@ import AddAssetDialog from "./AddAssetDialog"
 import BalanceDetailsListItem from "./BalanceDetailsListItem"
 
 function isAssetMatchingBalance(asset: Asset, balance: BalanceLine): boolean {
+  if (balance.asset_type === "liquidity_pool_shares") {
+    return false
+  }
   if (balance.asset_type === "native") {
     return asset.isNative()
   } else {

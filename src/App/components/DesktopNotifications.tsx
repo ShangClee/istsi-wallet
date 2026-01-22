@@ -19,9 +19,25 @@ import { Account, AccountsContext } from "../contexts/accounts"
 import { trackError } from "../contexts/notifications"
 import { SignatureDelegationContext } from "../contexts/signatureDelegation"
 import * as routes from "../routes"
-import type { AccountCredited } from "stellar-sdk/lib/horizon/types/effects"
 
-const isTradeEffect = (effect: Horizon.ServerApi.EffectRecord): effect is Trade => effect.type === "trade"
+interface AccountCreditedEffect {
+  type: "account_credited"
+  amount: string
+  asset_code?: string
+}
+
+interface TradeRecord {
+  type: "trade"
+  bought_amount: string
+  bought_asset_code?: string
+  bought_asset_issuer?: string
+  sold_amount: string
+  sold_asset_code?: string
+  sold_asset_issuer?: string
+  offer_id: string | number
+}
+
+const isTradeEffect = (effect: any): effect is TradeRecord => effect.type === "trade"
 const isPaymentEffect = (effect: Horizon.ServerApi.EffectRecord) =>
   effect.type === "account_credited" || effect.type === "account_debited"
 
@@ -33,7 +49,7 @@ function createEffectHandlers(
   t: TFunction
 ) {
   return {
-    async handleTradeEffect(account: Account, effect: Trade) {
+    async handleTradeEffect(account: Account, effect: TradeRecord) {
       const buying =
         effect.bought_asset_code && effect.bought_asset_issuer
           ? new Asset(effect.bought_asset_code, effect.bought_asset_issuer)
@@ -71,7 +87,7 @@ function createEffectHandlers(
     },
     async handlePaymentEffect(account: Account, effect: Horizon.ServerApi.EffectRecord) {
       if (effect.type === "account_credited" && effect.account === account.accountID) {
-        const paymentEffect = effect as AccountCredited
+        const paymentEffect = effect as AccountCreditedEffect
         const title = t("app.notification.desktop.received-payment.title", `Received payment | ${account.name}`, {
           account: account.name
         })

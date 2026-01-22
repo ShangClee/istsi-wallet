@@ -15,6 +15,12 @@ import {
 import { AssetRecord } from "../hooks/stellar-ecosystem"
 import { AccountData, BalanceLine } from "./account"
 
+interface OfferAsset {
+  asset_type: string
+  asset_code?: string
+  asset_issuer?: string
+}
+
 const MAX_INT64 = "9223372036854775807"
 
 // Used as a fallback if fetching the friendbot href from horizon fails
@@ -46,6 +52,9 @@ export function isNotFoundError(error: any): error is NotFoundError {
 }
 
 export function balancelineToAsset(balanceline: BalanceLine): Asset {
+  if (balanceline.asset_type === "liquidity_pool_shares") {
+    throw new Error("Cannot convert liquidity pool balance to Asset")
+  }
   return balanceline.asset_type === "native"
     ? Asset.native()
     : new Asset(balanceline.asset_code, balanceline.asset_issuer)
@@ -84,6 +93,9 @@ export function stringifyAsset(assetOrTrustline: Asset | BalanceLine) {
     return asset.isNative() ? "XLM" : `${asset.getIssuer()}:${asset.getCode()}`
   } else {
     const line: BalanceLine = assetOrTrustline
+    if (line.asset_type === "liquidity_pool_shares") {
+      return `Liquidity Pool ${line.liquidity_pool_id}`
+    }
     return line.asset_type === "native" ? "XLM" : `${line.asset_issuer}:${line.asset_code}`
   }
 }
@@ -105,6 +117,9 @@ export function getAccountMinimumBalance(accountData: Pick<AccountData, "subentr
 
 export function getSpendableBalance(accountMinimumBalance: BigNumber, balanceLine?: BalanceLine) {
   if (balanceLine !== undefined) {
+    if (balanceLine.asset_type === "liquidity_pool_shares") {
+      return BigNumber(balanceLine.balance)
+    }
     const fullBalance = BigNumber(balanceLine.balance)
     return balanceLine.asset_type === "native"
       ? fullBalance.minus(accountMinimumBalance).minus(balanceLine.selling_liabilities)
@@ -115,18 +130,23 @@ export function getSpendableBalance(accountMinimumBalance: BigNumber, balanceLin
 }
 
 export function getAssetsFromBalances(balances: BalanceLine[]) {
-  return balances.map(balance =>
-    balance.asset_type === "native"
-      ? Asset.native()
-      : new Asset(
-          (balance as Horizon.HorizonApi.BalanceLineAsset).asset_code,
-          (balance as Horizon.HorizonApi.BalanceLineAsset).asset_issuer
-        )
-  )
+  return balances
+    .filter(balance => balance.asset_type !== "liquidity_pool_shares")
+    .map(balance =>
+      balance.asset_type === "native"
+        ? Asset.native()
+        : new Asset(
+            (balance as Horizon.HorizonApi.BalanceLineAsset).asset_code,
+            (balance as Horizon.HorizonApi.BalanceLineAsset).asset_issuer
+          )
+    )
 }
 
 export function findMatchingBalanceLine(balances: AccountData["balances"], asset: Asset): BalanceLine | undefined {
-  return balances.find((balance): balance is BalanceLine => balancelineToAsset(balance).equals(asset))
+  return balances.find(
+    (balance): balance is BalanceLine =>
+      balance.asset_type !== "liquidity_pool_shares" && balancelineToAsset(balance).equals(asset)
+  )
 }
 
 export function getHorizonURL(horizon: Horizon.Server) {

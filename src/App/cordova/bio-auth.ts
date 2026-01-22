@@ -24,8 +24,8 @@ export async function bioAuthenticate() {
         title: "Unlock Solar",
         description: device && device.platform === "iOS" ? "Unlock your Solar wallet" : undefined
       },
-      resolve,
-      reject
+      () => resolve(undefined),
+      () => reject(new Error("Biometric authentication failed"))
     )
   })
 }

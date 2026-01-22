@@ -93,7 +93,7 @@ function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
 
   const isAccountCreation = props.transaction.operations.some(op => op.type === "createAccount")
   const isAddingSigner = props.transaction.operations.some(
-    op => op.type === "setOptions" && (op.signer?.weight || 0) > 0
+    op => op.type === "setOptions" && ((op.signer as any)?.weight || 0) > 0
   )
 
   const isWideScreen = useMediaQuery("(min-width:900px)")

@@ -72,22 +72,26 @@ export function useOperationTitle() {
         : t("operations.change-trust.title.add-asset")
     } else if (operation.type === "manageData") {
       return t("operations.manage-data.title")
-    } else if (operation.type === "setOptions" && operation.signer && typeof operation.signer.weight === "number") {
-      return operation.signer.weight > 0
+    } else if (
+      operation.type === "setOptions" &&
+      operation.signer &&
+      typeof (operation.signer as any).weight === "number"
+    ) {
+      return (operation.signer as any).weight > 0
         ? t("operations.set-options.add-signer.title")
         : t("operations.set-options.remove-signer.title")
     } else if (
       operation.type === "setOptions" &&
       operation.signer &&
-      operation.signer.weight !== undefined &&
-      operation.signer.weight > 0
+      (operation.signer as any).weight !== undefined &&
+      (operation.signer as any).weight > 0
     ) {
       return t("operations.set-options.add-signer.title")
     } else if (
       operation.type === "setOptions" &&
       operation.signer &&
-      operation.signer.weight !== undefined &&
-      operation.signer.weight === 0
+      (operation.signer as any).weight !== undefined &&
+      (operation.signer as any).weight === 0
     ) {
       return t("operations.set-options.remove-signer.title")
     } else if (operation.type === "setOptions" && someThresholdSet(operation)) {

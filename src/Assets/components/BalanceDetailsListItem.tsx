@@ -146,9 +146,19 @@ function BalanceListItem(props: BalanceListItemProps) {
     )
   }
 
-  const assetName = (assetMetadata && assetMetadata.name) || props.balance.asset_code
-  const title =
-    assetName !== props.balance.asset_code ? `${assetName} (${props.balance.asset_code})` : props.balance.asset_code
+  const assetCode =
+    (props.balance as any).asset_type === "native"
+      ? "XLM"
+      : props.balance.asset_type === "liquidity_pool_shares"
+      ? "LP"
+      : props.balance.asset_code
+  const assetIssuer =
+    (props.balance as any).asset_type === "native" || props.balance.asset_type === "liquidity_pool_shares"
+      ? ""
+      : props.balance.asset_issuer
+
+  const assetName = (assetMetadata && assetMetadata.name) || assetCode
+  const title = assetName !== assetCode ? `${assetName} (${assetCode})` : assetCode
 
   return (
     <ListItem button={Boolean(props.onClick) as any} className={className} onClick={props.onClick} style={props.style}>
@@ -169,7 +179,7 @@ function BalanceListItem(props: BalanceListItemProps) {
           secondary: classes.mainListItemTextSecondaryTypography
         }}
         primary={title}
-        secondary={<AccountName publicKey={props.balance.asset_issuer} testnet={props.testnet} />}
+        secondary={assetIssuer ? <AccountName publicKey={assetIssuer} testnet={props.testnet} /> : null}
       />
       <ListItemText
         className={classes.balanceListItemText}

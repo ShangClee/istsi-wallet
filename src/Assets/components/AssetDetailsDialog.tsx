@@ -338,7 +338,11 @@ function AssetDetailsDialog(props: Props) {
   const balance = accountData.balances.find(
     asset.isNative()
       ? bal => bal.asset_type === "native"
-      : bal => bal.asset_type !== "native" && bal.asset_issuer === asset.issuer && bal.asset_code === asset.code
+      : bal =>
+          bal.asset_type !== "native" &&
+          bal.asset_type !== "liquidity_pool_shares" &&
+          bal.asset_issuer === asset.issuer &&
+          bal.asset_code === asset.code
   )
 
   const metadata = useAssetMetadata(asset, props.account.testnet)
