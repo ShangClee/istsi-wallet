@@ -1,11 +1,13 @@
 import React from "react"
 import { trackError } from "~App/contexts/notifications"
-import { AccountRecord, fetchWellknownAccounts } from "../lib/stellar-expert"
-import { AssetRecord, fetchAllAssets } from "../lib/stellar-ticker"
+import { fetchWellknownAccounts } from "../lib/stellar-expert"
+import type { AccountRecord } from "../lib/stellar-expert"
+import { fetchAllAssets } from "../lib/stellar-ticker"
+import type { AssetRecord } from "../lib/stellar-ticker"
 import { tickerAssetsCache, wellKnownAccountsCache } from "./_caches"
 import { useForceRerender } from "./util"
 
-export { AccountRecord, AssetRecord }
+export type { AccountRecord, AssetRecord }
 
 export function useTickerAssets(testnet: boolean) {
   const fetchAssets = () => fetchAllAssets(testnet)

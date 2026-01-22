@@ -99,7 +99,7 @@ export function subscribeToUpdatesAndPoll<ValueT, UpdateT = ValueT>(
             return fetchAndApplyUpdate(streamedUpdate, retry + 1)
           }
         } catch (error) {
-          handleUnexpectedError(error)
+          handleUnexpectedError(error instanceof Error ? error : new Error(String(error)))
         }
       }
 

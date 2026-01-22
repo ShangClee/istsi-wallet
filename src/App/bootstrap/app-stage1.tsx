@@ -1,5 +1,3 @@
-/// <reference types="parcel-env" />
-
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { HashRouter as Router } from "react-router-dom"
@@ -47,6 +45,6 @@ const root = createRoot(rootElement)
 root.render(<App />)
 
 // Hot Module Replacement
-if (module.hot) {
-  module.hot.accept()
+if (import.meta.hot) {
+  import.meta.hot.accept()
 }

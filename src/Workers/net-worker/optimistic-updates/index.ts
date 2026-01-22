@@ -2,7 +2,9 @@ import { Horizon, Operation, Transaction } from "stellar-sdk"
 import { AccountData } from "../../../Generic/lib/account"
 import {
   accountDataUpdates,
-  offerUpdates,
+  offerUpdates
+} from "../../lib/optimistic-updates"
+import type {
   OptimisticAccountUpdate,
   OptimisticOfferUpdate
 } from "../../lib/optimistic-updates"
@@ -10,7 +12,8 @@ import handleChangeTrust from "./change-trust"
 import handleManageOffer from "./manage-offer"
 import handleSetOptions from "./set-options"
 
-export { accountDataUpdates, offerUpdates, OptimisticAccountUpdate, OptimisticOfferUpdate }
+export { accountDataUpdates, offerUpdates }
+export type { OptimisticAccountUpdate, OptimisticOfferUpdate }
 
 function ingestOperation(horizonURL: string, operation: Operation, transaction: Transaction) {
   if (operation.type === "changeTrust") {

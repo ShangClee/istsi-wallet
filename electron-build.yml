@@ -1,6 +1,6 @@
 # Don't change the appId! See <https://www.electron.build/configuration/nsis#guid-vs-application-name>
 appId: io.solarwallet.app
-productName: Solar Wallet
+productName: iSTSiWallet
 copyright: Copyright © 2026 SatoshiPay Ltd
 
 protocols:

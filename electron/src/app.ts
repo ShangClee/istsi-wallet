@@ -1,5 +1,7 @@
 import { app, Menu } from "electron"
 import contextMenu from "electron-context-menu"
+import electronDebug from "electron-debug"
+import electronSquirrelStartup from "electron-squirrel-startup"
 import "./bootstrap" // should be first of all local imports
 import { createAppMenu } from "./menu"
 import { createMainWindow, getOpenWindows, trackWindow } from "./window"
@@ -7,14 +9,12 @@ import "./ipc/index"
 import "./ipc/updater"
 
 // returns true if installation-related stuff is happening (win only)
-// tslint:disable-next-line: no-var-requires
-if (require("electron-squirrel-startup")) {
+if (electronSquirrelStartup) {
   app.quit()
 }
 
 // Enable opening dev tools in production using keyboard shortcut
-// tslint:disable-next-line: no-var-requires
-require("electron-debug")({
+electronDebug({
   isEnabled: true,
   showDevTools: false
 })

@@ -1,7 +1,5 @@
 import { BrowserWindow, Menu, nativeImage, shell } from "electron"
-import isDev from "electron-is-dev"
 import path from "path"
-import URL from "url"
 
 let openWindows: BrowserWindow[] = []
 
@@ -30,7 +28,7 @@ export function createMainWindow() {
       disableBlinkFeatures: "Auxclick", // prevent middle-click events (see https://git.io/Jeu1K)
       nodeIntegration: false, // Required for security in Electron 28+
       nodeIntegrationInWorker: false,
-      preload: isDev ? path.join(__dirname, "..", "lib", "preload.js") : path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "../preload/preload.js"),
       sandbox: true,
       webviewTag: false
     }
@@ -38,17 +36,11 @@ export function createMainWindow() {
 
   window.removeMenu()
 
-  const pathname = isDev
-    ? path.join(__dirname, "../../dist/index.dev.html")
-    : path.join(__dirname, "../../dist/index.prod.html")
-
-  const webappURL = URL.format({
-    pathname,
-    protocol: "file:",
-    slashes: true
-  })
-
-  window.loadURL(webappURL)
+  if (process.env.VITE_DEV_SERVER_URL) {
+    window.loadURL(process.env.VITE_DEV_SERVER_URL)
+  } else {
+    window.loadFile(path.join(__dirname, "../../dist/index.html"))
+  }
 
   window.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
     if (!webContents.getURL().startsWith("file://") && (permission === "media" || permission === "openExternal")) {
