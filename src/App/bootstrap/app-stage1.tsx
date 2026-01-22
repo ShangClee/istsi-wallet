@@ -23,6 +23,7 @@ const Stage2 = React.lazy(() => import("./app-stage2"))
 export const Providers = (props: { children: React.ReactNode }) => (
   <StyledEngineProvider injectFirst>
     <ThemeProvider theme={theme}>
+      {/* @ts-expect-error - react-router-dom v5 types are outdated but runtime works correctly */}
       <Router>
         <ContextProviders>{props.children}</ContextProviders>
       </Router>

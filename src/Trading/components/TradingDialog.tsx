@@ -25,7 +25,7 @@ import TradingForm from "./TradingForm"
 
 interface TradingDialogProps {
   account: Account
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   sendTransaction: (transaction: Transaction) => void
 }

@@ -204,7 +204,14 @@ export async function shareTransaction(
 }
 
 export async function submitSignature(multisigTx: MultisigTransactionResponse, signedTxXdr: string) {
-  const collateEndpointURL = parseRequestURI(multisigTx.req).parameters.callback.replace(/^url:/, "")
+  const callback = parseRequestURI(multisigTx.req).parameters.callback
+  if (!callback || typeof callback !== "string") {
+    throw CustomError(
+      "NoCallbackUrlError",
+      "Cannot submit back to multi-signature service. Signature request has no callback URL set."
+    )
+  }
+  const collateEndpointURL = callback.replace(/^url:/, "")
 
   if (!collateEndpointURL) {
     throw CustomError(
@@ -253,7 +260,14 @@ export async function submitSignature(multisigTx: MultisigTransactionResponse, s
 }
 
 export async function submitMultisigTransactionToStellarNetwork(multisigTx: MultisigTransactionResponse) {
-  const collateEndpointURL = parseRequestURI(multisigTx.req).parameters.callback.replace(/^url:/, "")
+  const callback = parseRequestURI(multisigTx.req).parameters.callback
+  if (!callback || typeof callback !== "string") {
+    throw CustomError(
+      "NoCallbackUrlError",
+      "Cannot submit to Stellar network. Signature request has no callback URL set."
+    )
+  }
+  const collateEndpointURL = callback.replace(/^url:/, "")
   const submissionEndpointURL = collateEndpointURL.replace(
     `/transactions/${multisigTx.hash}/signatures`,
     `/transactions/${multisigTx.hash}/submit`

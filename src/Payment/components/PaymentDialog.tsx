@@ -18,7 +18,7 @@ import PaymentForm from "./PaymentForm"
 interface Props {
   account: Account
   accountData: AccountData
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   openOrdersCount: number
   sendTransaction: (transaction: Transaction) => Promise<any>

@@ -39,7 +39,7 @@ const TransferContent = withFallback(PureTransferContent, <ViewLoading />)
 export interface TransferDialogProps {
   account: Account
   accountData: AccountData
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   sendTransaction: (transaction: Transaction) => Promise<any>
   type: "deposit" | "withdrawal"

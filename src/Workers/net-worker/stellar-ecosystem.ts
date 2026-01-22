@@ -61,7 +61,7 @@ export async function fetchAllAssets(tickerURL: string): Promise<AssetRecord[]> 
 
 export async function fetchStellarToml(
   domain: string,
-  options: StellarToml.StellarTomlResolveOptions = {}
+  options: { allowHttp?: boolean; timeout?: number } = {}
 ): Promise<any> {
   try {
     return await StellarToml.Resolver.resolve(domain, options)
@@ -72,6 +72,6 @@ export async function fetchStellarToml(
   }
 }
 
-export function resolveStellarAddress(address: string, options?: Federation.FederationServer.Options) {
-  return Federation.FederationServer.resolve(address, options)
+export function resolveStellarAddress(address: string, options?: { allowHttp?: boolean; timeout?: number }) {
+  return Federation.Server.resolve(address, options)
 }

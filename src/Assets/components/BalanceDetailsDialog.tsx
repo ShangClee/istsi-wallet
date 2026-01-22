@@ -1,7 +1,7 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Horizon, ServerApi } from "stellar-sdk"
+import { Asset, Horizon } from "stellar-sdk"
 import Dialog from "@mui/material/Dialog"
 import Divider from "@mui/material/Divider"
 import List from "@mui/material/List"

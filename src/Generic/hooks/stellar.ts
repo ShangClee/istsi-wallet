@@ -1,7 +1,7 @@
 /* tslint:disable:no-string-literal */
 
 import React from "react"
-import { Asset, Networks, Horizon, Transaction, Horizon } from "stellar-sdk"
+import { Asset, Networks, Horizon, Transaction } from "stellar-sdk"
 import {
   SigningKeyCacheContext,
   StellarAddressCacheContext,

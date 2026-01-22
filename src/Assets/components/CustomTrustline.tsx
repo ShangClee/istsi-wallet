@@ -14,7 +14,7 @@ interface Props {
   account: Account
   accountData: AccountData
   createAddAssetTransaction: (asset: Asset, options: { limit?: string }) => any
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   sendTransaction: (createTransactionToSend: () => Promise<Transaction>) => any
   txCreationPending: boolean

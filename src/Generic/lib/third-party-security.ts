@@ -1,4 +1,4 @@
-import { Server, Transaction, Horizon } from "stellar-sdk"
+import { Horizon, Transaction } from "stellar-sdk"
 import { CustomError } from "./errors"
 import StellarGuardIcon from "~Icons/components/StellarGuard"
 import LobstrVaultIcon from "~Icons/components/LobstrVault"

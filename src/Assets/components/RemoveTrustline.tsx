@@ -1,6 +1,6 @@
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
-import { Asset, Horizon, Operation, Server } from "stellar-sdk"
+import { Asset, Horizon, Operation } from "stellar-sdk"
 import CloseIcon from "@mui/icons-material/Close"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
@@ -16,7 +16,7 @@ interface Props {
   account: Account
   accountData: AccountData
   asset: Asset
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   onRemoved: () => void
   sendTransaction: SendTransaction

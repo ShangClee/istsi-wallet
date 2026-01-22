@@ -55,7 +55,10 @@ interface SafariViewControllerOptions {
 
 interface Cordova {
   InAppBrowser: InAppBrowser
+  plugins: CordovaPlugins
 }
+
+declare var cordova: Cordova
 
 interface Device {
   cordova: string

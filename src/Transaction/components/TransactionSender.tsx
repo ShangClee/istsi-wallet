@@ -77,7 +77,7 @@ export type SendTransaction = (
 ) => Promise<any>
 
 interface RenderFunctionProps {
-  horizon: Server
+  horizon: Horizon.Server
   sendTransaction: SendTransaction
 }
 
@@ -85,7 +85,7 @@ interface Props {
   account: Account
   completionCallbackDelay?: number
   forceClose?: boolean
-  horizon: Server
+  horizon: Horizon.Server
   settings: SettingsContextType
   t: TFunction
   children: (props: RenderFunctionProps) => React.ReactNode

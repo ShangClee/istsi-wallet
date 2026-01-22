@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Horizon, Networks, Operation, Horizon, Transaction, xdr } from "stellar-sdk"
+import { Horizon, Networks, Operation, Transaction, xdr } from "stellar-sdk"
 import { WebauthData } from "@satoshipay/stellar-sep-10"
 import {
   fetchTransferInfos,

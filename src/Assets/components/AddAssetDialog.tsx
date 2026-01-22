@@ -229,7 +229,7 @@ const useAddAssetStyles = makeStyles({
 interface AddAssetDialogProps {
   account: Account
   accountData: AccountData
-  horizon: Server
+  horizon: Horizon.Server
   hpadding: number
   itemHPadding: number
   onClose: () => void

@@ -23,7 +23,7 @@ const dialogActionsBoxStyle: React.CSSProperties = {
 interface Props {
   account: Account
   asset: Asset
-  horizon: Server
+  horizon: Horizon.Server
   sendTransaction: SendTransaction
 }
 

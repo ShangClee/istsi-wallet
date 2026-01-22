@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Operation, Transaction, Server } from "stellar-sdk"
+import { Horizon, Operation, Transaction } from "stellar-sdk"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
 import Switch from "@mui/material/Switch"
@@ -90,7 +90,7 @@ interface Warning {
 
 interface AccountDeletionDialogProps {
   account: Account
-  horizon: Server
+  horizon: Horizon.Server
   onClose: () => void
   onDelete: () => void
   sendTransaction: (transaction: Transaction) => void

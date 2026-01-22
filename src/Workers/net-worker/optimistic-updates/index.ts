@@ -1,4 +1,4 @@
-import { Horizon, Operation, Horizon, Transaction } from "stellar-sdk"
+import { Horizon, Operation, Transaction } from "stellar-sdk"
 import {
   accountDataUpdates,
   offerUpdates,

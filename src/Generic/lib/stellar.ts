@@ -6,7 +6,6 @@ import {
   Horizon,
   Keypair,
   NotFoundError,
-  Server,
   Transaction,
   LiquidityPoolAsset,
   getLiquidityPoolId
@@ -119,7 +118,10 @@ export function getAssetsFromBalances(balances: BalanceLine[]) {
   return balances.map(balance =>
     balance.asset_type === "native"
       ? Asset.native()
-      : new Asset((balance as Horizon.HorizonApi.BalanceLineAsset).asset_code, (balance as Horizon.HorizonApi.BalanceLineAsset).asset_issuer)
+      : new Asset(
+          (balance as Horizon.HorizonApi.BalanceLineAsset).asset_code,
+          (balance as Horizon.HorizonApi.BalanceLineAsset).asset_issuer
+        )
   )
 }
 

@@ -170,7 +170,7 @@ function initializeStorage(contentWindow: Window) {
 
       return [secureStorage, keyStore] as const
     } catch (error) {
-      const message = error && error.message ? error.message : "Unknown error."
+      const message = error && typeof error === "object" && "message" in error ? error.message : "Unknown error."
       alert(
         "Could not initialize keystore: " +
           message +

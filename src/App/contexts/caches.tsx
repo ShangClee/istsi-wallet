@@ -1,8 +1,14 @@
 import debounce from "lodash.debounce"
 import LRUCache from "lru-cache"
 import React from "react"
-import { Federation } from "stellar-sdk"
 import { useSingleton } from "~Generic/hooks/util"
+
+// Federation Record type
+type FederationRecord = {
+  account_id: string
+  memo_type?: string
+  memo?: string
+}
 
 // Just to make the cache types more readable
 type CacheKey = string
@@ -18,7 +24,7 @@ interface CacheContextType<K, V> {
 }
 
 export type SigningKeyContextType = CacheContextType<PublicKey, Domain>
-export type StellarAddressContextType = CacheContextType<StellarAddress, Federation.FederationServer.Record>
+export type StellarAddressContextType = CacheContextType<StellarAddress, FederationRecord>
 export type StellarAddressReverseContextType = CacheContextType<PublicKey, StellarAddress>
 export type WebAuthTokenContextType = CacheContextType<CacheKey, JWT>
 
@@ -75,7 +81,7 @@ export function SigningKeyCachingProvider(props: Props) {
 export function StellarAddressesCachingProvider(props: Props) {
   const cache = useSingleton(
     () =>
-      new LRUCache<StellarAddress, Federation.FederationServer.Record>({
+      new LRUCache<StellarAddress, FederationRecord>({
         max: 1000,
         maxAge: 10 * 60 * 1000 // 10 mins
       })

@@ -4,8 +4,7 @@ import {
   Keypair,
   Memo,
   Operation,
-  Server,
-  ServerApi,
+  Horizon,
   TransactionBuilder,
   Transaction,
   xdr,
@@ -98,7 +97,7 @@ function selectTransactionTimeout(accountData: Pick<Horizon.ServerApi.AccountRec
 
 interface TxBlueprint {
   accountData: Pick<Horizon.ServerApi.AccountRecord, "id" | "signers">
-  horizon: Server
+  horizon: Horizon.Server
   memo?: Memo | null
   minTransactionFee?: number
   walletAccount: Account
@@ -147,7 +146,7 @@ interface PaymentOperationBlueprint {
   amount: string
   asset: Asset
   destination: string
-  horizon: Server
+  horizon: Horizon.Server
 }
 
 export async function createPaymentOperation(options: PaymentOperationBlueprint) {
