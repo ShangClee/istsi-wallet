@@ -32,9 +32,19 @@ See <https://github.com/satoshipay/solar/releases>. You will find the binaries t
 
 Keys are encrypted with a key derived from the user's password before storing them on the local filesystem. That means that the user's secret key is safe as long as their password is strong enough. However, if they forget their password there will be no way of recovering the secret key. That's why you should always make a backup of your secret key.
 
-The encryption key is derived from the password using `PBKDF2` with `SHA256`. The actual encryption is performed using `xsalsa20-poly1305`.
+The encryption key is derived from the password using `PBKDF2` with `SHA256` (100,000 iterations). The actual encryption is performed using `xsalsa20-poly1305`.
+
+**Important**: The encryption parameters are unchanged from previous versions to maintain backward compatibility with existing keystores.
 
 ## Development
+
+### Prerequisites
+
+- **Node.js**: Version 16.x or higher
+- **npm**: Version 8.x or higher
+- **TypeScript**: Version 5.7.x (installed as dev dependency)
+- **React**: Version 18.3.x
+- **Electron**: Version 40.x (for desktop builds)
 
 ### Desktop
 
@@ -56,7 +66,30 @@ PLATFORM=darwin npm run dev
 To run the tests:
 
 ```
+# Run all tests once
 npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run property-based tests only
+npm run test:pbt
+```
+
+To run the linter:
+
+```
+# Check for linting errors
+npm run lint
+
+# Fix linting errors automatically
+npm run lint:fix
 ```
 
 To run the storybook:
@@ -80,11 +113,26 @@ See [Cordova build readme](./cordova/README.md).
 
 #### Desktop
 
+Build commands for each platform:
+
 ```
+# Build for Mac OS (requires Mac OS)
 npm run build:mac
+
+# Build signed Mac OS app (requires code signing certificate)
+npm run build:mac:signed
+
+# Build for Windows
 npm run build:win
+
+# Build signed Windows app (requires code signing certificate)
+npm run build:win:signed
+
+# Build for Linux
 npm run build:linux
 ```
+
+**Note**: The build process uses Parcel v1.12.4 for bundling and electron-builder v26.5.0 for packaging.
 
 #### Building windows binaries on macOS
 
@@ -106,6 +154,26 @@ docker run --rm -ti \
 ```
 
 **Note:** We have seen weird module resolution troubles with Parcel. In this case make sure to `rm -rf node_modules/` **on the host**, then try again.
+
+### Available npm scripts
+
+- `npm run dev` - Run the app in development mode with hot reload
+- `npm run dev:bundle` - Run Parcel bundler in watch mode
+- `npm run dev:app` - Run Electron app in development mode
+- `npm test` - Run all tests once
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:ui` - Run tests with Vitest UI
+- `npm run test:coverage` - Run tests with coverage report
+- `npm run test:pbt` - Run property-based tests only
+- `npm run lint` - Check for linting errors using ESLint
+- `npm run lint:fix` - Fix linting errors automatically
+- `npm run prettier` - Format code with Prettier
+- `npm run storybook` - Run Storybook for component development
+- `npm run build:mac` - Build Mac OS desktop app
+- `npm run build:win` - Build Windows desktop app
+- `npm run build:linux` - Build Linux desktop app
+- `npm run build:mac:signed` - Build signed Mac OS app (requires certificate)
+- `npm run build:win:signed` - Build signed Windows app (requires certificate)
 
 ### Signed binaries
 
