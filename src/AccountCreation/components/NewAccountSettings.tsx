@@ -1,5 +1,4 @@
 import React from "react"
-import List from "@mui/material/List"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { AccountCreation, AccountCreationErrors } from "../types/types"
 import MultisigAccountPubKey from "./MultisigAccountPubKey"
@@ -53,7 +52,7 @@ function NewAccountSettings(props: NewAccountSettingsProps) {
   )
 
   return (
-    <List style={{ padding: isSmallScreen ? 0 : "24px 16px" }}>
+    <div className={isSmallScreen ? "p-0" : "px-4 py-6"}>
       {props.accountCreation.import ? (
         <>
           <SecretKeyImport
