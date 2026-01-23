@@ -1,8 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
+// Card and Typography removed - using Tailwind classes
 import * as routes from "~App/routes"
 import AppSettings from "~AppSettings/components/AppSettings"
 import { Box, VerticalLayout } from "~Layout/components/Box"
@@ -29,7 +27,8 @@ function SettingsPage() {
 
   const headerCard = React.useMemo(
     () => (
-      <Card
+      <div
+        className="text-white relative bg-transparent shadow-none"
         style={{
           color: "white",
           position: "relative",
@@ -37,15 +36,15 @@ function SettingsPage() {
           boxShadow: "none"
         }}
       >
-        <CardContent style={{ padding: isSmallScreen ? 8 : undefined, paddingBottom: 8 }}>
+        <div className={isSmallScreen ? "p-2 pb-2" : "p-4 pb-2"}>
           <MainTitle
             onBack={showSettingsOverview ? navigateToAllAccounts : navigateToSettingsOverview}
             title={t("app-settings.settings.title")}
             titleColor="inherit"
             style={{ marginTop: -12, marginLeft: 0 }}
           />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     ),
     [isSmallScreen, navigateToAllAccounts, navigateToSettingsOverview, showSettingsOverview, t]
   )
@@ -71,9 +70,9 @@ function SettingsPage() {
             <AppSettings />
           </Box>
           <Box grow={0} margin="16px 0">
-            <Typography align="center" color="textSecondary">
+            <p className="text-center text-gray-600">
               v{pkg.version}
-            </Typography>
+            </p>
           </Box>
         </VerticalLayout>
       </Section>

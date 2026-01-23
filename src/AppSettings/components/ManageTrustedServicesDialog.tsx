@@ -1,7 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
+import { DialogContent } from "~Generic/components/Dialog"
 import DialogBody from "~Layout/components/DialogBody"
 import TrustedServiceSelectionList from "./TrustedServiceSelectionList"
 
@@ -11,9 +10,9 @@ function ManageTrustedServicesDialog() {
   return (
     <DialogBody>
       <DialogContent style={{ flexGrow: 0, padding: 0 }}>
-        <DialogContentText align="justify" style={{ marginTop: 8 }}>
+        <p className="text-justify mt-2 text-base text-gray-700">
           {t("app-settings.trusted-services.info")}
-        </DialogContentText>
+        </p>
 
         <TrustedServiceSelectionList />
       </DialogContent>

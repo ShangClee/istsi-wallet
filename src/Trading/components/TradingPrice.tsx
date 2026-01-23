@@ -1,9 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset } from "stellar-sdk"
-import InputAdornment from "@mui/material/InputAdornment"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
 import TextField from "~Generic/components/TextField"
 
 interface TradingPriceProps {
@@ -31,23 +28,19 @@ const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceP
     : t("trading.trading-price.default-label")
 
   const endAdornment = (
-    <InputAdornment position="end">
-      <Select
-        variant="standard"
-        disabled={isDisabled}
-        disableUnderline
-        onChange={event => props.onSetPriceDenotedIn(event.target.value as any)}
-        style={{ fontWeight: 400 }}
-        value={props.priceDenotedIn}
-      >
-        <MenuItem selected={props.priceDenotedIn === "secondary"} value="secondary">
-          {props.secondaryAsset ? props.secondaryAsset.getCode() : ""}
-        </MenuItem>
-        <MenuItem selected={props.priceDenotedIn === "primary"} value="primary">
-          {props.primaryAsset ? props.primaryAsset.getCode() : ""}
-        </MenuItem>
-      </Select>
-    </InputAdornment>
+    <select
+      disabled={isDisabled}
+      onChange={event => props.onSetPriceDenotedIn(event.target.value as any)}
+      className="font-normal border-none bg-transparent cursor-pointer focus:outline-none"
+      value={props.priceDenotedIn}
+    >
+      <option selected={props.priceDenotedIn === "secondary"} value="secondary">
+        {props.secondaryAsset ? props.secondaryAsset.getCode() : ""}
+      </option>
+      <option selected={props.priceDenotedIn === "primary"} value="primary">
+        {props.primaryAsset ? props.primaryAsset.getCode() : ""}
+      </option>
+    </select>
   )
 
   return (

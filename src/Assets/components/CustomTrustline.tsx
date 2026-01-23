@@ -1,9 +1,23 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, Horizon, Transaction } from "stellar-sdk"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import TextField from "~Generic/components/TextField"
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"
+import { HiShieldCheck } from "react-icons/hi2"
+
+// useMediaQuery replacement
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
 import { Account } from "~App/contexts/accounts"
 import { AccountData } from "~Generic/lib/account"
 import DialogBody from "~Layout/components/DialogBody"
@@ -75,7 +89,7 @@ function CustomTrustlineDialog(props: Props) {
         <DialogActionsBox preventMobileActionsBox>
           <ActionButton onClick={props.onClose}>{t("account-settings.custom-trustline.action.cancel")}</ActionButton>
           <ActionButton
-            icon={<VerifiedUserIcon />}
+            icon={<HiShieldCheck className="w-5 h-5" />}
             loading={props.txCreationPending}
             onClick={addCustomAsset}
             type="primary"

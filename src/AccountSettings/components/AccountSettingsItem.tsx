@@ -1,57 +1,9 @@
 import React from "react"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import makeStyles from "@mui/styles/makeStyles"
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
-import { breakpoints } from "~App/theme"
+import { HiChevronRight } from "react-icons/hi2"
 
 const isMobileDevice = process.env.PLATFORM === "android" || process.env.PLATFORM === "ios"
 
-const useAccountSettingsItemStyles = makeStyles({
-  caret: {
-    color: "rgba(0, 0, 0, 0.35)",
-    fontSize: 48,
-    justifyContent: "center",
-    marginRight: -8,
-    transition: "transform .3s",
-    width: 48
-  },
-  icon: {
-    fontSize: 28,
-    justifyContent: "center",
-    marginRight: 4,
-    width: 28
-  },
-  settingsItem: {
-    position: "relative",
-    padding: "16px 24px",
-    background: "#FFFFFF",
-    boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.1)",
-
-    [breakpoints.down(600)]: {
-      padding: "16px 12px"
-    },
-
-    "&:focus": {
-      backgroundColor: "#FFFFFF"
-    },
-    "&$button:hover": {
-      backgroundColor: isMobileDevice ? "#FFFFFF" : "rgb(232, 232, 232)"
-    },
-    "&:not(:first-child):not($subItem)": {
-      borderTop: "1px solid rgba(230, 230, 230, 1.0)"
-    }
-  },
-  button: {
-    // only used in conjunction with settingsItem
-  },
-  rotateRight: {
-    transform: "rotate(90deg)"
-  },
-  subItem: {
-    // only used in conjunction with settingsItem
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface AccountSettingsItemProps {
   children: React.ReactNode
@@ -64,30 +16,34 @@ interface AccountSettingsItemProps {
 
 const AccountSettingsItem = React.forwardRef(function AccountSettingsItem(
   props: AccountSettingsItemProps,
-  ref: React.Ref<HTMLLIElement>
+  ref: React.Ref<HTMLDivElement>
 ) {
-  const classes = useAccountSettingsItemStyles()
   const isButton = Boolean(props.onClick)
-  const className = [classes.settingsItem, isButton ? classes.button : "", props.subItem ? classes.subItem : ""].join(
-    " "
-  )
 
   return (
-    <ListItem
-      button={isButton as any}
-      className={className}
-      disabled={props.disabled}
-      onClick={props.onClick}
+    <div
       ref={ref}
+      className={`
+        relative px-6 py-4 sm:px-3 bg-white shadow-[0_8px_12px_0_rgba(0,0,0,0.1)]
+        ${isButton ? "cursor-pointer hover:bg-gray-200 active:bg-gray-200" : ""}
+        ${props.disabled ? "opacity-50 cursor-not-allowed" : ""}
+        ${!props.subItem ? "border-t border-gray-200 first:border-t-0" : ""}
+        focus:bg-white
+      `.trim().replace(/\s+/g, " ")}
+      onClick={props.onClick}
     >
-      <ListItemIcon className={classes.icon}>{props.icon || <div />}</ListItemIcon>
-      {props.children}
-      {props.caret && props.caret !== "hide" ? (
-        <ListItemIcon className={`${classes.caret} ${props.caret === "down" ? classes.rotateRight : ""}`}>
-          <KeyboardArrowRightIcon className={classes.caret} />
-        </ListItemIcon>
-      ) : null}
-    </ListItem>
+      <div className="flex items-center">
+        <div className="flex-shrink-0 mr-1 w-7 text-[28px] flex items-center justify-center">
+          {props.icon || <div />}
+        </div>
+        <div className="flex-1 min-w-0">{props.children}</div>
+        {props.caret && props.caret !== "hide" ? (
+          <div className={`flex-shrink-0 text-[48px] text-black/35 flex items-center justify-center -mr-2 w-12 transition-transform duration-300 ${props.caret === "down" ? "rotate-90" : ""}`}>
+            <HiChevronRight className="text-[48px]" />
+          </div>
+        ) : null}
+      </div>
+    </div>
   )
 })
 

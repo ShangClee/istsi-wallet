@@ -1,8 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, Horizon, Transaction } from "stellar-sdk"
-import Box from "@mui/material/Box"
-import Typography from "@mui/material/Typography"
+// Box and Typography removed - using Tailwind classes
 import { Account } from "~App/contexts/accounts"
 import * as routes from "~App/routes"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
@@ -118,8 +117,8 @@ function TradingDialog(props: TradingDialogProps) {
 
   const LinkToManageAssets = React.useMemo(
     () => (
-      <Box margin="32px 0 0" textAlign="center">
-        <Typography>{t("trading.no-assets-info")}</Typography>
+      <div className="my-8 text-center">
+        <p className="text-base">{t("trading.no-assets-info")}</p>
         <Portal target={dialogActionsRef.element}>
           <DialogActionsBox>
             <ActionButton
@@ -131,7 +130,7 @@ function TradingDialog(props: TradingDialogProps) {
             </ActionButton>
           </DialogActionsBox>
         </Portal>
-      </Box>
+      </div>
     ),
     [dialogActionsRef, props.account, router, t]
   )

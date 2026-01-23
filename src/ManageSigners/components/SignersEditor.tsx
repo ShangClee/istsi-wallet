@@ -1,16 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Horizon } from "stellar-sdk"
-import IconButton from "@mui/material/IconButton"
-import Divider from "@mui/material/Divider"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction"
-import ListItemText from "@mui/material/ListItemText"
-import AddIcon from "@mui/icons-material/Add"
-import PersonIcon from "@mui/icons-material/Person"
-import RemoveIcon from "@mui/icons-material/RemoveCircle"
+import { HiPlus, HiUser, HiXCircle } from "react-icons/hi2"
 import { AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import ButtonListItem from "~Generic/components/ButtonListItem"
@@ -141,7 +132,7 @@ function SignersEditor(props: SignersEditorProps) {
   }
 
   return (
-    <List disablePadding={isSmallScreen}>
+    <div className={isSmallScreen ? "p-0" : ""}>
       {isEditingNewSigner ? (
         <NewSignerForm
           errors={newSignerErrors}
@@ -153,62 +144,64 @@ function SignersEditor(props: SignersEditorProps) {
         />
       ) : (
         <ButtonListItem gutterBottom onClick={editNewSigner}>
-          <AddIcon />
+          <HiPlus className="w-6 h-6" />
           &nbsp;&nbsp;
           {t("account-settings.manage-signers.action.add-signer")}
         </ButtonListItem>
       )}
       {props.signers.map(signer => (
-        <ListItem key={signer.key} style={listItemStyles}>
-          <ListItemIcon>
-            <PersonIcon style={{ fontSize: "2rem" }} />
-          </ListItemIcon>
-          <ListItemText
-            primary={<Address address={signer.key} testnet={props.testnet} variant="full" />}
-            secondary={
-              <>
-                {props.showKeyWeights ? (
-                  <span style={{ marginRight: 24 }}>
-                    {t("account-settings.manage-signers.signers-editor.list.item.weight")}: {signer.weight}
-                  </span>
-                ) : null}
-                {accounts.some(account => account.publicKey === signer.key && account.testnet === testnet) ? (
-                  <span>{t("account-settings.manage-signers.signers-editor.list.item.local-key")}</span>
-                ) : null}
-              </>
-            }
-          />
-          <ListItemSecondaryAction>
-            <IconButton
+        <div key={signer.key} className="flex items-center py-3 px-4 border-b border-gray-100" style={listItemStyles}>
+          <div className="flex-shrink-0 mr-6">
+            <HiUser className="text-[2rem]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-base font-medium">
+              <Address address={signer.key} testnet={props.testnet} variant="full" />
+            </div>
+            <div className="text-sm text-gray-600">
+              {props.showKeyWeights ? (
+                <span className="mr-6">
+                  {t("account-settings.manage-signers.signers-editor.list.item.weight")}: {signer.weight}
+                </span>
+              ) : null}
+              {accounts.some(account => account.publicKey === signer.key && account.testnet === testnet) ? (
+                <span>{t("account-settings.manage-signers.signers-editor.list.item.local-key")}</span>
+              ) : null}
+            </div>
+          </div>
+          <div className="flex-shrink-0 ml-4">
+            <button
+              type="button"
               aria-label="Remove"
               disabled={props.signers.length === 1}
               onClick={() => removeSigner(signer)}
-              size="large"
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RemoveIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
+              <HiXCircle className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
       ))}
       {requiresSignatureThreshold(preset) ? (
         <>
-          <ListItem style={listItemStyles}>
-            <ListItemIcon>
-              <div />
-            </ListItemIcon>
-            <ListItemText
-              primary={t("account-settings.manage-signers.signers-editor.threshold.primary")}
-              secondary={t("account-settings.manage-signers.signers-editor.threshold.secondary")}
-              style={{ flexGrow: 0, marginRight: 32 }}
-            />
-            <ListItemText>
+          <div className="flex items-center py-3 px-4 border-b border-gray-100" style={listItemStyles}>
+            <div className="flex-shrink-0 mr-6 w-6" />
+            <div className="flex-1 min-w-0 mr-8 flex-grow-0">
+              <div className="text-base font-medium">
+                {t("account-settings.manage-signers.signers-editor.threshold.primary")}
+              </div>
+              <div className="text-sm text-gray-600">
+                {t("account-settings.manage-signers.signers-editor.threshold.secondary")}
+              </div>
+            </div>
+            <div className="flex-1">
               <ThresholdInput inputRef={thresholdInputRef} />
-            </ListItemText>
-          </ListItem>
-          <Divider />
+            </div>
+          </div>
+          <hr className="my-1 border-gray-200" />
         </>
       ) : null}
-    </List>
+    </div>
   )
 }
 

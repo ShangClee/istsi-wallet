@@ -1,14 +1,27 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Dialog from "@mui/material/Dialog"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { Dialog } from "~Generic/components/Dialog"
 import { Operation, Transaction } from "stellar-sdk"
 import { Account } from "~App/contexts/accounts"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { isStellarWebAuthTransaction } from "~Generic/lib/transaction"
 import { useDialogActions, useIsMobile } from "~Generic/hooks/userinterface"
-import { FullscreenDialogTransition, CompactDialogTransition } from "~App/theme"
+
+// useMediaQuery replacement
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
 import DialogBody from "~Layout/components/DialogBody"
 import TestnetBadge from "~Generic/components/TestnetBadge"
 import { Box } from "~Layout/components/Box"
@@ -129,11 +142,7 @@ function TransactionReviewDialog(props: Props) {
       open={props.open}
       fullScreen={isSmallScreen}
       onClose={props.onClose}
-      maxWidth="lg"
-      TransitionComponent={isSmallScreen ? FullscreenDialogTransition : CompactDialogTransition}
-      PaperProps={{
-        style: { minWidth: isScreen600pxWide ? 500 : undefined }
-      }}
+      style={{ minWidth: isScreen600pxWide ? 500 : undefined }}
     >
       <TransactionReviewDialogBody {...props} />
     </Dialog>

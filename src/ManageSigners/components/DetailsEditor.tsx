@@ -1,6 +1,5 @@
-import Typography from "@mui/material/Typography"
-import CheckIcon from "@mui/icons-material/Check"
 import React from "react"
+import { HiCheck } from "react-icons/hi2"
 import { useTranslation } from "react-i18next"
 import { Horizon } from "stellar-sdk"
 import { AccountsContext } from "~App/contexts/accounts"
@@ -39,13 +38,9 @@ const PresetDescription = React.memo(function PresetDescription(props: { preset:
 
   return (
     <>
-      <Typography align="center" color="textSecondary" gutterBottom>
-        {description}
-      </Typography>
+      <p className="text-center text-gray-600 mb-4">{description}</p>
       {extraDescription ? (
-        <Typography align="center" color="textSecondary">
-          {extraDescription}
-        </Typography>
+        <p className="text-center text-gray-600">{extraDescription}</p>
       ) : null}
     </>
   )
@@ -103,7 +98,7 @@ function DetailsEditor(props: DetailsEditorProps) {
       </Box>
       <Portal target={props.actionsRef?.element}>
         <DialogActionsBox desktopStyle={{ margin: 0 }}>
-          <ActionButton disabled={disabled} icon={<CheckIcon />} onClick={props.onSubmit} type="submit">
+          <ActionButton disabled={disabled} icon={<HiCheck className="w-5 h-5" />} onClick={props.onSubmit} type="submit">
             {isSmallScreen
               ? t("account-settings.manage-signers.action.apply.short")
               : t("account-settings.manage-signers.action.apply.long")}

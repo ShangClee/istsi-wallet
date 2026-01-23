@@ -1,10 +1,6 @@
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import WarningIcon from "@mui/icons-material/Warning"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { warningColor } from "~App/theme"
+import { HiExclamationTriangle } from "react-icons/hi2"
 
 interface WarningProps {
   primary: React.ReactNode
@@ -14,12 +10,15 @@ interface WarningProps {
 
 const Warning = React.memo(function Warning(props: WarningProps) {
   return (
-    <ListItem component="div" style={{ background: warningColor, marginBottom: 16, ...props.style }}>
-      <ListItemIcon style={{ minWidth: 40 }}>
-        <WarningIcon />
-      </ListItemIcon>
-      <ListItemText primary={props.primary} secondary={props.secondary} />
-    </ListItem>
+    <div className="flex items-center bg-warning mb-4 px-4 py-3 rounded" style={props.style}>
+      <div className="flex-shrink-0 min-w-[40px]">
+        <HiExclamationTriangle className="w-6 h-6" />
+      </div>
+      <div className="flex-1 min-w-0 ml-4">
+        <div className="text-base font-medium">{props.primary}</div>
+        {props.secondary && <div className="text-sm text-gray-600 mt-1">{props.secondary}</div>}
+      </div>
+    </div>
   )
 })
 

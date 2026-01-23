@@ -1,7 +1,4 @@
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-import { alpha, useTheme } from "@mui/material/styles"
-import ErrorIcon from "@mui/icons-material/Error"
+import { HiExclamationCircle } from "react-icons/hi2"
 import React from "react"
 import { Translation, useTranslation } from "react-i18next"
 import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
@@ -55,23 +52,16 @@ interface InlineErrorBoundaryProps {
 }
 
 export const InlineErrorBoundary = ErrorBoundary<InlineErrorBoundaryProps>(function InlineErrorBoundary(props) {
-  const theme = useTheme()
   const { t } = useTranslation()
 
   return (
     <HorizontalLayout
       alignItems="center"
       height={props.height}
-      style={{
-        background: alpha(theme.palette.error.main, 0.2),
-        borderRadius: 8,
-        color: theme.palette.error.main,
-        fontWeight: 600,
-        padding: "8px 12px"
-      }}
+      className="bg-red-100 rounded-lg text-red-600 font-semibold px-3 py-2"
     >
-      <ErrorIcon />
-      <span style={{ marginLeft: 8 }}>{getErrorTranslation(props.error, t)}</span>
+      <HiExclamationCircle className="w-5 h-5" />
+      <span className="ml-2">{getErrorTranslation(props.error, t)}</span>
     </HorizontalLayout>
   )
 })
@@ -88,29 +78,32 @@ export const MainErrorBoundary = ErrorBoundary<MainErrorBoundaryProps>(function 
         {t => (
           <>
             <Box textAlign="center">
-              <Typography variant="h5">{t("generic.error.boundary.header")}</Typography>
-              <Typography style={{ margin: "8px 0 24px", userSelect: "text" }} variant="body2">
+              <h5 className="text-xl font-medium">{t("generic.error.boundary.header")}</h5>
+              <p className="my-2 mb-6 text-sm select-text">
                 {getErrorTranslation(props.error, t)}
-              </Typography>
-              <Button color="primary" onClick={refreshContent} variant="contained">
+              </p>
+              <button
+                onClick={refreshContent}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              >
                 {buttonLabels[Math.floor(Math.random() * buttonLabels.length)]}
-              </Button>
+              </button>
             </Box>
             <Box style={{ position: "absolute", bottom: 8, left: 0, width: "100%", opacity: 0.5 }}>
-              <Typography align="center" color="textPrimary">
+              <p className="text-center text-gray-900">
                 {t("generic.error.boundary.contact-us")}{" "}
                 <a
                   href="mailto:hello@solarwallet.io"
-                  style={{ color: "inherit" }}
+                  className="text-inherit"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   hello@solarwallet.io
                 </a>
-              </Typography>
-              <Typography align="center" color="textPrimary">
+              </p>
+              <p className="text-center text-gray-900">
                 v{pkg.version}
-              </Typography>
+              </p>
             </Box>
           </>
         )}

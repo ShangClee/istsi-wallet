@@ -1,8 +1,7 @@
 import { nanoid } from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import CircularProgress from "@mui/material/CircularProgress"
-import Typography from "@mui/material/Typography"
+// CircularProgress and Typography removed - using Tailwind classes
 import { Withdrawal } from "@satoshipay/stellar-transfer"
 import { trackError } from "~App/contexts/notifications"
 import { RefStateObject } from "~Generic/hooks/userinterface"
@@ -49,7 +48,7 @@ function TransferKYCPending(props: TransferKYCPendingProps) {
     <form id={formID} noValidate onSubmit={handleSubmit}>
       <VerticalLayout grow>
         <VerticalLayout alignItems="center" margin="24px auto" textAlign="center">
-          <Typography variant="h5">{t("transfer-service.kyc-pending.body.additional-info-needed")}</Typography>
+          <h5 className="text-xl font-medium">{t("transfer-service.kyc-pending.body.additional-info-needed")}</h5>
           <TransferTransactionStatus
             domain={transferServer.domain}
             transaction={props.state.transfer}
@@ -57,7 +56,7 @@ function TransferKYCPending(props: TransferKYCPendingProps) {
           />
           {props.state.didRedirect ? (
             <Box grow margin="48px 0" textAlign="center">
-              <CircularProgress />
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
             </Box>
           ) : null}
           <Portal desktop="inline" target={props.dialogActionsRef && props.dialogActionsRef.element}>

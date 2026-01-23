@@ -2,13 +2,10 @@ import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, Horizon } from "stellar-sdk"
-import Dialog from "@mui/material/Dialog"
-import Divider from "@mui/material/Divider"
-import List from "@mui/material/List"
-import AddIcon from "@mui/icons-material/Add"
+import { Dialog } from "~Generic/components/Dialog"
+import { HiPlus } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import * as routes from "~App/routes"
-import { FullscreenDialogTransition } from "~App/theme"
 import ButtonListItem from "~Generic/components/ButtonListItem"
 import MainTitle from "~Generic/components/MainTitle"
 import ViewLoading from "~Generic/components/ViewLoading"
@@ -169,7 +166,7 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
 
   return (
     <DialogBody excessWidth={12} top={<MainTitle onBack={props.onClose} title={props.account.name} />}>
-      <List style={{ paddingLeft: hpadding, paddingRight: hpadding, margin: "0 -8px" }}>
+      <div className="px-4 -mx-2" style={{ paddingLeft: hpadding, paddingRight: hpadding }}>
         <ButtonListItem
           gutterBottom
           onClick={openAddAssetDialog}
@@ -179,7 +176,7 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
             marginRight: itemHMargin
           }}
         >
-          <AddIcon />
+          <HiPlus className="w-6 h-6" />
           &nbsp;&nbsp;{t("account.balance-details.button.add-asset.label")}
         </ButtonListItem>
         <TrustedAssets
@@ -192,9 +189,9 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
           openOffers={openOrders}
           olderOffersAvailable={olderOffersAvailable}
         />
-      </List>
-      <Divider style={{ margin: "16px 0" }} />
-      <List style={{ paddingLeft: hpadding, paddingRight: hpadding, margin: "0 -8px 8px" }}>
+      </div>
+      <hr className="my-4 border-gray-200" />
+      <div className="px-4 -mx-2 mb-2" style={{ paddingLeft: hpadding, paddingRight: hpadding }}>
         {nativeBalance ? (
           <NativeBalanceItems
             account={props.account}
@@ -205,12 +202,11 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
             onOpenAssetDetails={openAssetDetails}
           />
         ) : null}
-      </List>
+      </div>
       <Dialog
         fullScreen
         open={addAssetDialogOpen || assetDetailsDialogOpen}
         onClose={closeAddAssetDialog}
-        TransitionComponent={FullscreenDialogTransition}
       >
         <React.Suspense fallback={<ViewLoading />}>
           <AddAssetDialog

@@ -2,20 +2,25 @@ import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Asset, Horizon, Operation, Transaction } from "stellar-sdk"
-import Button from "@mui/material/Button"
-import Accordion from "@mui/material/Accordion"
-import AccordionDetails from "@mui/material/AccordionDetails"
-import AccordionSummary from "@mui/material/AccordionSummary"
-import InputAdornment from "@mui/material/InputAdornment"
-import makeStyles from "@mui/styles/makeStyles"
 import TextField from "~Generic/components/TextField"
-import Typography from "@mui/material/Typography"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import GavelIcon from "@mui/icons-material/Gavel"
+import { HiChevronDown, HiGavel } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
-import { warningColor } from "~App/theme"
+
+// useMediaQuery replacement
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
 import AssetSelector from "~Generic/components/AssetSelector"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { ReadOnlyTextfield } from "~Generic/components/FormFields"
@@ -37,32 +42,7 @@ import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
 import { bigNumberToInputValue, TradingFormValues, useCalculation } from "../hooks/form"
 import TradingPrice from "./TradingPrice"
 
-const useStyles = makeStyles({
-  expansionPanel: {
-    background: "transparent",
-    margin: "8px 0 !important",
-
-    "&:before": {
-      background: "transparent"
-    }
-  },
-  expansionPanelSummary: {
-    justifyContent: "flex-start",
-    minHeight: "48px !important",
-    padding: 0
-  },
-  expansionPanelSummaryContent: {
-    flexGrow: 0,
-    marginTop: "0 !important",
-    marginBottom: "0 !important"
-  },
-  expansionPanelDetails: {
-    justifyContent: "flex-start",
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 12
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface Props {
   account: Account
@@ -77,7 +57,6 @@ interface Props {
 }
 
 function TradingForm(props: Props) {
-  const classes = useStyles()
   const isSmallScreen = useIsMobile()
   const isSmallHeightScreen = useMediaQuery("(max-height: 500px)")
   const isSmallScreenXY = isSmallScreen || isSmallHeightScreen
@@ -300,15 +279,14 @@ function TradingForm(props: Props) {
                 props.primaryAction === "buy" ? (
                   undefined
                 ) : (
-                  <InputAdornment position="end">
-                    <Button
-                      disabled={!primaryAsset || !primaryBalance}
-                      onClick={setPrimaryAmountToMax}
-                      style={{ boxShadow: "none", fontWeight: 400 }}
-                    >
-                      {t("trading.inputs.primary-amount.max-button.label")}
-                    </Button>
-                  </InputAdornment>
+                  <button
+                    type="button"
+                    disabled={!primaryAsset || !primaryBalance}
+                    onClick={setPrimaryAmountToMax}
+                    className="px-3 py-1.5 text-sm font-normal border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {t("trading.inputs.primary-amount.max-button.label")}
+                  </button>
                 )
             }}
             label={
@@ -370,21 +348,17 @@ function TradingForm(props: Props) {
             }
           />
         </HorizontalLayout>
-        <Accordion
-          className={classes.expansionPanel}
-          elevation={0}
-          expanded={expanded}
-          onChange={() => setExpanded(!expanded)}
-        >
-          <AccordionSummary
-            classes={{ root: classes.expansionPanelSummary, content: classes.expansionPanelSummaryContent }}
-            expandIcon={<ExpandMoreIcon />}
+        <div className="bg-transparent my-2">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="w-full flex items-center justify-between min-h-[48px] p-0"
           >
-            <Typography align="center" style={{ flexGrow: 1 }}>
-              {t("trading.advanced.header")}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails className={classes.expansionPanelDetails}>
+            <p className="text-center flex-1 text-base">{t("trading.advanced.header")}</p>
+            <HiChevronDown className={`w-5 h-5 transition-transform ${expanded ? "rotate-180" : ""}`} />
+          </button>
+          {expanded && (
+            <div className="flex justify-start pl-0 pr-0 pt-3">
             <Controller
               as={
                 <TradingPrice
@@ -408,10 +382,11 @@ function TradingForm(props: Props) {
               }}
               valueName="manualPrice"
             />
-          </AccordionDetails>
-        </Accordion>
+            </div>
+          )}
+        </div>
         {relativeSpread >= 0.015 ? (
-          <Box margin="32px 0 0" padding="8px 12px" style={{ background: warningColor }}>
+          <div className="my-8 px-3 py-2 bg-warning rounded">
             <b>{t("trading.warning.title")}</b>
             <br />
             {t(
@@ -419,11 +394,11 @@ function TradingForm(props: Props) {
               `The spread between buying and selling price is about ${(relativeSpread * 100).toFixed(1)}%.`,
               { spread: (relativeSpread * 100).toFixed(1) }
             )}
-          </Box>
+          </div>
         ) : null}
         <Portal target={props.dialogActionsRef?.element}>
           <DialogActionsBox desktopStyle={{ marginTop: 32 }}>
-            <ActionButton loading={pending} icon={<GavelIcon />} onClick={form.handleSubmit(submitForm)} type="primary">
+            <ActionButton loading={pending} icon={<HiGavel className="w-5 h-5" />} onClick={form.handleSubmit(submitForm)} type="primary">
               {t("trading.action.submit")}
             </ActionButton>
           </DialogActionsBox>

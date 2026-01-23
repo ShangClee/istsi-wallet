@@ -1,12 +1,8 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Horizon, Operation, Transaction } from "stellar-sdk"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
-import Switch from "@mui/material/Switch"
-import Typography from "@mui/material/Typography"
-import DeleteIcon from "@mui/icons-material/Delete"
-import WarnIcon from "@mui/icons-material/Warning"
+import { DialogContent } from "~Generic/components/Dialog"
+import { HiTrash, HiExclamationTriangle } from "react-icons/hi2"
 import AccountSelectionList from "~Account/components/AccountSelectionList"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { createTransaction } from "~Generic/lib/transaction"
@@ -159,21 +155,26 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
       accountData.balances.length > 0 ? (
         <>
           <HorizontalLayout alignItems="center" style={{ marginTop: 24, marginLeft: -12, marginBottom: 8 }}>
-            <Switch color="primary" checked={mergeAccountEnabled} onChange={toggleMergeAccount} />
-            <Typography
+            <button
+              role="switch"
+              aria-checked={mergeAccountEnabled}
               onClick={toggleMergeAccount}
-              variant="h6"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                height: 48,
-                cursor: "pointer",
-                fontSize: isSmallScreen ? 16 : 20,
-                marginLeft: 8
-              }}
+              className={`${
+                mergeAccountEnabled ? "bg-blue-500" : "bg-gray-300"
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            >
+              <span
+                className={`${
+                  mergeAccountEnabled ? "translate-x-6" : "translate-x-1"
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </button>
+            <h6
+              onClick={toggleMergeAccount}
+              className="flex items-center h-12 cursor-pointer text-lg sm:text-xl ml-2"
             >
               {t("account-settings.account-deletion.remaining-funds.text")}
-            </Typography>
+            </h6>
           </HorizontalLayout>
 
           <AccountSelectionList
@@ -204,7 +205,7 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
 
   return (
     <DialogBody
-      background={<WarnIcon style={{ fontSize: 160 }} />}
+      background={<HiExclamationTriangle className="text-[160px] text-gray-300" />}
       noMaxWidth
       preventNotchSpacing
       top={
@@ -231,7 +232,7 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
                 : t("account-settings.account-deletion.action.merge.long")}
             </ActionButton>
           ) : (
-            <ActionButton autoFocus icon={<DeleteIcon />} onClick={requestConfirmation} type="primary">
+            <ActionButton autoFocus icon={<HiTrash className="w-5 h-5" />} onClick={requestConfirmation} type="primary">
               {t("account-settings.account-deletion.action.delete")}
             </ActionButton>
           )}
@@ -239,12 +240,15 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
       }
     >
       <DialogContent style={{ padding: 0 }}>
-        <DialogContentText style={{ marginTop: 8 }}>
+        <p className="text-base text-gray-700 mt-2">
           {t("account-settings.account-deletion.text.1", { accountName: props.account.name })}
-        </DialogContentText>
-        <DialogContentText style={{ display: accountData.balances.length > 0 ? undefined : "none", marginTop: 16 }}>
+        </p>
+        <p
+          className="text-base text-gray-700 mt-4"
+          style={{ display: accountData.balances.length > 0 ? undefined : "none" }}
+        >
           {t("account-settings.account-deletion.text.2")}
-        </DialogContentText>
+        </p>
 
         {remainingFundsContent}
 

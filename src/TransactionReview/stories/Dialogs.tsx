@@ -1,5 +1,5 @@
 import React from "react"
-import Button from "@mui/material/Button"
+// Button removed - using native button
 import { storiesOf } from "@storybook/react"
 import { Asset, Horizon, Transaction } from "stellar-sdk"
 import TransactionReviewDialog from "../components/TransactionReviewDialog"
@@ -40,9 +40,12 @@ function DialogContainer(props: DialogContainerProps) {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} variant="contained">
+      <button
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        onClick={() => setIsOpen(true)}
+      >
         Open
-      </Button>
+      </button>
       {transaction
         ? props.children({
             open: isOpen,

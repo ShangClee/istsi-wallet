@@ -1,17 +1,14 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
-import Switch from "@mui/material/Switch"
-import makeStyles from "@mui/styles/makeStyles"
-import ArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
-import FingerprintIcon from "@mui/icons-material/Fingerprint"
-import GroupIcon from "@mui/icons-material/Group"
-import LanguageIcon from "@mui/icons-material/Language"
-import MessageIcon from "@mui/icons-material/Message"
-import TestnetIcon from "@mui/icons-material/MoneyOff"
-import TrustIcon from "@mui/icons-material/VerifiedUser"
+import {
+  HiChevronRight,
+  HiFingerPrint,
+  HiUserGroup,
+  HiLanguage,
+  HiChatBubbleLeftRight,
+  HiCurrencyDollar,
+  HiShieldCheck
+} from "react-icons/hi2"
 import { availableLanguages, languageNames } from "../../../i18n/index"
 import AppSettingsItem from "./AppSettingsItem"
 
@@ -28,7 +25,23 @@ function SettingsToggle(props: SettingsToggleProps) {
     onChange(event.target.checked)
   }
 
-  return <Switch checked={checked} color="primary" disabled={disabled} onChange={handleChange} />
+  return (
+    <button
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className={`${
+        checked ? "bg-blue-500" : "bg-gray-300"
+      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed`}
+    >
+      <span
+        className={`${
+          checked ? "translate-x-6" : "translate-x-1"
+        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+      />
+    </button>
+  )
 }
 
 interface SettingProps {
@@ -36,21 +49,7 @@ interface SettingProps {
   value: boolean
 }
 
-const useSettingsStyles = makeStyles({
-  caret: {
-    color: "rgba(0, 0, 0, 0.35)",
-    fontSize: 48,
-    justifyContent: "center",
-    marginRight: -8,
-    width: 48
-  },
-  icon: {
-    fontSize: 28,
-    justifyContent: "center",
-    marginRight: 4,
-    width: 28
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface BiometricLockSettingProps {
   enrolled: boolean
@@ -59,7 +58,6 @@ interface BiometricLockSettingProps {
 }
 
 export const BiometricLockSetting = React.memo(function BiometricLockSetting(props: BiometricLockSettingProps) {
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
   return (
     <AppSettingsItem
@@ -67,7 +65,7 @@ export const BiometricLockSetting = React.memo(function BiometricLockSetting(pro
         // pass empty onChange handler to prevent calling onToggle twice
         <SettingsToggle checked={props.enrolled && props.value} disabled={!props.enrolled} onChange={() => undefined} />
       }
-      icon={<FingerprintIcon className={classes.icon} />}
+      icon={<HiFingerPrint className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       onClick={props.enrolled ? props.onToggle : undefined}
       primaryText={
         process.env.PLATFORM === "ios"
@@ -86,12 +84,11 @@ export const BiometricLockSetting = React.memo(function BiometricLockSetting(pro
 })
 
 export const HideMemoSetting = React.memo(function HideMemoSetting(props: SettingProps) {
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
   return (
     <AppSettingsItem
       actions={<SettingsToggle checked={!props.value} onChange={props.onToggle} />}
-      icon={<MessageIcon className={classes.icon} />}
+      icon={<HiChatBubbleLeftRight className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       onClick={props.onToggle}
       primaryText={t("app-settings.settings.memo.text.primary")}
       secondaryText={
@@ -110,14 +107,13 @@ interface LanguageSettingProps {
 
 export const LanguageSetting = React.memo(function LanguageSetting(props: LanguageSettingProps) {
   const { onSelect } = props
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
 
   const browserLanguage = navigator.language.substr(0, 2)
 
   const handleChange = React.useCallback(
-    (event: any) => {
-      onSelect(event.target.value as string)
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      onSelect(event.target.value)
     },
     [onSelect]
   )
@@ -125,21 +121,20 @@ export const LanguageSetting = React.memo(function LanguageSetting(props: Langua
   return (
     <AppSettingsItem
       actions={
-        <Select
-          variant="standard"
+        <select
           onChange={handleChange}
-          style={{ marginLeft: 8 }}
-          value={props.value}
-          SelectDisplayProps={{ style: { paddingLeft: 8 } }}
+          className="ml-2 border-none bg-transparent cursor-pointer focus:outline-none text-base"
+          value={props.value || ""}
+          style={{ paddingLeft: 8 }}
         >
           {[...availableLanguages].sort().map(lang => (
-            <MenuItem key={lang} value={lang}>
+            <option key={lang} value={lang}>
               {languageNames[lang]} {lang === browserLanguage && "(Auto)"}
-            </MenuItem>
+            </option>
           ))}
-        </Select>
+        </select>
       }
-      icon={<LanguageIcon className={classes.icon} />}
+      icon={<HiLanguage className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       primaryText={t("app-settings.settings.language.text.primary")}
       secondaryText={t("app-settings.settings.language.text.secondary")}
     />
@@ -147,12 +142,11 @@ export const LanguageSetting = React.memo(function LanguageSetting(props: Langua
 })
 
 export const MultiSigSetting = React.memo(function MultiSigSetting(props: SettingProps) {
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
   return (
     <AppSettingsItem
       actions={<SettingsToggle checked={props.value} onChange={props.onToggle} />}
-      icon={<GroupIcon className={classes.icon} />}
+      icon={<HiUserGroup className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       onClick={props.onToggle}
       primaryText={t("app-settings.settings.multi-sig.text.primary")}
       secondaryText={
@@ -171,12 +165,11 @@ interface TestnetSettingProps {
 }
 
 export const TestnetSetting = React.memo(function TestnetSetting(props: TestnetSettingProps) {
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
   return (
     <AppSettingsItem
       actions={<SettingsToggle checked={props.value} disabled={props.hasTestnetAccount} onChange={props.onToggle} />}
-      icon={<TestnetIcon className={classes.icon} />}
+      icon={<HiCurrencyDollar className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       onClick={props.hasTestnetAccount ? undefined : props.onToggle}
       primaryText={t("app-settings.settings.testnet.text.primary")}
       secondaryText={
@@ -195,16 +188,15 @@ interface TrustedServicesSettingProps {
 }
 
 export const TrustedServicesSetting = React.memo(function TrustedServicesSetting(props: TrustedServicesSettingProps) {
-  const classes = useSettingsStyles(props)
   const { t } = useTranslation()
   return (
     <AppSettingsItem
       actions={
-        <ListItemIcon className={classes.caret}>
-          <ArrowRightIcon className={classes.caret} />
-        </ListItemIcon>
+        <div className="text-[48px] text-black/35 flex items-center justify-center -mr-2 w-12">
+          <HiChevronRight className="text-[48px]" />
+        </div>
       }
-      icon={<TrustIcon className={classes.icon} />}
+      icon={<HiShieldCheck className="text-[28px] mr-1 w-7 flex items-center justify-center" />}
       onClick={props.onClick}
       primaryText={t("app-settings.settings.trusted-services.text.primary")}
       secondaryText={t("app-settings.settings.trusted-services.text.secondary")}

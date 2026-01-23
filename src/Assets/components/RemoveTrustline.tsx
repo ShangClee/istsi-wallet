@@ -1,10 +1,8 @@
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 import { Asset, Horizon, Operation } from "stellar-sdk"
-import CloseIcon from "@mui/icons-material/Close"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
-import DialogTitle from "@mui/material/DialogTitle"
+import { HiX } from "react-icons/hi2"
+import { Dialog, DialogContent, DialogTitle } from "~Generic/components/Dialog"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import { AccountData } from "~Generic/lib/account"
@@ -54,7 +52,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
     <>
       <DialogTitle>{t("account.remove-trustline.title")}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <p className="text-base text-gray-700 mb-4">
           {stillOwnsTokens ? (
             <>{t("account.remove-trustline.text.warning")}</>
           ) : (
@@ -62,7 +60,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
               You are about to remove <b>{props.asset.code}</b> from account "{props.account.name}".
             </Trans>
           )}
-        </DialogContentText>
+        </p>
         {/* Not in the DialogBody's `actions` prop as it's not a fullscreen dialog */}
         <DialogActionsBox preventMobileActionsBox>
           <ActionButton onClick={props.onClose} style={{ maxWidth: "none" }}>
@@ -73,7 +71,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
               autoFocus
               disabled={stillOwnsTokens}
               loading={txCreationPending}
-              icon={<CloseIcon />}
+              icon={<HiX className="w-5 h-5" />}
               onClick={removeAsset}
               style={{ maxWidth: "none" }}
               type="primary"

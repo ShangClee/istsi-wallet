@@ -1,9 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Horizon, Memo, Transaction, Networks } from "stellar-sdk"
-import Tooltip from "@mui/material/Tooltip"
-import CheckIcon from "@mui/icons-material/Check"
-import UpdateIcon from "@mui/icons-material/Update"
+import { HiCheck, HiArrowPath } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
@@ -15,17 +13,21 @@ import { SummaryDetailsField, SummaryItem } from "./SummaryItem"
 
 function SignerStatus(props: { hasSigned: boolean; style?: React.CSSProperties }) {
   const { t } = useTranslation()
-  const Icon = props.hasSigned ? CheckIcon : UpdateIcon
+  const Icon = props.hasSigned ? HiCheck : HiArrowPath
+  const title = props.hasSigned
+    ? t("account.transaction-review.signer-status.tooltip.has-signed")
+    : t("account.transaction-review.signer-status.tooltip.has-not-signed")
   return (
-    <Tooltip
-      title={
-        props.hasSigned
-          ? t("account.transaction-review.signer-status.tooltip.has-signed")
-          : t("account.transaction-review.signer-status.tooltip.has-not-signed")
-      }
-    >
-      <Icon style={{ opacity: props.hasSigned ? 1 : 0.5, ...props.style }} />
-    </Tooltip>
+    <div className="relative group">
+      <Icon
+        className={`${props.hasSigned ? "opacity-100" : "opacity-50"}`}
+        style={props.style}
+        title={title}
+      />
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10">
+        {title}
+      </div>
+    </div>
   )
 }
 

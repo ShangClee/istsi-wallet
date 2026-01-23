@@ -2,7 +2,7 @@ import { TFunction } from "i18next"
 import React from "react"
 import { Translation } from "react-i18next"
 import { Networks, Horizon, Transaction } from "stellar-sdk"
-import Zoom from "@mui/material/Zoom"
+// Zoom transition removed - using CSS transitions
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext, SettingsContextType } from "~App/contexts/settings"
 import { useHorizon } from "~Generic/hooks/stellar"
@@ -55,18 +55,19 @@ function ConditionalSubmissionProgress(props: {
   }
   return (
     <div style={outerStyle}>
-      <Zoom in={Boolean(props.promise)}>
-        <div style={innerStyle}>
-          {props.promise ? (
-            <SubmissionProgress
-              onClose={props.onClose}
-              onRetry={props.onRetry}
-              promise={props.promise}
-              type={props.type}
-            />
-          ) : null}
-        </div>
-      </Zoom>
+      <div
+        style={innerStyle}
+        className={`transition-opacity duration-300 ${props.promise ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      >
+        {props.promise ? (
+          <SubmissionProgress
+            onClose={props.onClose}
+            onRetry={props.onRetry}
+            promise={props.promise}
+            type={props.type}
+          />
+        ) : null}
+      </div>
     </div>
   )
 }

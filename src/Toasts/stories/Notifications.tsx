@@ -1,5 +1,5 @@
 import React from "react"
-import Button from "@mui/material/Button"
+// Button removed - using native button
 import { storiesOf } from "@storybook/react"
 import NotificationContainer from "../components/NotificationContainer"
 import { NotificationsContext, NotificationsProvider } from "~App/contexts/notifications"
@@ -25,21 +25,30 @@ storiesOf("Notifications", module).add("All", () => (
     <NotificationsContext.Consumer>
       {({ showError, showNotification }) => (
         <Buttons>
-          <Button variant="contained" onClick={() => showError(new Error("An error happened."))}>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            onClick={() => showError(new Error("An error happened."))}
+          >
             Show error notification
-          </Button>
-          <Button variant="contained" onClick={() => showNotification("info", "This is an informational message.")}>
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            onClick={() => showNotification("info", "This is an informational message.")}
+          >
             Show info notification
-          </Button>
-          <Button variant="contained" onClick={() => showNotification("success", "Action successful!")}>
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            onClick={() => showNotification("success", "Action successful!")}
+          >
             Show success notification
-          </Button>
-          <Button
-            variant="contained"
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             onClick={() => showNotification("info", "Click me.", { onClick: () => window.alert("Clicked!") })}
           >
             Show clickable notification
-          </Button>
+          </button>
         </Buttons>
       )}
     </NotificationsContext.Consumer>

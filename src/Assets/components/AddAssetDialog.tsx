@@ -1,16 +1,12 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, AssetType, Horizon, Operation, Transaction } from "stellar-sdk"
-import Dialog from "@mui/material/Dialog"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
-import AddIcon from "@mui/icons-material/Add"
+import { Dialog } from "~Generic/components/Dialog"
+import { HiPlus } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-import { CompactDialogTransition } from "~App/theme"
+// CompactDialogTransition removed - using CSS transitions in Dialog component
 import ButtonListItem from "~Generic/components/ButtonListItem"
 import { AccountName } from "~Generic/components/Fetchers"
 import { SearchField } from "~Generic/components/FormFields"
@@ -91,22 +87,7 @@ const PopularAssets = React.memo(function PopularAssets(props: PopularAssetsProp
 
 const searchResultRowHeight = 73
 
-const useSearchResultStyles = makeStyles({
-  assetItem: {
-    borderRadius: "0 !important",
-    height: searchResultRowHeight
-  },
-  issuerItem: {
-    background: "white",
-    borderRadius: 8,
-    height: searchResultRowHeight
-  },
-  noResultItem: {
-    background: "white",
-    borderRadius: 8,
-    height: searchResultRowHeight
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 function createSearchResultRow(
   account: Account,
@@ -137,7 +118,6 @@ function createSearchResultRow(
   }
 
   function SearchResultRow(props: { index: number; style: React.CSSProperties }) {
-    const classes = useSearchResultStyles()
     const item = itemRenderMap[props.index]
     const { t } = useTranslation()
 
@@ -145,32 +125,29 @@ function createSearchResultRow(
       <div style={props.style}>
         <React.Suspense fallback={<ViewLoading />}>
           {item.type === "issuer" ? (
-            <ListItem key={item.issuer} className={classes.issuerItem}>
-              <ListItemText
-                primary={
-                  item.issuer === "native" ? (
+            <div key={item.issuer} className="bg-white rounded-lg h-[73px] flex items-center px-4">
+              <div className="flex-1 min-w-0">
+                <div className="text-base font-medium overflow-hidden text-ellipsis">
+                  {item.issuer === "native" ? (
                     "stellar.org"
                   ) : (
                     <AccountName publicKey={item.issuer} testnet={account.testnet} />
-                  )
-                }
-                secondary={
-                  assetsByIssuer[item.issuer].length === 1
+                  )}
+                </div>
+                <div className="text-sm text-gray-600 overflow-hidden text-ellipsis">
+                  {assetsByIssuer[item.issuer].length === 1
                     ? t("account.add-asset.item.issuer.secondary.one-asset")
                     : t("account.add-asset.item.issuer.secondary.more-than-one-asset", {
                         amount: assetsByIssuer[item.issuer].length
-                      })
-                }
-                secondaryTypographyProps={{
-                  style: { overflow: "hidden", textOverflow: "ellipsis" }
-                }}
-              />
-            </ListItem>
+                      })}
+                </div>
+              </div>
+            </div>
           ) : null}
           {item.type === "asset" ? (
             <BalanceDetailsListItem
               balance={assetToBalance(assetRecordToAsset(item.record))}
-              className={classes.assetItem}
+              className="rounded-none h-[73px]"
               hideBalance
               onClick={() => openAssetDetails(assetRecordToAsset(item.record))}
               style={{ paddingLeft: 32 }}
@@ -183,16 +160,15 @@ function createSearchResultRow(
   }
 
   function NoResultRow() {
-    const classes = useSearchResultStyles()
     const { t } = useTranslation()
 
     return (
-      <ListItem key={0} className={classes.noResultItem}>
-        <ListItemText
-          primary={t("account.add-asset.item.no-result.primary")}
-          secondary={t("account.add-asset.item.no-result.secondary")}
-        />
-      </ListItem>
+      <div key={0} className="bg-white rounded-lg h-[73px] flex items-center px-4">
+        <div className="flex-1">
+          <div className="text-base font-medium">{t("account.add-asset.item.no-result.primary")}</div>
+          <div className="text-sm text-gray-600">{t("account.add-asset.item.no-result.secondary")}</div>
+        </div>
+      </div>
     )
   }
 
@@ -205,22 +181,7 @@ function createSearchResultRow(
   }
 }
 
-const useAddAssetStyles = makeStyles({
-  grow: {
-    flexGrow: 1
-  },
-  list: {
-    marginTop: 16,
-    padding: 0
-  },
-  searchField: {
-    background: "white",
-    flexShrink: 0,
-    flexGrow: 0,
-    marginBottom: 16
-  },
-  searchFieldInput: {
-    fontSize: 16,
+// Styles converted to Tailwind - see className usage below
     paddingTop: 14,
     paddingBottom: 14
   }
@@ -238,7 +199,6 @@ interface AddAssetDialogProps {
 
 const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogProps) {
   const assets = props.account.testnet ? popularAssets.testnet : popularAssets.mainnet
-  const classes = useAddAssetStyles()
   const containerRef = React.useRef<HTMLUListElement | null>(null)
   const allAssets = useTickerAssets(props.account.testnet)
   const router = useRouter()
@@ -326,23 +286,23 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
       <VerticalLayout grow margin="16px 0 0">
         <SearchField
           autoFocus
-          className={classes.searchField}
+          className="bg-white flex-shrink-0 flex-grow-0 mb-4"
           inputProps={{
-            className: classes.searchFieldInput
+            className: "text-base"
           }}
           onChange={onSearchFieldChange}
           value={searchFieldValue}
           placeholder={t("account.add-asset.search-field.placeholder")}
         />
-        <List className={classes.list}>
+        <div className="mt-4 p-0">
           <ButtonListItem onClick={openCustomTrustlineDialog}>
-            <AddIcon />
+            <HiPlus className="w-6 h-6" />
             &nbsp;&nbsp;{t("account.add-asset.button.add-custom-asset.label")}
           </ButtonListItem>
-        </List>
+        </div>
         <React.Suspense fallback={<ViewLoading />}>
           {searchFieldValue ? (
-            <ul className={`${classes.list} ${classes.grow}`} ref={containerRef}>
+            <ul className="mt-4 p-0 flex-grow" ref={containerRef}>
               <FixedSizeList
                 container={containerRef.current}
                 itemCount={SearchResultRow.count}
@@ -352,20 +312,19 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
               </FixedSizeList>
             </ul>
           ) : (
-            <List className={`${classes.list} ${classes.grow}`}>
+            <div className="mt-4 p-0 flex-grow">
               <PopularAssets
                 assets={notYetAddedAssets}
                 onOpenAssetDetails={openAssetDetails}
                 testnet={props.account.testnet}
               />
-            </List>
+            </div>
           )}
         </React.Suspense>
       </VerticalLayout>
       <Dialog
         open={customTrustlineDialogOpen}
         onClose={closeCustomTrustlineDialog}
-        TransitionComponent={CompactDialogTransition}
       >
         <React.Suspense fallback={<ViewLoading />}>
           <CustomTrustlineDialog

@@ -1,11 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import InputAdornment from "@mui/material/InputAdornment"
-import Typography from "@mui/material/Typography"
-import LockIcon from "@mui/icons-material/LockOutlined"
-import LockOpenIcon from "@mui/icons-material/LockOpenOutlined"
-import LockFilledIcon from "@mui/icons-material/Lock"
-import WarnIcon from "@mui/icons-material/Warning"
+import { HiLockClosed, HiLockOpen, HiLock, HiExclamationTriangle } from "react-icons/hi2"
 import KeyExportBox from "~Account/components/KeyExportBox"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
@@ -33,13 +28,13 @@ function PromptToReveal(props: PromptToRevealProps) {
 
   return (
     <DialogBody
-      background={<WarnIcon style={{ fontSize: 220 }} />}
+      background={<HiExclamationTriangle className="text-[220px] text-gray-300" />}
       noMaxWidth
       preventNotchSpacing
       top={props.title}
       actions={
         <DialogActionsBox desktopStyle={{ marginTop: 32 }} smallDialog>
-          <ActionButton icon={<LockOpenIcon />} onClick={props.onReveal} type="primary">
+          <ActionButton icon={<HiLockOpen className="w-5 h-5" />} onClick={props.onReveal} type="primary">
             {isSmallScreen
               ? t("account-settings.export-key.action.reveal.short")
               : t("account-settings.export-key.action.reveal.long")}
@@ -65,9 +60,9 @@ function PromptToReveal(props: PromptToRevealProps) {
             style={{ marginTop: 8 }}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon color="disabled" />
-                </InputAdornment>
+                <div className="flex items-center">
+                  <HiLockClosed className="w-5 h-5 text-gray-400" />
+                </div>
               )
             }}
           />
@@ -89,7 +84,7 @@ function ShowSecretKey(props: ShowSecretKeyProps) {
 
   return (
     <DialogBody
-      background={<LockFilledIcon style={{ fontSize: 220 }} />}
+      background={<HiLock className="text-[220px] text-gray-300" />}
       noMaxWidth
       preventNotchSpacing
       top={props.title}
@@ -104,9 +99,9 @@ function ShowSecretKey(props: ShowSecretKeyProps) {
       }
     >
       {props.variant === "initial-backup" ? (
-        <Typography align="center" component="p" variant="h6" style={{ marginTop: -8, marginBottom: 16 }}>
+        <h6 className="text-center text-lg font-medium -mt-2 mb-4">
           {t("account-settings.export-key.info.secret-key")}
-        </Typography>
+        </h6>
       ) : null}
       <Box padding={"32px 0 0"}>
         <KeyExportBox export={props.export} hideTapToCopy={props.variant === "initial-backup"} size={192} />
@@ -175,15 +170,13 @@ function ExportKeyDialog(props: Props) {
   const backupInfoContent = React.useMemo(
     () => (
       <Box fontSize="18px" margin="24px 0 0">
-        <Typography component="p" variant="h5">
-          {t("account-settings.export-key.info.backup.title")}
-        </Typography>
-        <Typography component="p" variant="body1" style={{ fontSize: "inherit", margin: "24px 0" }}>
+        <h5 className="text-xl font-medium">{t("account-settings.export-key.info.backup.title")}</h5>
+        <p className="text-base my-6" style={{ fontSize: "inherit" }}>
           {t("account-settings.export-key.info.backup.paragraph-1")}
-        </Typography>
-        <Typography component="p" variant="body1" style={{ fontSize: "inherit", margin: "24px 0" }}>
+        </p>
+        <p className="text-base my-6" style={{ fontSize: "inherit" }}>
           {t("account-settings.export-key.info.backup.paragraph-2")}
-        </Typography>
+        </p>
       </Box>
     ),
     [t]
@@ -192,12 +185,8 @@ function ExportKeyDialog(props: Props) {
   const exportInfoContent = React.useMemo(
     () => (
       <Box margin="24px 0 0">
-        <Typography component="p" variant="body1">
-          {t("account-settings.export-key.info.export.paragraph-1")}
-        </Typography>
-        <Typography component="p" variant="body1" style={{ margin: "24px 0" }}>
-          {t("account-settings.export-key.info.export.paragraph-2")}
-        </Typography>
+        <p className="text-base">{t("account-settings.export-key.info.export.paragraph-1")}</p>
+        <p className="text-base my-6">{t("account-settings.export-key.info.export.paragraph-2")}</p>
       </Box>
     ),
     [t]

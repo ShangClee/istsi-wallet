@@ -2,10 +2,8 @@ import { nanoid } from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset } from "stellar-sdk"
-import Collapse from "@mui/material/Collapse"
-import MenuItem from "@mui/material/MenuItem"
+import Collapse from "~Generic/components/Collapse"
 import TextField from "~Generic/components/TextField"
-import makeStyles from "@mui/styles/makeStyles"
 import { AssetTransferInfo } from "@satoshipay/stellar-transfer"
 import { trackError } from "~App/contexts/notifications"
 import { CustomError } from "~Generic/lib/errors"
@@ -22,12 +20,7 @@ import FormLayout from "./FormLayout"
 import { Paragraph, Summary } from "./Sidebar"
 import { WithdrawalContext } from "./WithdrawalProvider"
 
-const useFormStyles = makeStyles({
-  select: {
-    fontSize: 18,
-    fontWeight: 400
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface FormValues {
   asset: Asset | null
@@ -49,7 +42,6 @@ function TransferInitial(props: TransferInitialProps) {
     props.type === "deposit" ? React.useContext(DepositContext) : React.useContext(WithdrawalContext)
 
   const formID = React.useMemo(() => nanoid(), [])
-  const classes = useFormStyles()
   const isTinyScreen = useIsSmallMobile()
   const [submissionState, handleSubmission] = useLoadingState({ throwOnError: true })
   const { t } = useTranslation()
@@ -165,9 +157,9 @@ function TransferInitial(props: TransferInitialProps) {
           value={formValues.asset || undefined}
         >
           {props.transferableAssets.length === 0 ? (
-            <MenuItem disabled value="">
+            <option disabled value="">
               {t("transfer-service.initial.body.asset-selector.no-assets")}
-            </MenuItem>
+            </option>
           ) : null}
         </AssetSelector>
         <Collapse in={showMethods}>
@@ -183,21 +175,19 @@ function TransferInitial(props: TransferInitialProps) {
             onChange={setFormValue("methodID")}
             select
             SelectProps={{
-              classes: {
-                select: classes.select
-              }
+              className: "text-lg font-normal"
             }}
             value={formValues.methodID || ""}
           >
-            <MenuItem disabled value="">
+            <option disabled value="">
               {formValues.asset
                 ? t("transfer-service.initial.body.method-selector.info-item.asset")
                 : t("transfer-service.initial.body.method-selector.info-item.no-asset")}
-            </MenuItem>
+            </option>
             {methodNames.map(methodName => (
-              <MenuItem key={methodName} value={methodName}>
+              <option key={methodName} value={methodName}>
                 {formatIdentifier(methodName)}
-              </MenuItem>
+              </option>
             ))}
           </TextField>
         </Collapse>

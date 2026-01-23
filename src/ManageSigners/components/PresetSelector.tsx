@@ -1,11 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import List from "@mui/material/List"
-import ListItemText from "@mui/material/ListItemText"
-import Radio from "@mui/material/Radio"
-import RadioGroup from "@mui/material/RadioGroup"
-import Typography from "@mui/material/Typography"
-import RightIcon from "@mui/icons-material/KeyboardArrowRight"
+import { HiChevronRight } from "react-icons/hi2"
 import AccountSettingsItem from "~AccountSettings/components/AccountSettingsItem"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import Portal from "~Generic/components/Portal"
@@ -25,10 +20,20 @@ interface PresetSelectorItemProps {
 const PresetSelectorItem = React.memo(function PresetSelectorItem(props: PresetSelectorItemProps) {
   return (
     <AccountSettingsItem
-      icon={<Radio checked={props.selected} color="primary" onChange={props.onChange} />}
+      icon={
+        <input
+          type="radio"
+          checked={props.selected}
+          onChange={props.onChange}
+          className="w-5 h-5 text-blue-600 focus:ring-blue-500"
+        />
+      }
       onClick={props.onChange}
     >
-      <ListItemText primary={props.primary} secondary={props.secondary} />
+      <div className="flex-1 min-w-0">
+        <div className="text-base font-medium">{props.primary}</div>
+        <div className="text-sm text-gray-600">{props.secondary}</div>
+      </div>
     </AccountSettingsItem>
   )
 })
@@ -56,11 +61,11 @@ function PresetSelector(props: PresetSelectorProps) {
 
   return (
     <VerticalLayout>
-      <Typography gutterBottom style={{ marginLeft: 8, marginRight: 8 }} variant="h6">
+      <h6 className="mb-4 mx-2 text-lg font-medium">
         {t("account-settings.manage-signers.preset-selector.title")}
-      </Typography>
-      <RadioGroup>
-        <List style={props.style}>
+      </h6>
+      <div>
+        <div style={props.style}>
           <PresetSelectorItem
             onChange={() => setPreset({ type: MultisigPresets.Type.SingleSignature })}
             primary={t("account-settings.manage-signers.preset-selector.options.single-signature.primary")}
@@ -84,11 +89,11 @@ function PresetSelector(props: PresetSelectorProps) {
             selected={editorState.preset.type === MultisigPresets.Type.OneOutOfN}
             secondary={t("account-settings.manage-signers.preset-selector.options.one-out-of-n.secondary")}
           />
-        </List>
-      </RadioGroup>
+        </div>
+      </div>
       <Portal target={props.actionsRef?.element}>
         <DialogActionsBox desktopStyle={{ margin: 0 }}>
-          <ActionButton disabled={!canProceed} icon={<RightIcon />} onClick={props.onProceed} type="submit">
+          <ActionButton disabled={!canProceed} icon={<HiChevronRight className="w-5 h-5" />} onClick={props.onProceed} type="submit">
             {t("account-settings.manage-signers.action.proceed")}
           </ActionButton>
         </DialogActionsBox>

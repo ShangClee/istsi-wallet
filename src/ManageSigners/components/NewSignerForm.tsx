@@ -1,16 +1,9 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import IconButton from "@mui/material/IconButton"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
 import TextField from "~Generic/components/TextField"
-import CheckIcon from "@mui/icons-material/Check"
-import CloseIcon from "@mui/icons-material/Close"
-import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import { HiCheck, HiX, HiUserPlus } from "react-icons/hi2"
 import { useIsSmallMobile, useIsMobile } from "~Generic/hooks/userinterface"
 import { HorizontalLayout } from "~Layout/components/Box"
-import theme from "~App/theme"
 
 interface FormValues {
   publicKey: string
@@ -37,11 +30,11 @@ function NewSignerForm(props: Props) {
   const { t } = useTranslation()
 
   return (
-    <ListItem style={props.style}>
-      <ListItemIcon>
-        <PersonAddIcon style={{ fontSize: "2rem" }} />
-      </ListItemIcon>
-      <ListItemText>
+    <div className="flex items-center py-3 px-4 border-b border-gray-100" style={props.style}>
+      <div className="flex-shrink-0 mr-6">
+        <HiUserPlus className="text-[2rem]" />
+      </div>
+      <div className="flex-1 min-w-0">
         <HorizontalLayout>
           <TextField
             variant="standard"
@@ -63,23 +56,26 @@ function NewSignerForm(props: Props) {
             value={props.values.publicKey}
           />
         </HorizontalLayout>
-      </ListItemText>
-      <ListItemIcon style={{ marginLeft: 8, minWidth: 0 }}>
-        <IconButton
-          color="primary"
+      </div>
+      <div className="flex-shrink-0 ml-2 min-w-0">
+        <button
+          type="button"
           onClick={props.onSubmit}
-          style={{ borderColor: theme.palette.primary.main, borderStyle: "solid", borderWidth: 1.5, padding: 8 }}
-          size="large"
+          className="p-2 border-2 border-brand-main rounded-full hover:bg-brand-main/10 transition-colors"
         >
-          <CheckIcon />
-        </IconButton>
-      </ListItemIcon>
-      <ListItemIcon style={{ minWidth: 0 }}>
-        <IconButton onClick={props.onCancel} size="large">
-          <CloseIcon />
-        </IconButton>
-      </ListItemIcon>
-    </ListItem>
+          <HiCheck className="w-6 h-6 text-brand-main" />
+        </button>
+      </div>
+      <div className="flex-shrink-0 min-w-0">
+        <button
+          type="button"
+          onClick={props.onCancel}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <HiX className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
   )
 }
 

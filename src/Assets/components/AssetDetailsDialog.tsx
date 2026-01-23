@@ -1,17 +1,13 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset } from "stellar-sdk"
-import Avatar from "@mui/material/Avatar"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
-import makeStyles from "@mui/styles/makeStyles"
+// Styles converted to Tailwind - see className usage below
 import { Account } from "~App/contexts/accounts"
 import { useAccountData, useAssetMetadata, useStellarToml } from "~Generic/hooks/stellar"
 import { useClipboard, useIsMobile } from "~Generic/hooks/userinterface"
 import { BASE_RESERVE, parseAssetID } from "~Generic/lib/stellar"
 import { openLink } from "~Platform/links"
-import { breakpoints } from "~App/theme"
+// breakpoints removed - using Tailwind responsive classes
 import { StellarTomlCurrency } from "~shared/types/stellar-toml"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import DialogBody from "~Layout/components/DialogBody"
@@ -26,36 +22,7 @@ import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 
 const capitalize = (text: string) => text[0].toUpperCase() + text.substr(1)
 
-const useDetailContentStyles = makeStyles({
-  card: {
-    backgroundColor: "#fbfbfb",
-    borderRadius: 8,
-    margin: "12px -8px",
-    overflowY: "auto"
-  },
-  cardContent: {
-    position: "relative",
-    padding: "8px 16px !important"
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 400,
-    marginBottom: 8
-  },
-  cardLogo: {
-    position: "absolute",
-    top: 8,
-    right: 8,
-    width: 72,
-    height: 72,
-    backgroundColor: "white",
-    boxShadow: "0 0 2px 2px rgba(0, 0, 0, 0.2)"
-  },
-  cardLogoImage: {
-    width: "100%",
-    height: "100%"
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface LumenDetailProps {
   account: Account
@@ -63,13 +30,12 @@ interface LumenDetailProps {
 
 const LumenDetails = React.memo(function LumenDetails(props: LumenDetailProps) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
-  const classes = useDetailContentStyles()
   const { t } = useTranslation()
 
   return (
     <>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
+      <div className="bg-[#fbfbfb] rounded-lg my-3 -mx-2 overflow-y-auto">
+        <div className="relative px-4 py-2">
           <ReadOnlyTextfield
             disableUnderline
             fullWidth
@@ -77,13 +43,13 @@ const LumenDetails = React.memo(function LumenDetails(props: LumenDetailProps) {
             multiline
             value={t("account.asset-details.lumen.description.text")}
           />
-        </CardContent>
-      </Card>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
+        </div>
+      </div>
+      <div className="bg-[#fbfbfb] rounded-lg my-3 -mx-2 overflow-y-auto">
+        <div className="relative px-4 py-2">
           <SpendableBalanceBreakdown account={props.account} accountData={accountData} baseReserve={BASE_RESERVE} />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </>
   )
 })
@@ -98,7 +64,6 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
   const issuingAccountData = useAccountData(asset.issuer, account.testnet)
   const stellarToml = useStellarToml(issuingAccountData.home_domain)
 
-  const classes = useDetailContentStyles()
   const clipboard = useClipboard()
   const { t } = useTranslation()
 
@@ -109,8 +74,8 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
 
   return (
     <>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
+      <div className="bg-[#fbfbfb] rounded-lg my-3 -mx-2 overflow-y-auto">
+        <div className="relative px-4 py-2">
           {metadata && metadata.desc ? (
             <ReadOnlyTextfield
               disableUnderline
@@ -192,16 +157,16 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
         </CardContent>
       </Card>
       {stellarToml && stellarToml.DOCUMENTATION ? (
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
+        <div className="bg-[#fbfbfb] rounded-lg my-3 -mx-2 overflow-y-auto">
+          <div className="relative px-4 py-2">
             {stellarToml.DOCUMENTATION.ORG_LOGO ? (
-              <Avatar className={classes.cardLogo}>
+              <div className="absolute top-2 right-2 w-18 h-18 bg-white rounded-full shadow-[0_0_2px_2px_rgba(0,0,0,0.2)] overflow-hidden">
                 <img
                   alt="Organization logo"
-                  className={classes.cardLogoImage}
+                  className="w-full h-full object-cover"
                   src={stellarToml.DOCUMENTATION.ORG_LOGO}
                 />
-              </Avatar>
+              </div>
             ) : null}
             {stellarToml.DOCUMENTATION.ORG_NAME ? (
               <ReadOnlyTextfield
@@ -296,32 +261,7 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
   )
 })
 
-const useAssetDetailStyles = makeStyles({
-  logo: {
-    position: "absolute",
-    top: 4,
-    right: -4,
-    width: 96,
-    height: 96,
-    boxShadow: "0 0 8px 2px rgba(0, 0, 0, 0.2)",
-    fontSize: 24,
-
-    [breakpoints.down(600)]: {
-      width: 64,
-      height: 64,
-      fontSize: 18
-    }
-  },
-  domain: {
-    marginTop: -4,
-    marginLeft: 47, // should be 46, but somehow 47 looks correct
-    marginBottom: 16,
-
-    [breakpoints.down(600)]: {
-      marginLeft: 39
-    }
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface Props {
   account: Account
@@ -332,7 +272,6 @@ interface Props {
 function AssetDetailsDialog(props: Props) {
   const accountData = useAccountData(props.account.accountID, props.account.testnet)
   const asset = React.useMemo(() => parseAssetID(props.assetID), [props.assetID])
-  const classes = useAssetDetailStyles()
   const isSmallScreen = useIsMobile()
 
   const balance = accountData.balances.find(
@@ -373,7 +312,7 @@ function AssetDetailsDialog(props: Props) {
               textShadow: "0 0 5px white, 0 0 5px white, 0 0 5px white"
             }}
           />
-          <Typography className={classes.domain} variant="subtitle1">
+          <p className="text-base font-medium">
             {balance ? (
               <SingleBalance assetCode={asset.getCode()} balance={balance.balance} />
             ) : asset.isNative() ? (
@@ -381,8 +320,12 @@ function AssetDetailsDialog(props: Props) {
             ) : (
               <AccountName publicKey={asset.getIssuer()} testnet={props.account.testnet} />
             )}
-          </Typography>
-          <AssetLogo asset={asset} className={classes.logo} testnet={props.account.testnet} />
+          </p>
+          <AssetLogo
+            asset={asset}
+            className="absolute top-1 -right-1 w-24 h-24 sm:w-16 sm:h-16 text-2xl sm:text-lg shadow-[0_0_8px_2px_rgba(0,0,0,0.2)]"
+            testnet={props.account.testnet}
+          />
         </>
       }
       actions={dialogActions}

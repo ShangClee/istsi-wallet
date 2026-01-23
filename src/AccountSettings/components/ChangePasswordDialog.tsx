@@ -1,11 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import DialogActions from "@mui/material/DialogActions"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import InputAdornment from "@mui/material/InputAdornment"
-import Switch from "@mui/material/Switch"
-import LockIcon from "@mui/icons-material/LockOutlined"
-import LockOpenIcon from "@mui/icons-material/LockOpenOutlined"
+import { DialogActions } from "~Generic/components/Dialog"
+import { HiLockClosed, HiLockOpen } from "react-icons/hi2"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { NotificationsContext } from "~App/contexts/notifications"
 import { useIsMobile } from "~Generic/hooks/userinterface"
@@ -17,15 +13,15 @@ import { Box, HorizontalLayout } from "~Layout/components/Box"
 import DialogBody from "~Layout/components/DialogBody"
 
 const adornmentLock = (
-  <InputAdornment position="start">
-    <LockIcon color="disabled" />
-  </InputAdornment>
+  <div className="flex items-center">
+    <HiLockClosed className="w-5 h-5 text-gray-400" />
+  </div>
 )
 
 const adornmentLockOpen = (
-  <InputAdornment position="start">
-    <LockOpenIcon color="disabled" />
-  </InputAdornment>
+  <div className="flex items-center">
+    <HiLockOpen className="w-5 h-5 text-gray-400" />
+  </div>
 )
 
 interface FormValues {
@@ -84,13 +80,26 @@ function Actions(props: ActionsProps) {
               : t("account-settings.set-password.action.remove-password.long")}
           </ActionButton>
         ) : (
-          <FormControlLabel
-            control={<Switch checked={props.removePassword} color="primary" onChange={props.onToggleRemovePassword} />}
-            label={t("account-settings.set-password.action.remove-password.long")}
-          />
+          <label className="flex items-center gap-2 cursor-pointer">
+            <button
+              role="switch"
+              aria-checked={props.removePassword}
+              onClick={props.onToggleRemovePassword}
+              className={`${
+                props.removePassword ? "bg-blue-500" : "bg-gray-300"
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            >
+              <span
+                className={`${
+                  props.removePassword ? "translate-x-6" : "translate-x-1"
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </button>
+            <span>{t("account-settings.set-password.action.remove-password.long")}</span>
+          </label>
         )
       ) : null}
-      <ActionButton icon={<LockIcon />} onClick={props.onSubmit} type="primary">
+      <ActionButton icon={<HiLockClosed className="w-5 h-5" />} onClick={props.onSubmit} type="primary">
         {isSmallScreen
           ? props.removePassword
             ? t("account-settings.set-password.action.remove-password.long")
@@ -195,7 +204,7 @@ function ChangePasswordDialog(props: Props) {
         />
       }
       actions={
-        <DialogActions style={{ margin: "32px 0 0" }}>
+        <DialogActions className="mt-8">
           <Actions
             isPasswordProtected={props.account.requiresPassword}
             onSubmit={removingPassword ? removePassword : changePassword}

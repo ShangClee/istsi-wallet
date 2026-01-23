@@ -1,13 +1,11 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, Operation, Horizon, Transaction } from "stellar-sdk"
-import Dialog from "@mui/material/Dialog"
-import ClearIcon from "@mui/icons-material/Clear"
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
+import { Dialog } from "~Generic/components/Dialog"
+import { HiX, HiArrowsRightLeft } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-import { CompactDialogTransition } from "~App/theme"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { createTransaction } from "~Generic/lib/transaction"
@@ -98,7 +96,7 @@ function AssetDetailsActions(props: Props) {
           </ActionButton>
         )}
       </DialogActionsBox>
-      <Dialog open={removalDialogOpen} onClose={closeRemovalDialog} TransitionComponent={CompactDialogTransition}>
+      <Dialog open={removalDialogOpen} onClose={closeRemovalDialog}>
         <RemoveTrustlineDialog
           account={props.account}
           accountData={accountData}

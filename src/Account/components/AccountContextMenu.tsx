@@ -112,11 +112,24 @@ function AccountContextMenu(props: MenuProps) {
     <ContextMenu
       anchor={props.children}
       menu={({ anchorEl, open, onClose, closeAndCall }) => (
-        <Menu
-          anchorEl={isSmallScreen ? document.body : anchorEl || undefined}
-          disableAutoFocusItem={isSmallScreen}
-          onClose={onClose}
-          open={open}
+        <div
+          className={`
+            fixed z-50 bg-white shadow-lg rounded-lg min-w-[200px] py-2
+            ${open ? "block" : "hidden"}
+            ${isSmallScreen ? "bottom-0 left-0 right-0 rounded-b-none" : ""}
+          `.trim().replace(/\s+/g, " ")}
+          style={
+            isSmallScreen
+              ? {}
+              : anchorEl
+                ? {
+                    position: "absolute",
+                    top: anchorEl.getBoundingClientRect().bottom + window.scrollY,
+                    left: anchorEl.getBoundingClientRect().left + window.scrollX
+                  }
+                : {}
+          }
+          onClick={e => e.stopPropagation()}
         >
           <React.Suspense fallback={null}>
             <LiveAccountContextMenuItems closeAndCall={closeAndCall} {...props} />
@@ -124,19 +137,19 @@ function AccountContextMenu(props: MenuProps) {
           {props.showingSettings ? (
             <AccountContextMenuItem
               disabled={!props.onAccountTransactions}
-              icon={<ListIcon />}
+              icon={<HiListBullet className="w-6 h-6" />}
               label={t("account.context-menu.transactions.label")}
               onClick={closeAndCall(props.onAccountTransactions)}
             />
           ) : (
             <AccountContextMenuItem
               disabled={!props.onAccountSettings}
-              icon={<SettingsIcon />}
+              icon={<HiCog className="w-6 h-6" />}
               label={t("account.context-menu.account-settings.label")}
               onClick={closeAndCall(props.onAccountSettings)}
             />
           )}
-        </Menu>
+        </div>
       )}
     />
   )

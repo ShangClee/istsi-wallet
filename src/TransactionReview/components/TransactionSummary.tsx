@@ -3,8 +3,22 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import { Operation, Transaction } from "stellar-sdk"
 import Collapse from "~Generic/components/Collapse"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
+// useMediaQuery and useTheme removed - using Tailwind responsive classes
+
+// useMediaQuery replacement
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { SigningKeyCacheContext } from "~App/contexts/caches"
 import { useLiveAccountDataSet } from "~Generic/hooks/stellar-subscriptions"
@@ -65,11 +79,10 @@ interface DefaultTransactionSummaryProps {
 function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
   const { accounts } = React.useContext(AccountsContext)
   const { t } = useTranslation()
-  const theme = useTheme()
 
   const [showingAllMetadataDeferred, showingAllMetadata, setShowingAllMetadata] = useDeferredState(
     false,
-    theme.transitions.duration.shortest
+    150 // transition duration in ms
   )
 
   const localAccountPublicKey = props.account ? props.account.publicKey : undefined

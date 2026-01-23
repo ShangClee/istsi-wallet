@@ -1,45 +1,7 @@
 import React from "react"
-import Switch from "@mui/material/Switch"
-import Typography from "@mui/material/Typography"
-import makeStyles from "@mui/styles/makeStyles"
 import { Box } from "./Box"
 
-const useToggleSectionStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: 24,
-    paddingLeft: 4,
-
-    "&:first-child": {
-      marginTop: 0
-    }
-  },
-  row: {
-    display: "flex",
-    flexWrap: "nowrap"
-  },
-  left: {
-    flexShrink: 0,
-    marginLeft: -12,
-    width: 70
-  },
-  right: {
-    flexGrow: 1,
-    flexShrink: 0,
-    width: "calc(100% - 70px)"
-  },
-  heading: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: 18,
-    height: 48,
-    lineHeight: "24px"
-  },
-  headingSpan: {
-    cursor: "pointer"
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface Props {
   checked: boolean
@@ -51,25 +13,38 @@ interface Props {
 }
 
 function ToggleSection(props: Props) {
-  const classes = useToggleSectionStyles()
   const onChange = props.onChange && !props.disabled ? props.onChange : undefined
   return (
-    <Box className={classes.root} style={props.style}>
-      <Box className={classes.row} alignItems="center">
-        <Box className={classes.left}>
-          <Switch color="primary" checked={props.checked} disabled={props.disabled} onChange={props.onChange} />
+    <Box className="flex flex-col mt-6 pl-1 first:mt-0" style={props.style}>
+      <Box className="flex flex-nowrap" alignItems="center">
+        <Box className="flex-shrink-0 -ml-3 w-[70px]">
+          <button
+            role="switch"
+            aria-checked={props.checked}
+            disabled={props.disabled}
+            onClick={props.onChange}
+            className={`${
+              props.checked ? "bg-blue-500" : "bg-gray-300"
+            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            <span
+              className={`${
+                props.checked ? "translate-x-6" : "translate-x-1"
+              } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+            />
+          </button>
         </Box>
-        <Box className={classes.right}>
-          <Typography className={classes.heading} variant="h6">
-            <span className={classes.headingSpan} onClick={onChange}>
+        <Box className="flex-grow flex-shrink-0 w-[calc(100%-70px)]">
+          <h6 className="flex items-center text-lg h-12 leading-6">
+            <span className={onChange ? "cursor-pointer" : ""} onClick={onChange}>
               {props.title}
             </span>
-          </Typography>
+          </h6>
         </Box>
       </Box>
-      <Box className={classes.row}>
-        <Box className={classes.left}>{null}</Box>
-        <Box className={classes.right}>{props.children}</Box>
+      <Box className="flex flex-nowrap">
+        <Box className="flex-shrink-0 -ml-3 w-[70px]">{null}</Box>
+        <Box className="flex-grow flex-shrink-0 w-[calc(100%-70px)]">{props.children}</Box>
       </Box>
     </Box>
   )

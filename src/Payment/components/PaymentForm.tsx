@@ -4,9 +4,8 @@ import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Asset, Memo, MemoType, Horizon, Transaction } from "stellar-sdk"
-import InputAdornment from "@mui/material/InputAdornment"
 import TextField from "~Generic/components/TextField"
-import SendIcon from "@mui/icons-material/Send"
+import { HiPaperAirplane } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { AccountRecord, useWellKnownAccounts } from "~Generic/hooks/stellar-ecosystem"
 import { useFederationLookup } from "~Generic/hooks/stellar"
@@ -151,7 +150,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
 
   const qrReaderAdornment = React.useMemo(
     () => (
-      <InputAdornment disableTypography position="end">
+      <div className="flex items-center">
         <QRReader onScan={handleQRScan} />
       </InputAdornment>
     ),
@@ -306,7 +305,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
       <DialogActionsBox desktopStyle={{ marginTop: 64 }}>
         <ActionButton
           form={formID}
-          icon={<SendIcon style={{ fontSize: 16 }} />}
+          icon={<HiPaperAirplane className="w-4 h-4" />}
           loading={props.txCreationPending}
           onClick={() => undefined}
           type="submit"

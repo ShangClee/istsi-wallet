@@ -1,15 +1,15 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Typography from "@mui/material/Typography"
+// Typography removed - using Tailwind classes
 import { DepositTransaction, TransferStatus, WithdrawalTransaction } from "@satoshipay/stellar-transfer"
 import { VerticalLayout } from "~Layout/components/Box"
 import { formatDuration } from "../util/formatters"
 
 function Paragraph(props: { children: React.ReactNode }) {
   return (
-    <Typography style={{ margin: "8px 0" }} variant="body2">
+    <p className="my-2 text-sm">
       {props.children}
-    </Typography>
+    </p>
   )
 }
 

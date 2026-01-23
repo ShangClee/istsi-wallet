@@ -1,9 +1,3 @@
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import Radio from "@mui/material/Radio"
-import RadioGroup from "@mui/material/RadioGroup"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Horizon } from "stellar-sdk"
@@ -21,27 +15,39 @@ interface SignerSelectorProps {
 function SignerSelector(props: SignerSelectorProps) {
   const { t } = useTranslation()
   return (
-    <RadioGroup value={props.selected?.key || ""}>
-      <List>
+    <div>
+      <div>
         {props.signers.map(signer => (
-          <ListItem button key={signer.key} onClick={() => props.onSelect(signer)}>
-            <ListItemIcon>
-              <Radio edge="start" value={signer.key} />
-            </ListItemIcon>
-            <ListItemText
-              primary={<Address address={signer.key} variant="full" testnet={props.testnet} />}
-              secondary={
-                props.accounts.some(
-                  account => account.publicKey === signer.key && account.testnet === props.testnet
-                ) ? (
-                  <span>{t("account-settings.manage-signers.signers-editor.list.item.local-key")}</span>
-                ) : null
-              }
-            />
-          </ListItem>
+          <div
+            key={signer.key}
+            className="flex items-center py-3 px-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 active:bg-gray-100"
+            onClick={() => props.onSelect(signer)}
+          >
+            <div className="flex-shrink-0 mr-6">
+              <input
+                type="radio"
+                checked={props.selected?.key === signer.key}
+                value={signer.key}
+                readOnly
+                className="w-5 h-5 text-blue-600 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-base font-medium">
+                <Address address={signer.key} variant="full" testnet={props.testnet} />
+              </div>
+              {props.accounts.some(
+                account => account.publicKey === signer.key && account.testnet === props.testnet
+              ) ? (
+                <div className="text-sm text-gray-600">
+                  {t("account-settings.manage-signers.signers-editor.list.item.local-key")}
+                </div>
+              ) : null}
+            </div>
+          </div>
         ))}
-      </List>
-    </RadioGroup>
+      </div>
+    </div>
   )
 }
 

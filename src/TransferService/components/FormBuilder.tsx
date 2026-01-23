@@ -1,6 +1,5 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import MenuItem from "@mui/material/MenuItem"
 import TextField from "~Generic/components/TextField"
 import { TransferInfoFields } from "@satoshipay/stellar-transfer"
 import { formatDescriptionText, formatIdentifier } from "../util/formatters"
@@ -37,9 +36,9 @@ export function FormBuilderField(props: FormBuilderFieldProps) {
         value={props.value}
       >
         {choices.map((choice, index) => (
-          <MenuItem key={index} value={choice}>
+          <option key={index} value={choice}>
             {formatIdentifier(choice)}
-          </MenuItem>
+          </option>
         ))}
       </TextField>
     )

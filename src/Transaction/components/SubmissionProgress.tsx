@@ -1,11 +1,9 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import Async from "react-promise"
-import CircularProgress from "@mui/material/CircularProgress"
-import Typography from "@mui/material/Typography"
 import { ActionButton, CloseButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import ErrorIcon from "~Icons/components/Error"
-import RetryIcon from "@mui/icons-material/Replay"
+import { HiArrowPath } from "react-icons/hi2"
 import SuccessIcon from "~Icons/components/Success"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 import { explainSubmissionErrorResponse } from "~Generic/lib/horizonErrors"
@@ -25,9 +23,9 @@ function Container(props: { children: React.ReactNode }) {
 
 function Heading(props: { children: React.ReactNode }) {
   return (
-    <Typography align="center" variant="subtitle1" style={{ wordBreak: "break-word" }}>
+    <p className="text-center text-base font-medium break-words">
       {props.children}
-    </Typography>
+    </p>
   )
 }
 
@@ -68,7 +66,7 @@ function SubmissionProgress(props: SubmissionProgressProps) {
       promise={props.promise}
       pending={
         <Container>
-          <CircularProgress size={70} style={{ marginBottom: 24 }} />
+          <div className="animate-spin rounded-full h-[70px] w-[70px] border-b-2 border-blue-600 mb-6" />
           <Heading>{t("generic.submission-progress.pending")}</Heading>
         </Container>
       }
@@ -88,7 +86,7 @@ function SubmissionProgress(props: SubmissionProgressProps) {
           </Heading>
           <DialogActionsBox>
             {props.onRetry && (
-              <ActionButton icon={<RetryIcon />} loading={loading} onClick={retry} type="primary">
+              <ActionButton icon={<HiArrowPath className="w-5 h-5" />} loading={loading} onClick={retry} type="primary">
                 {t("generic.dialog-actions.retry.label")}
               </ActionButton>
             )}
