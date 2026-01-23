@@ -1,7 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import CircularProgress from "@mui/material/CircularProgress"
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"
+import { HiThumbUp } from "react-icons/hi"
 import { trackError } from "~App/contexts/notifications"
 import { friendbotTopup } from "~Generic/lib/stellar"
 import MainSelectionButton from "~Generic/components/MainSelectionButton"
@@ -33,7 +32,7 @@ function FriendbotButton(props: Props) {
   return (
     // Extra padding especially for mobile
     <MainSelectionButton
-      Icon={isPending ? CircularProgress : ThumbUpIcon}
+      Icon={isPending ? () => <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-current"></div> : HiThumbUp}
       className={props.className}
       description={t("account.transactions.action.friendbot.description")}
       label={t("account.transactions.action.friendbot.label")}

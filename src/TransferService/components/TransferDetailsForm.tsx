@@ -3,10 +3,8 @@ import { nanoid } from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset } from "stellar-sdk"
-import Typography from "@mui/material/Typography"
 import { AssetTransferInfo } from "@satoshipay/stellar-transfer"
 import { trackError } from "~App/contexts/notifications"
-import theme from "~App/theme"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { ReadOnlyTextfield } from "~Generic/components/FormFields"
 import Portal from "~Generic/components/Portal"
@@ -74,7 +72,7 @@ const MinMaxAmount = React.memo(function MinMaxAmount(props: ReadOnlyFieldProps)
     <ReadOnlyTextfield
       inputProps={{
         style: {
-          color: theme.palette.text.secondary
+          color: "#6b7280" // gray-500
         }
       }}
       label={t("transfer-service.transfer-details.body.min-max-amount.label")}
@@ -130,7 +128,7 @@ const TransferFee = React.memo(function TransferFee(props: TransferFeeProps) {
       })}
       inputProps={{
         style: {
-          color: theme.palette.text.secondary
+          color: "#6b7280" // gray-500
         }
       }}
       label={
@@ -282,9 +280,9 @@ function TransferDetailsForm(props: TransferDetailsFormProps) {
         <FormLayout>
           <MinMaxAmount asset={props.state.asset} metadata={assetInfo && assetInfo.withdraw} />
           {!validBalance && (
-            <Typography color="error" variant="caption">
+            <p className="text-red-600 text-xs">
               {t("transfer-service.transfer-details.body.min-max-amount.not-enough-funds")}
-            </Typography>
+            </p>
           )}
           <TransferFee
             asset={props.state.asset}

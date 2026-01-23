@@ -1,8 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import MenuIcon from "@mui/icons-material/Menu"
-import SettingsIcon from "@mui/icons-material/Settings"
-import UpdateIcon from "@mui/icons-material/SystemUpdateAlt"
+import { HiMenu, HiCog, HiArrowPath } from "react-icons/hi2"
 import DialogBody from "~Layout/components/DialogBody"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 import { Section } from "~Layout/components/Page"
@@ -193,7 +191,7 @@ function AllAccountsPage() {
         onClick={startUpdate}
         style={{ marginLeft: isWidthMax450 ? 0 : 8, marginRight: -12, color: "inherit" }}
       >
-        <UpdateIcon className="animate-glowing"></UpdateIcon>
+        <HiArrowPath className="animate-glowing w-6 h-6"></HiArrowPath>
       </IconButton>
     </Tooltip>
   )
@@ -220,7 +218,7 @@ function AllAccountsPage() {
             style={{ color: "inherit" }}
             aria-label="menu"
           >
-            <MenuIcon />
+            <HiMenu className="w-6 h-6" />
           </IconButton>
         }
         actions={
@@ -238,7 +236,7 @@ function AllAccountsPage() {
               onClick={() => router.history.push(routes.settings())}
               style={{ marginLeft: isWidthMax450 ? 0 : 8, color: "inherit" }}
             >
-              <SettingsIcon />
+              <HiCog className="w-6 h-6" />
             </IconButton>
           </Box>
         }
@@ -279,7 +277,7 @@ function AllAccountsPage() {
             handleMenuClose()
             router.history.push(routes.settings())
           }}
-          icon={<SettingsIcon />}
+          icon={<HiCog className="w-5 h-5" />}
         >
           {t("app.menu.settings")}
         </MenuItem>

@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Account } from "~App/contexts/accounts"
@@ -23,9 +22,9 @@ function ReceivePaymentDialog(props: Props) {
         <KeyExportBox export={props.account.accountID} size={isSmallScreen ? 192 : 256} />
       </Box>
       {props.account.accountID === props.account.publicKey ? null : (
-        <Typography align="center" color="textSecondary">
+        <p className="text-center text-gray-600 text-sm">
           {t("payment.note.multisig-pubkey")}
-        </Typography>
+        </p>
       )}
     </DialogBody>
   )

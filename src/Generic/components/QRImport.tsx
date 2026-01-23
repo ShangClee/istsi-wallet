@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next"
-import Dialog from "@mui/material/Dialog"
-import DialogContent from "@mui/material/DialogContent"
+import { Dialog, DialogContent } from "./Dialog"
 import { QRReader, isFullscreenQRPreview } from "~Platform/components"
 import { ActionButton, DialogActionsBox } from "./DialogActions"
 

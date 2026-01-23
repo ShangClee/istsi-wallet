@@ -1,6 +1,5 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Typography from "@mui/material/Typography"
 import { Account } from "~App/contexts/accounts"
 import * as routes from "~App/routes"
 import { useRouter, RefStateObject } from "~Generic/hooks/userinterface"
@@ -19,7 +18,7 @@ function NoWithdrawableAssets(props: Props) {
   const { t } = useTranslation()
   return (
     <Box margin={props.margin} textAlign="center">
-      <Typography>{t("transfer-service.no-withdrawable-assets.body.no-withdrawable-assets")}</Typography>
+      <p className="text-base">{t("transfer-service.no-withdrawable-assets.body.no-withdrawable-assets")}</p>
       <Portal desktop="inline" target={props.actionsRef.element}>
         <DialogActionsBox>
           <ActionButton

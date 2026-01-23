@@ -1,4 +1,4 @@
-import ListSubheader from "@mui/material/ListSubheader"
+import React from "react"
 import { TransactionStellarUri } from "@stellarguard/stellar-uri"
 import React from "react"
 import { Transaction } from "stellar-sdk"
@@ -92,9 +92,9 @@ export const SignatureRequestList = React.memo(function SignatureRequestList(pro
   return (
     <>
       <List style={{ background: "transparent" }}>
-        <ListSubheader disableSticky style={{ background: "transparent" }}>
+        <div className="px-4 py-2 text-sm font-medium text-gray-700 bg-transparent">
           {props.title}
-        </ListSubheader>
+        </div>
         {props.signatureRequests.map(signatureRequest => (
           <InlineErrorBoundary height={72} key={signatureRequest.hash}>
             <SignatureRequestListItem

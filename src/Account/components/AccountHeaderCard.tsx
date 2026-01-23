@@ -1,15 +1,11 @@
 import React from "react"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import IconButton from "@mui/material/IconButton"
-import MenuIcon from "@mui/icons-material/Menu"
-import makeStyles from "@mui/styles/makeStyles"
+import { HiMenu } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
 import * as routes from "~App/routes"
-import { breakpoints } from "~App/theme"
+// breakpoints removed - using Tailwind responsive classes
 import { AccountCreation } from "~AccountCreation/types/types"
 import { HideOnError } from "~Generic/components/ErrorBoundaries"
 import ViewLoading from "~Generic/components/ViewLoading"
@@ -22,23 +18,7 @@ const AccountContextMenu = withFallback(
   <ViewLoading style={{ justifyContent: "flex-end" }} />
 )
 
-const useAccountHeaderStyles = makeStyles({
-  button: {
-    fontSize: 32,
-    marginRight: -4,
-    padding: 6,
-
-    [breakpoints.down(600)]: {
-      marginRight: -12
-    }
-  },
-  closeButton: {
-    boxSizing: "content-box",
-    width: 32,
-    height: 32
-  },
-  menuButton: {}
-})
+// Styles converted to Tailwind - see className usage below
 
 interface Props {
   account: Account | AccountCreation
@@ -57,7 +37,6 @@ interface Props {
 }
 
 function AccountHeaderCard(props: Props) {
-  const classes = useAccountHeaderStyles()
   const isSmallScreen = useIsMobile()
   const router = useRouter()
   const settings = React.useContext(SettingsContext)
@@ -90,22 +69,20 @@ function AccountHeaderCard(props: Props) {
             showingSettings={showingSettings}
           >
             {({ onOpen }) => (
-              <IconButton
-                className={`${classes.button} ${classes.menuButton}`}
-                color="inherit"
+              <button
+                className="text-[32px] -mr-1 p-1.5 sm:-mr-3 rounded-full hover:bg-black/5 transition-colors"
                 onClick={onOpen}
-                size="large"
+                type="button"
+                aria-label="Menu"
               >
-                <MenuIcon style={{ fontSize: "inherit" }} />
-              </IconButton>
+                <HiMenu className="w-8 h-8" />
+              </button>
             )}
           </AccountContextMenu>
         ) : null}
       </Box>
     ),
     [
-      classes.button,
-      classes.menuButton,
       meta.account,
       props.onAccountSettings,
       props.onAccountTransactions,
@@ -139,7 +116,8 @@ function AccountHeaderCard(props: Props) {
   )
 
   return (
-    <Card
+    <div
+      className="text-white relative bg-transparent shadow-none overflow-visible"
       style={{
         color: "white",
         position: "relative",
@@ -148,7 +126,7 @@ function AccountHeaderCard(props: Props) {
         overflow: "visible"
       }}
     >
-      <CardContent style={isSmallScreen ? { padding: 8 } : undefined}>
+      <div className={isSmallScreen ? "p-2" : "p-4"}>
         <React.Suspense fallback={null}>
           <AccountTitle
             // set the key to force the component to remount on account change
@@ -165,8 +143,8 @@ function AccountHeaderCard(props: Props) {
           />
         </React.Suspense>
         {props.children}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 

@@ -2,14 +2,11 @@ import React from "react"
 import { animated, useSpring } from "react-spring"
 import { useDrag } from "react-use-gesture"
 import { Asset, Horizon } from "stellar-sdk"
-import IconButton from "@mui/material/IconButton"
-import makeStyles from "@mui/styles/makeStyles"
-import LeftIcon from "@mui/icons-material/ArrowLeft"
-import RightIcon from "@mui/icons-material/ArrowRight"
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { stringifyAsset } from "~Generic/lib/stellar"
-import { breakpoints } from "~App/theme"
+// breakpoints removed - using Tailwind responsive classes
 import InlineLoader from "~Generic/components/InlineLoader"
 import { BalanceLine } from "~Generic/lib/account"
 import { sortBalances } from "~Generic/lib/balances"
@@ -25,92 +22,7 @@ function isAssetMatchingBalance(asset: Asset, balance: BalanceLine): boolean {
     : !asset.isNative() && balance.asset_code === asset.getCode() && balance.asset_issuer === asset.getIssuer()
 }
 
-const useScrollableBalancesStyles = makeStyles({
-  root: {
-    marginLeft: -10,
-    marginRight: -10,
-    position: "relative",
-
-    [breakpoints.down(600)]: {
-      marginLeft: -24,
-      marginRight: -24
-    }
-  },
-  sliderContainer: {
-    marginLeft: 8,
-    marginRight: 8,
-    overflowX: "hidden"
-  },
-  slider: {
-    display: "flex"
-  },
-  canScroll: {
-    WebkitMaskImage:
-      "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0) 100%)"
-  },
-  canScrollLeft: {
-    WebkitMaskPositionX: "0",
-    WebkitMaskSize: "110%"
-  },
-  canScrollLeftRight: {
-    WebkitMaskPositionX: "0",
-    WebkitMaskSize: "100%"
-  },
-  canScrollRight: {
-    WebkitMaskPositionX: "-10vw",
-    WebkitMaskSize: "110%"
-  },
-  scrollButton: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    boxSizing: "content-box",
-    position: "absolute",
-    top: "50%",
-    marginTop: -22,
-    padding: 2,
-    width: 40,
-    height: 40,
-
-    "@media (hover: hover)": {
-      "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.12)"
-      }
-    },
-    "@media (hover: none)": {
-      "&, &:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.08)"
-      }
-    },
-
-    [breakpoints.down(600)]: {
-      marginTop: -22,
-      padding: 4,
-      width: 36,
-      height: 36
-    }
-  },
-  scrollButtonLeft: {
-    left: 6,
-
-    [breakpoints.down(600)]: {
-      left: 12
-    }
-  },
-  scrollButtonRight: {
-    right: 6,
-
-    [breakpoints.down(600)]: {
-      right: 12
-    }
-  },
-  scrollButtonIcon: {
-    color: "white",
-    fontSize: 40,
-
-    [breakpoints.down(600)]: {
-      fontSize: 36
-    }
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface ScrollableBalancesProps {
   account: Account
@@ -123,7 +35,6 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
   const { onClick } = props
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
   const balanceItemsRef = React.useRef<Map<number, HTMLElement | null>>(new Map())
-  const classes = useScrollableBalancesStyles()
   const latestStepRef = React.useRef(0)
   const mouseState = React.useRef({ currentlyDragging: false, latestMouseMoveEndTime: 0 })
   const swipeableContainerRef = React.useRef<HTMLDivElement | null>(null)
@@ -201,16 +112,20 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
   const canScrollRight = currentStep < stepCount - 1
 
   const className = [
-    classes.sliderContainer,
-    canScrollLeft || canScrollRight ? classes.canScroll : "",
+    "mx-2 overflow-x-hidden",
+    canScrollLeft || canScrollRight
+      ? "mask-gradient"
+      : "",
     canScrollLeft && canScrollRight
-      ? classes.canScrollLeftRight
+      ? "mask-gradient-both"
       : canScrollLeft
-      ? classes.canScrollLeft
+      ? "mask-gradient-left"
       : canScrollRight
-      ? classes.canScrollRight
+      ? "mask-gradient-right"
       : ""
-  ].join(" ")
+  ]
+    .filter(Boolean)
+    .join(" ")
 
   const balanceItems = React.useMemo(
     () => [
@@ -248,33 +163,35 @@ function ScrollableBalances(props: ScrollableBalancesProps) {
   )
 
   return (
-    <div className={classes.root} style={props.style}>
+    <div className="-mx-[10px] sm:-mx-6 relative" style={props.style}>
       <div className={className}>
         <animated.div
           {...bind()}
-          className={classes.slider}
+          className="flex"
           ref={swipeableContainerRef}
           style={{ transform: spring.x.interpolate(xi => `translate3d(${xi}px, 0, 0)`) }}
         >
           {balanceItems}
         </animated.div>
       </div>
-      <IconButton
-        className={`${classes.scrollButton} ${classes.scrollButtonLeft}`}
+      <button
+        className={`absolute top-1/2 -mt-[22px] p-0.5 w-10 h-10 sm:w-9 sm:h-9 sm:mt-[22px] sm:p-1 bg-black/5 hover:bg-black/12 active:bg-black/8 left-1.5 sm:left-3 rounded-full flex items-center justify-center transition-colors ${
+          !canScrollLeft ? "hidden" : ""
+        }`}
         onClick={scrollLeft}
-        style={{ display: canScrollLeft ? undefined : "none" }}
-        size="large"
+        type="button"
       >
-        <LeftIcon className={classes.scrollButtonIcon} />
-      </IconButton>
-      <IconButton
-        className={`${classes.scrollButton} ${classes.scrollButtonRight}`}
+        <HiChevronLeft className="text-white text-[40px] sm:text-[36px]" />
+      </button>
+      <button
+        className={`absolute top-1/2 -mt-[22px] p-0.5 w-10 h-10 sm:w-9 sm:h-9 sm:mt-[22px] sm:p-1 bg-black/5 hover:bg-black/12 active:bg-black/8 right-1.5 sm:right-3 rounded-full flex items-center justify-center transition-colors ${
+          !canScrollRight ? "hidden" : ""
+        }`}
         onClick={scrollRight}
-        style={{ display: canScrollRight ? undefined : "none" }}
-        size="large"
+        type="button"
       >
-        <RightIcon className={classes.scrollButtonIcon} />
-      </IconButton>
+        <HiChevronRight className="text-white text-[40px] sm:text-[36px]" />
+      </button>
     </div>
   )
 }

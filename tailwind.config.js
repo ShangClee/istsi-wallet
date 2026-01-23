@@ -30,6 +30,33 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".mask-gradient": {
+          WebkitMaskImage:
+            "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0) 100%)",
+        },
+        ".mask-gradient-left": {
+          WebkitMaskImage:
+            "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0) 100%)",
+          WebkitMaskPositionX: "0",
+          WebkitMaskSize: "110%",
+        },
+        ".mask-gradient-right": {
+          WebkitMaskImage:
+            "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0) 100%)",
+          WebkitMaskPositionX: "-10vw",
+          WebkitMaskSize: "110%",
+        },
+        ".mask-gradient-both": {
+          WebkitMaskImage:
+            "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0) 100%)",
+          WebkitMaskPositionX: "0",
+          WebkitMaskSize: "100%",
+        },
+      })
+    },
+  ],
 }
 

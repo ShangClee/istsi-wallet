@@ -1,8 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import ButtonBase from "@mui/material/ButtonBase"
-import Dialog from "@mui/material/Dialog"
-import Typography from "@mui/material/Typography"
+import { Dialog } from "~Generic/components/Dialog"
 import AccountActions from "~Account/components/AccountActions"
 import AccountCreationActions from "~AccountCreation/components/AccountCreationActions"
 import NoPasswordConfirmation from "~AccountCreation/components/NoPasswordConfirmation"
@@ -22,7 +20,7 @@ import ViewLoading from "~Generic/components/ViewLoading"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-import { FullscreenDialogTransition } from "~App/theme"
+// FullscreenDialogTransition removed - using CSS transitions in Dialog component
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useClipboard, useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { getLastArgumentFromURL } from "~Generic/lib/url"
@@ -90,18 +88,18 @@ const NotCosignerOnLedgerWarning = React.memo(function NotCosignerOnLedgerWarnin
 
   return (
     <VerticalLayout className="p-4 bg-warning text-center">
-      <Typography className="mb-[0.35em]">{t("account.cosigner.not-cosigner-yet.note")}</Typography>
-      <Typography className="mb-[0.35em]">{t("account.cosigner.not-cosigner-yet.label")}</Typography>
-      <ButtonBase onClick={handleClick} className="self-center w-fit">
-        <Typography align="center" className="underline">
+      <p className="mb-[0.35em] text-base">{t("account.cosigner.not-cosigner-yet.note")}</p>
+      <p className="mb-[0.35em] text-base">{t("account.cosigner.not-cosigner-yet.label")}</p>
+      <button onClick={handleClick} className="self-center w-fit cursor-pointer bg-transparent border-none p-0">
+        <p className="text-center underline text-base">
           <PublicKey
             publicKey={props.account.publicKey}
             showRaw
             className="break-all"
             testnet={props.account.testnet}
           />
-        </Typography>
-      </ButtonBase>
+        </p>
+      </button>
     </VerticalLayout>
   )
 })

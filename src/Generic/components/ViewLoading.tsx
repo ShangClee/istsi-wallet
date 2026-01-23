@@ -1,5 +1,4 @@
 import React from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 
 interface Props {
   height?: string | number
@@ -19,7 +18,7 @@ function ViewLoading(props: Props) {
         ...props.style
       }}
     >
-      <CircularProgress />
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
     </div>
   )
 }

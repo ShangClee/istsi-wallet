@@ -1,16 +1,13 @@
 import React, { useEffect } from "react"
-import CheckIcon from "@mui/icons-material/CheckCircle"
-import ErrorIcon from "@mui/icons-material/Error"
-import InfoIcon from "@mui/icons-material/Info"
-import OfflineBoltIcon from "@mui/icons-material/OfflineBolt"
+import { HiCheckCircle, HiExclamationCircle, HiInformationCircle, HiBolt } from "react-icons/hi2"
 import { NotificationType } from "~App/contexts/notifications"
 
 // Mapping types to colors/icons
 const icons: Record<NotificationType, React.ComponentType<any>> = {
-  connection: OfflineBoltIcon,
-  error: ErrorIcon,
-  info: InfoIcon,
-  success: CheckIcon
+  connection: HiBolt,
+  error: HiExclamationCircle,
+  info: HiInformationCircle,
+  success: HiCheckCircle
 }
 
 const typeStyles: Record<NotificationType, string> = {

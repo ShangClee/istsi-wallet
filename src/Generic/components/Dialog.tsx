@@ -7,6 +7,7 @@ interface DialogProps {
   onClose?: () => void
   open: boolean
   style?: React.CSSProperties
+  TransitionComponent?: any // Ignored - using CSS transitions instead
 }
 
 export const Dialog = ({ children, className, fullScreen, onClose, open, style }: DialogProps) => {

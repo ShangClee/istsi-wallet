@@ -1,5 +1,4 @@
 import React from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 
 const Container = (props: { children: React.ReactNode; style?: React.CSSProperties }) => {
   return <span style={{ display: "flex", alignItems: "center", height: 24, ...props.style }}>{props.children}</span>
@@ -24,7 +23,12 @@ interface Props {
 }
 
 const ButtonIconLabel = (props: Props) => {
-  const loader = <CircularProgress size="1.2em" style={{ color: props.loaderColor || "inherit" }} />
+  const loader = (
+    <div
+      className="animate-spin rounded-full border-b-2"
+      style={{ width: "1.2em", height: "1.2em", borderColor: props.loaderColor || "currentColor" }}
+    />
+  )
   return (
     <Container style={props.style}>
       {props.children || props.loading ? <Icon>{props.loading ? loader : props.children}</Icon> : null}

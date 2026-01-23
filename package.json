@@ -67,16 +67,12 @@
     "lodash.pick": "^3.1.0",
     "nanoid": "^3.1.31",
     "react-hook-form": "^5.0.3",
+    "react-icons": "^5.3.0",
     "stellar-sdk": "^11.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.6",
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
     "@mui/codemod": "^7.3.7",
-    "@mui/icons-material": "^5.15.0",
-    "@mui/material": "^5.15.0",
-    "@mui/styles": "^5.15.0",
     "@satoshipay/stellar-sep-10": "^0.3.0",
     "@satoshipay/stellar-transfer": "^0.2.2",
     "@satoshipay/worker-plugin": "^3.2.0",

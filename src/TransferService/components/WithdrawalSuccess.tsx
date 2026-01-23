@@ -1,6 +1,5 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Typography from "@mui/material/Typography"
 import { Withdrawal } from "@satoshipay/stellar-transfer"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
@@ -21,20 +20,20 @@ function WithdrawalSuccess(props: WithdrawalSuccessProps) {
   return (
     <VerticalLayout grow>
       <VerticalLayout alignItems="center" margin="24px 0" textAlign="center">
-        <Typography variant="h5">{t("transfer-service.withdrawal-success.body.withdrawal-in-progress")}</Typography>
-        <Typography style={{ margin: "16px 0" }} variant="body2">
-          <Typography style={{ margin: "8px 0" }} variant="body2">
+        <h5 className="text-xl font-medium mb-4">{t("transfer-service.withdrawal-success.body.withdrawal-in-progress")}</h5>
+        <div className="text-sm my-4">
+          <p className="my-2 text-sm">
             {t(
               "transfer-service.withdrawal-success.body.info.1",
               `${transferServer.domain} is conducting the withdrawal.`,
               { domain: transferServer.domain }
             )}
-          </Typography>
-          <Typography style={{ margin: "8px 0" }} variant="body2">
+          </p>
+          <p className="my-2 text-sm">
             {t("transfer-service.withdrawal-success.body.info.2")}
-          </Typography>
+          </p>
           {/* TODO: Show nice summary */}
-        </Typography>
+        </div>
         <Portal desktop="inline" target={props.dialogActionsRef && props.dialogActionsRef.element}>
           <DialogActionsBox>
             <ActionButton onClick={props.onClose} type="primary">

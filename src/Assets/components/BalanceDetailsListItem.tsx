@@ -1,13 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Badge from "@mui/material/Badge"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
 import { useAssetMetadata } from "~Generic/hooks/stellar"
 import { balancelineToAsset } from "~Generic/lib/stellar"
-import { breakpoints } from "~App/theme"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import { BalanceLine } from "~Generic/lib/account"
 import { AccountName } from "~Generic/components/Fetchers"
@@ -15,72 +9,7 @@ import AssetLogo from "./AssetLogo"
 
 export const actionsSize = 36
 
-const useBalanceItemStyles = makeStyles({
-  clickable: {},
-  icon: {
-    [breakpoints.down(350)]: {
-      minWidth: 48
-    }
-  },
-  logo: {
-    [breakpoints.down(350)]: {
-      width: 36,
-      height: 36
-    }
-  },
-  logoHidden: {
-    visibility: "hidden"
-  },
-  badge: {
-    top: 4,
-    right: 4,
-    boxShadow: "0 0 3px 1px white"
-  },
-  mainListItemText: {
-    flex: "1 1 auto",
-    whiteSpace: "nowrap"
-  },
-  mainListItemTextPrimaryTypography: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-
-    [breakpoints.down(400)]: {
-      fontSize: 15
-    },
-    [breakpoints.down(350)]: {
-      fontSize: 13
-    }
-  },
-  mainListItemTextSecondaryTypography: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-
-    [breakpoints.down(400)]: {
-      fontSize: 14
-    },
-    [breakpoints.down(350)]: {
-      fontSize: 12
-    }
-  },
-  balanceListItemText: {
-    flex: "1 0 auto",
-    marginLeft: 8,
-    textAlign: "right"
-  },
-  balanceText: {
-    fontSize: "140%",
-
-    [breakpoints.down(350)]: {
-      fontSize: "120%"
-    }
-  },
-  actions: {
-    flex: "0 0 auto",
-    marginLeft: 4,
-    marginRight: -16,
-    width: 48
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface BalanceListItemProps {
   badgeCount?: number | string
@@ -95,8 +24,7 @@ interface BalanceListItemProps {
 }
 
 function BalanceListItem(props: BalanceListItemProps) {
-  const classes = useBalanceItemStyles()
-  const className = `${props.className || ""} ${props.onClick ? classes.clickable : ""}`
+  const baseClassName = `flex items-center py-3 px-4 border-b border-gray-100 ${props.onClick ? "cursor-pointer hover:bg-gray-50 active:bg-gray-100" : ""} ${props.className || ""}`
 
   const asset = React.useMemo(() => balancelineToAsset(props.balance), [props.balance])
   const assetMetadata = useAssetMetadata(asset, props.testnet)
@@ -109,40 +37,30 @@ function BalanceListItem(props: BalanceListItemProps) {
 
   if (props.balance.asset_type === "native") {
     return (
-      <ListItem
-        button={Boolean(props.onClick) as any}
-        className={className}
-        onClick={props.onClick}
-        style={props.style}
-      >
-        <ListItemIcon className={classes.icon}>
+      <div className={baseClassName} onClick={props.onClick} style={props.style}>
+        <div className="min-w-[56px] max-[350px]:min-w-[48px] flex items-center justify-center">
           <AssetLogo
             asset={asset}
-            className={`${classes.logo} ${props.hideLogo ? classes.logoHidden : ""}`}
+            className={`max-[350px]:w-9 max-[350px]:h-9 ${props.hideLogo ? "invisible" : ""}`}
             testnet={props.testnet}
           />
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            root: classes.mainListItemText,
-            primary: classes.mainListItemTextPrimaryTypography,
-            secondary: classes.mainListItemTextSecondaryTypography
-          }}
-          primary={
-            props.spendableBalance
+        </div>
+        <div className="flex-1 min-w-0 whitespace-nowrap ml-4">
+          <div className="overflow-hidden text-ellipsis text-base max-[400px]:text-[15px] max-[350px]:text-[13px]">
+            {props.spendableBalance
               ? t("account.balance-details.item.spendable-balance.primary")
-              : "Stellar Lumens (XLM)"
-          }
-          secondary={props.spendableBalance ? undefined : "stellar.org"}
-        />
-        <ListItemText
-          classes={{
-            root: classes.balanceListItemText,
-            primary: classes.balanceText
-          }}
-          primary={balance}
-        />
-      </ListItem>
+              : "Stellar Lumens (XLM)"}
+          </div>
+          {!props.spendableBalance && (
+            <div className="overflow-hidden text-ellipsis text-sm text-gray-600 max-[400px]:text-sm max-[350px]:text-xs">
+              stellar.org
+            </div>
+          )}
+        </div>
+        <div className="flex-1 flex-shrink-0 ml-2 text-right">
+          <div className="text-[140%] max-[350px]:text-[120%]">{balance}</div>
+        </div>
+      </div>
     )
   }
 
@@ -161,32 +79,43 @@ function BalanceListItem(props: BalanceListItemProps) {
   const title = assetName !== assetCode ? `${assetName} (${assetCode})` : assetCode
 
   return (
-    <ListItem button={Boolean(props.onClick) as any} className={className} onClick={props.onClick} style={props.style}>
-      <ListItemIcon className={classes.icon}>
-        <Badge badgeContent={props.badgeCount} classes={{ badge: classes.badge }} color="primary">
+    <div className={baseClassName} onClick={props.onClick} style={props.style}>
+      <div className="min-w-[56px] max-[350px]:min-w-[48px] flex items-center justify-center relative">
+        {props.badgeCount ? (
+          <div className="relative">
+            <AssetLogo
+              asset={asset}
+              className={`max-[350px]:w-9 max-[350px]:h-9 ${props.hideLogo ? "invisible" : ""}`}
+              dark
+              testnet={props.testnet}
+            />
+            <span className="absolute -top-1 -right-1 bg-brand-main text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-[0_0_3px_1px_white]">
+              {props.badgeCount}
+            </span>
+          </div>
+        ) : (
           <AssetLogo
             asset={asset}
-            className={`${classes.logo} ${props.hideLogo ? classes.logoHidden : ""}`}
+            className={`max-[350px]:w-9 max-[350px]:h-9 ${props.hideLogo ? "invisible" : ""}`}
             dark
             testnet={props.testnet}
           />
-        </Badge>
-      </ListItemIcon>
-      <ListItemText
-        className={classes.mainListItemText}
-        classes={{
-          primary: classes.mainListItemTextPrimaryTypography,
-          secondary: classes.mainListItemTextSecondaryTypography
-        }}
-        primary={title}
-        secondary={assetIssuer ? <AccountName publicKey={assetIssuer} testnet={props.testnet} /> : null}
-      />
-      <ListItemText
-        className={classes.balanceListItemText}
-        primary={balance}
-        primaryTypographyProps={{ className: classes.balanceText }}
-      />
-    </ListItem>
+        )}
+      </div>
+      <div className="flex-1 min-w-0 whitespace-nowrap ml-4">
+        <div className="overflow-hidden text-ellipsis text-base max-[400px]:text-[15px] max-[350px]:text-[13px]">
+          {title}
+        </div>
+        {assetIssuer && (
+          <div className="overflow-hidden text-ellipsis text-sm text-gray-600 max-[400px]:text-sm max-[350px]:text-xs">
+            <AccountName publicKey={assetIssuer} testnet={props.testnet} />
+          </div>
+        )}
+      </div>
+      <div className="flex-1 flex-shrink-0 ml-2 text-right">
+        <div className="text-[140%] max-[350px]:text-[120%]">{balance}</div>
+      </div>
+    </div>
   )
 }
 

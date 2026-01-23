@@ -1,4 +1,4 @@
-import CircularProgress from "@mui/material/CircularProgress"
+import React from "react"
 import ContentLoader from "react-content-loader"
 import { VerticalLayout } from "~Layout/components/Box"
 
@@ -57,9 +57,9 @@ function TransactionListPlaceholder() {
         <TransactionLoadingPlaceholder />
         <TransactionLoadingPlaceholder />
       </VerticalLayout>
-      <CircularProgress
-        size={32}
-        style={{ position: "absolute", top: "50%", left: "50%", marginLeft: -16, marginTop: -26 }}
+      <div
+        className="animate-spin rounded-full border-b-2 border-blue-600"
+        style={{ position: "absolute", top: "50%", left: "50%", marginLeft: -16, marginTop: -26, width: 32, height: 32 }}
       />
     </VerticalLayout>
   )

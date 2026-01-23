@@ -1,7 +1,6 @@
 import QRCode from "qrcode.react"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Typography from "@mui/material/Typography"
 import { useClipboard } from "~Generic/hooks/userinterface"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 
@@ -23,19 +22,20 @@ function KeyExportBox(props: Props) {
           <QRCode size={props.size} value={props.export} />
         </Box>
         <Box margin="16px auto">
-          <Typography align="center" style={{ display: props.hideTapToCopy ? "none" : undefined, marginBottom: 12 }}>
+          <p
+            className="text-center mb-3"
+            style={{ display: props.hideTapToCopy ? "none" : undefined }}
+          >
             {t("account-settings.export-key.info.tap-to-copy")}:
-          </Typography>
-          <Typography
-            align="center"
-            component="p"
+          </p>
+          <p
+            className="text-center cursor-pointer break-words text-base"
             onClick={copyToClipboard}
             role="button"
-            style={{ cursor: "pointer", wordWrap: "break-word", maxWidth: window.innerWidth - 75 }}
-            variant="subtitle1"
+            style={{ maxWidth: window.innerWidth - 75 }}
           >
-            <b style={{ wordBreak: "break-all" }}>{props.export}</b>
-          </Typography>
+            <b className="break-all">{props.export}</b>
+          </p>
         </Box>
       </VerticalLayout>
     </VerticalLayout>

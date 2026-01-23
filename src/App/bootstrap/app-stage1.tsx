@@ -1,32 +1,16 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { HashRouter as Router } from "react-router-dom"
-import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles"
 import ViewLoading from "~Generic/components/ViewLoading"
 import { ContextProviders } from "./context"
-import theme from "../theme"
-
-declare module "@mui/styles/defaultTheme" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
-
-declare module "@mui/styles/defaultTheme" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
 
 const Stage2 = React.lazy(() => import("./app-stage2"))
 
 export const Providers = (props: { children: React.ReactNode }) => (
-  <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>
-      {/* @ts-expect-error - react-router-dom v5 types are outdated but runtime works correctly */}
-      <Router>
-        <ContextProviders>{props.children}</ContextProviders>
-      </Router>
-    </ThemeProvider>
-  </StyledEngineProvider>
+  /* @ts-expect-error - react-router-dom v5 types are outdated but runtime works correctly */
+  <Router>
+    <ContextProviders>{props.children}</ContextProviders>
+  </Router>
 )
 
 const App = () => (

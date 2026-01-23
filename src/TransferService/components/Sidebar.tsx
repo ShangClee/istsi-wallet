@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography"
 import React from "react"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
@@ -39,9 +38,9 @@ export function DesktopTwoColumns(props: { children: React.ReactNode[] }) {
 
 export function Paragraph(props: { children: React.ReactNode }) {
   return (
-    <Typography color="textSecondary" style={{ marginBottom: 16 }} variant="body2">
+    <p className="text-gray-600 text-sm mb-4">
       {props.children}
-    </Typography>
+    </p>
   )
 }
 
@@ -53,9 +52,9 @@ interface SummaryProps {
 export function Summary(props: SummaryProps) {
   return (
     <>
-      <Typography color="textSecondary" style={{ marginTop: 16, marginBottom: 16 }} variant="h6">
+      <h6 className="text-gray-600 text-lg font-medium mt-4 mb-4">
         {props.headline}
-      </Typography>
+      </h6>
       {props.children}
     </>
   )

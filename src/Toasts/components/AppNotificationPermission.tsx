@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import NotificationsIcon from "@mui/icons-material/Notifications"
+import { HiBell } from "react-icons/hi2"
 import { NotificationsContext, trackError } from "~App/contexts/notifications"
 import {
   hasPermission as hasPermissionToNotify,
@@ -43,7 +43,7 @@ const PermissionNotification = React.memo(function PermissionNotification(props:
       onClick={requestPermission}
     >
       <HorizontalLayout alignItems="center">
-        <NotificationsIcon className="text-gray-600 mr-3" />
+        <HiBell className="text-gray-600 mr-3 w-5 h-5" />
         <span className="font-medium uppercase text-sm tracking-wide">
           {t("app.notification.permission.app-notification.message")}
         </span>

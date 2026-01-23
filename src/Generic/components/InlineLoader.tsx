@@ -1,11 +1,12 @@
-import Fade from "@mui/material/Fade"
-import LinearProgress from "@mui/material/LinearProgress"
+import React from "react"
 
 const InlineLoader = () => {
   return (
-    <Fade appear in timeout={1500}>
-      <LinearProgress style={{ display: "inline-block", width: 250, margin: "8px 0" }} />
-    </Fade>
+    <div className="inline-block w-[250px] my-2 animate-fade-in">
+      <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-full bg-blue-600 animate-progress"></div>
+      </div>
+    </div>
   )
 }
 

@@ -1,13 +1,13 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import CloseIcon from "@mui/icons-material/Close"
+import { HiX } from "react-icons/hi2"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { MobileKeyboardOpenedSelector } from "~App/theme"
 import { setupRerenderListener } from "~Platform/keyboard-hack"
 import ButtonIconLabel from "~Generic/components/ButtonIconLabel"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "./Dialog"
 
-const closeIcon = <CloseIcon />
+const closeIcon = <HiX className="w-5 h-5" />
 
 interface MaybeIconProps {
   icon?: React.ReactNode

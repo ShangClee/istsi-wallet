@@ -1,48 +1,9 @@
 import React from "react"
 import { Asset } from "stellar-sdk"
-import Avatar from "@mui/material/Avatar"
-import makeStyles from "@mui/styles/makeStyles"
 import { useAssetMetadata } from "~Generic/hooks/stellar"
-import { brandColor } from "~App/theme"
 import LumenIcon from "~Icons/components/Lumen"
 
 const paddedAssetIconsRegex = /bitbondsto\.com/
-
-const useAssetLogoStyles = makeStyles({
-  imageAvatar: {
-    backgroundColor: "white"
-  },
-  textAvatar: {
-    background: `linear-gradient(145deg, ${brandColor.main} 0%, ${brandColor.dark} 35%, ${brandColor.dark} 75%, ${brandColor.main} 100%)`,
-    border: "1px solid rgba(255, 255, 255, 0.66)",
-    color: "rgba(255, 255, 255, 1)",
-    fontSize: 12,
-    fontWeight: 500
-  },
-  longCodeTextAvatar: {
-    justifyContent: "flex-start",
-    padding: "0 2px"
-  },
-  darkTextAvatar: {
-    background: brandColor.dark,
-    border: `1px solid ${brandColor.main15}`
-  },
-  xlmAvatar: {
-    background: "white",
-    boxSizing: "border-box",
-    color: "black",
-    fontSize: 12,
-    padding: "0.5em"
-  },
-  icon: {
-    width: "100%",
-    height: "100%"
-  },
-  padding: {
-    width: "75%",
-    height: "75%"
-  }
-})
 
 interface AssetLogoProps {
   asset: Asset
@@ -54,13 +15,17 @@ interface AssetLogoProps {
 
 function AssetLogo(props: AssetLogoProps) {
   const className = props.className || ""
-  const classes = useAssetLogoStyles()
 
   if (props.asset.isNative()) {
     return (
-      <Avatar alt="Stellar Lumens (XLM)" className={`${className} ${classes.xlmAvatar}`} style={props.style}>
-        <LumenIcon className={classes.icon} />
-      </Avatar>
+      <div
+        className={`${className} w-12 h-12 rounded-full bg-white box-border text-black text-xs p-2 flex items-center justify-center`}
+        style={props.style}
+        role="img"
+        aria-label="Stellar Lumens (XLM)"
+      >
+        <LumenIcon className="w-full h-full" />
+      </div>
     )
   } else {
     const applyPadding = props.imageURL && props.imageURL.match(paddedAssetIconsRegex)
@@ -68,16 +33,21 @@ function AssetLogo(props: AssetLogoProps) {
       props.asset.code.length < 5 ? props.asset.code : props.asset.code.substr(0, 2) + props.asset.code.substr(-2)
     const name = props.asset.code
 
-    const avatarClassName = [
+    const avatarClasses = [
       className,
-      props.imageURL ? classes.imageAvatar : classes.textAvatar,
-      props.dark && !props.imageURL ? classes.darkTextAvatar : ""
+      "w-12 h-12 rounded-full flex items-center justify-center text-xs font-medium",
+      props.imageURL
+        ? "bg-white"
+        : props.dark
+          ? "bg-brand-dark border border-brand-main15"
+          : "bg-gradient-to-br from-brand-main via-brand-dark to-brand-main border border-white/66 text-white"
     ].join(" ")
-    const iconClassName = [classes.icon, applyPadding ? classes.padding : ""].join(" ")
+    const iconClasses = applyPadding ? "w-3/4 h-3/4" : "w-full h-full"
+
     return (
-      <Avatar alt={name} className={avatarClassName} style={props.style}>
-        {props.imageURL ? <img className={iconClassName} src={props.imageURL} /> : assetCode}
-      </Avatar>
+      <div className={avatarClasses} style={props.style} role="img" aria-label={name}>
+        {props.imageURL ? <img className={iconClasses} src={props.imageURL} alt={name} /> : assetCode}
+      </div>
     )
   }
 }

@@ -1,5 +1,4 @@
 import React from "react"
-import CircularProgress from "@mui/material/CircularProgress"
 
 import { useIsMobile, RefStateObject } from "~Generic/hooks/userinterface"
 import { MobileKeyboardOpenedSelector } from "~App/theme"
@@ -94,7 +93,7 @@ function DialogBody(props: Props) {
         top={!props.preventNotchSpacing}
         width="100%"
       >
-        <React.Suspense fallback={<CircularProgress style={{ alignSelf: "center", justifySelf: "center" }} />}>
+        <React.Suspense fallback={<div className="flex items-center justify-center w-full h-full"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>}>
           {topContent}
           {background}
           <VerticalLayout

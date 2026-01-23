@@ -1,6 +1,5 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import List from "@mui/material/List"
 import { availableLanguages } from "../../../i18n/index"
 import { AccountsContext } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
@@ -55,7 +54,7 @@ function AppSettings() {
 
   return (
     <Carousel current={showSettingsOverview ? 0 : 1}>
-      <List style={{ padding: isSmallScreen ? 0 : "24px 16px" }}>
+      <div className={isSmallScreen ? "p-0" : "px-4 py-6"}>
         {availableLanguages.length > 1 ? (
           <LanguageSetting onSelect={switchLanguage} value={getEffectiveLanguage(settings.language, "en")} />
         ) : null}
