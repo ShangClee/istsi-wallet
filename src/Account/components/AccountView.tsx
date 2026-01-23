@@ -20,7 +20,6 @@ import ViewLoading from "~Generic/components/ViewLoading"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-// FullscreenDialogTransition removed - using CSS transitions in Dialog component
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useClipboard, useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { getLastArgumentFromURL } from "~Generic/lib/url"
@@ -385,7 +384,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showAssetDetails}
             fullScreen
             onClose={navigateTo.balanceDetails}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <AssetDetailsDialog
@@ -399,7 +397,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showCreatePayment}
             fullScreen
             onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <PaymentDialog account={props.account} onClose={closeDialog} />
@@ -409,7 +406,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showReceivePayment}
             fullScreen
             onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <ReceivePaymentDialog account={props.account} onClose={closeDialog} />
@@ -419,7 +415,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showAssetTrading}
             fullScreen
             onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <TradeAssetDialog account={props.account} onClose={closeDialog} />
@@ -429,7 +424,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showDeposit || showWithdrawal}
             fullScreen
             onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <TransferDialog
@@ -443,7 +437,6 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             open={showLumenPurchase}
             fullScreen
             onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
               <LumenPurchaseDialog account={props.account} onClose={closeDialog} />

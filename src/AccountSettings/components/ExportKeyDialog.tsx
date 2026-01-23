@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { HiLockClosed, HiLockOpen, HiLock, HiExclamationTriangle } from "react-icons/hi2"
+import { HiLockClosed, HiLockOpen, HiLockClosed as HiLock, HiExclamationTriangle } from "react-icons/hi2"
 import KeyExportBox from "~Account/components/KeyExportBox"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"

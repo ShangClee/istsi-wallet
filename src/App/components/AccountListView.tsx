@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { HiMenu, HiCog, HiArrowPath } from "react-icons/hi2"
+import { HiBars3, HiCog, HiArrowPath } from "react-icons/hi2"
 import DialogBody from "~Layout/components/DialogBody"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 import { Section } from "~Layout/components/Page"
@@ -218,7 +218,7 @@ function AllAccountsPage() {
             style={{ color: "inherit" }}
             aria-label="menu"
           >
-            <HiMenu className="w-6 h-6" />
+            <HiBars3 className="w-6 h-6" />
           </IconButton>
         }
         actions={
@@ -268,7 +268,7 @@ function AllAccountsPage() {
             onCreatePubnetAccount={() => router.history.push(routes.newAccount(false))}
             onCreateTestnetAccount={() => router.history.push(routes.newAccount(true))}
           />
-          <AppNotificationPermission />
+          <AppNotificationPermission onHide={() => {}} open={false} />
         </VerticalLayout>
       </DialogBody>
       <DrawerMenu open={menuOpen} onClose={handleMenuClose}>

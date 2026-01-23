@@ -1,5 +1,5 @@
 import React from "react"
-import { HiMenu } from "react-icons/hi2"
+import { HiBars3 } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
@@ -75,7 +75,7 @@ function AccountHeaderCard(props: Props) {
                 type="button"
                 aria-label="Menu"
               >
-                <HiMenu className="w-8 h-8" />
+                <HiBars3 className="w-8 h-8" />
               </button>
             )}
           </AccountContextMenu>

@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import TextField from "~Generic/components/TextField"
-import { HiCheck, HiX, HiUserPlus } from "react-icons/hi2"
+import { HiCheck, HiXMark, HiUserPlus } from "react-icons/hi2"
 import { useIsSmallMobile, useIsMobile } from "~Generic/hooks/userinterface"
 import { HorizontalLayout } from "~Layout/components/Box"
 
@@ -72,7 +72,7 @@ function NewSignerForm(props: Props) {
           onClick={props.onCancel}
           className="p-2 rounded-full hover:bg-gray-100 transition-colors"
         >
-          <HiX className="w-6 h-6" />
+          <HiXMark className="w-6 h-6 text-gray-500" />
         </button>
       </div>
     </div>

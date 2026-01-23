@@ -1,13 +1,13 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { HiX } from "react-icons/hi2"
+import { HiXMark } from "react-icons/hi2"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { MobileKeyboardOpenedSelector } from "~App/theme"
 import { setupRerenderListener } from "~Platform/keyboard-hack"
 import ButtonIconLabel from "~Generic/components/ButtonIconLabel"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "./Dialog"
 
-const closeIcon = <ClearIcon className="w-5 h-5" />
+const closeIcon = <HiXMark className="w-5 h-5" />
 
 interface MaybeIconProps {
   icon?: React.ReactNode

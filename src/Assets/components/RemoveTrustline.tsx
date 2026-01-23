@@ -1,9 +1,9 @@
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 import { Asset, Horizon, Operation } from "stellar-sdk"
-import { ClearIcon } from "~Generic/components/Icons"
-import { Dialog, DialogContent, DialogTitle } from "~Generic/components/Dialog"
+import { HiXMark } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
+import { Dialog, DialogContent, DialogTitle } from "~Generic/components/Dialog"
 import { trackError } from "~App/contexts/notifications"
 import { AccountData } from "~Generic/lib/account"
 import { createTransaction } from "~Generic/lib/transaction"
@@ -20,7 +20,6 @@ interface Props {
   sendTransaction: SendTransaction
 }
 
-// tslint:disable-next-line no-shadowed-variable
 const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: Props) {
   const { t } = useTranslation()
   const [txCreationPending, setTxCreationPending] = React.useState(false)
@@ -71,7 +70,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
               autoFocus
               disabled={stillOwnsTokens}
               loading={txCreationPending}
-              icon={<HiX className="w-5 h-5" />}
+              icon={<HiXMark className="w-5 h-5" />}
               onClick={removeAsset}
               style={{ maxWidth: "none" }}
               type="primary"

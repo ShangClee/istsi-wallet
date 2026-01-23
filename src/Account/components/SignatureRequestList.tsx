@@ -1,6 +1,5 @@
 import React from "react"
 import { TransactionStellarUri } from "@stellarguard/stellar-uri"
-import React from "react"
 import { Transaction } from "stellar-sdk"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"

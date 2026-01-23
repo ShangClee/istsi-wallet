@@ -5436,7 +5436,7 @@ process.emit = function(event, ...args) {
       return false;
     }
   }
-  return originalEmit.apply(process, [event, ...args]);
+  return originalEmit.call(process, event, ...args);
 };
 app$1.name = "Solar Wallet";
 app$1.setAppUserModelId("io.solarwallet.app");
