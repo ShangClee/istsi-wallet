@@ -5441,14 +5441,11 @@ process.emit = function(event, ...args) {
 app$1.name = "Solar Wallet";
 app$1.setAppUserModelId("io.solarwallet.app");
 function createAppMenu() {
-  if (process.platform !== "darwin") {
-    return null;
-  }
   const macAppMenuItem = {
     label: app$1.getName(),
     submenu: [{ label: "About", role: "about" }, { type: "separator" }, { label: "Quit", role: "quit" }]
   };
-  const appMenu = Menu.buildFromTemplate([
+  const menuTemplate = process.platform === "darwin" ? [
     macAppMenuItem,
     {
       // We need those menu items to make the keyboard shortcuts work
@@ -5463,7 +5460,43 @@ function createAppMenu() {
         { role: "selectAll" }
       ]
     }
-  ]);
+  ] : [
+    {
+      label: "File",
+      submenu: [{ role: "quit", label: "Exit" }]
+    },
+    {
+      label: "Edit",
+      submenu: [
+        { role: "undo" },
+        { role: "redo" },
+        { type: "separator" },
+        { role: "cut" },
+        { role: "copy" },
+        { role: "paste" },
+        { role: "selectAll" }
+      ]
+    },
+    {
+      label: "View",
+      submenu: [
+        { role: "reload" },
+        { role: "forceReload" },
+        { role: "toggleDevTools" },
+        { type: "separator" },
+        { role: "resetZoom" },
+        { role: "zoomIn" },
+        { role: "zoomOut" },
+        { type: "separator" },
+        { role: "togglefullscreen" }
+      ]
+    },
+    {
+      label: "Help",
+      submenu: [{ role: "about", label: "About Solar Wallet" }]
+    }
+  ];
+  const appMenu = Menu.buildFromTemplate(menuTemplate);
   return appMenu;
 }
 const urlEventEmitter = new events$1.EventEmitter();
@@ -5558,9 +5591,6 @@ const __filename$1 = fileURLToPath(import.meta.url);
 const __dirname$1 = path__default.dirname(__filename$1);
 let openWindows = [];
 function createMainWindow() {
-  if (process.platform !== "darwin") {
-    Menu.setApplicationMenu(null);
-  }
   const window2 = new BrowserWindow({
     width: 800,
     height: 600,
@@ -5583,7 +5613,6 @@ function createMainWindow() {
       webviewTag: false
     }
   });
-  window2.removeMenu();
   if (process.env.VITE_DEV_SERVER_URL) {
     window2.loadURL(process.env.VITE_DEV_SERVER_URL);
   } else {

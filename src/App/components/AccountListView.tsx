@@ -2,7 +2,12 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
 import makeStyles from "@mui/styles/makeStyles"
+import MenuIcon from "@mui/icons-material/Menu"
 import SettingsIcon from "@mui/icons-material/Settings"
 import Switch from "@mui/material/Switch"
 import Tooltip from "@mui/material/Tooltip"
@@ -42,6 +47,15 @@ function AllAccountsPage() {
   const testnetAccounts = React.useMemo(() => accounts.filter(account => account.testnet), [accounts])
   const [isUpdateInProgress, setUpdateInProgress] = React.useState(false)
   const { t } = useTranslation()
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const handleMenuOpen = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }, [])
+
+  const handleMenuClose = React.useCallback(() => {
+    setAnchorEl(null)
+  }, [])
 
   const styles = useStyles()
   const isWidthMax450 = useMediaQuery("(max-width:450px)")
@@ -92,8 +106,32 @@ function AllAccountsPage() {
         titleStyle={isWidthMax450 ? { marginRight: 0 } : {}}
         hideBackButton
         onBack={() => undefined}
+        leftAction={
+          <>
+            <IconButton
+              onClick={handleMenuOpen}
+              size="large"
+              style={{ marginLeft: -12, color: "inherit" }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              onClick={handleMenuClose}
+            >
+              <MenuItem onClick={() => router.history.push(routes.settings())}>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary={t("app.menu.settings")} />
+              </MenuItem>
+            </Menu>
+          </>
+        }
         actions={
-          <Box style={{ marginLeft: "auto" }}>
+          <Box style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
             {settings.showTestnet || networkSwitch === "testnet" || testnetAccounts.length > 0
               ? networkSwitchButton
               : null}
@@ -105,7 +143,7 @@ function AllAccountsPage() {
               : null}
             <IconButton
               onClick={() => router.history.push(routes.settings())}
-              style={{ marginLeft: isWidthMax450 ? 0 : 8, marginRight: -12, color: "inherit" }}
+              style={{ marginLeft: isWidthMax450 ? 0 : 8, color: "inherit" }}
               size="large"
             >
               <SettingsIcon />
@@ -115,6 +153,9 @@ function AllAccountsPage() {
       />
     ),
     [
+      anchorEl,
+      handleMenuClose,
+      handleMenuOpen,
       isUpdateInProgress,
       isWidthMax450,
       networkSwitch,

@@ -12,8 +12,11 @@ import * as protocolHandler from "./protocol-handler"
 import { Messages } from "./shared/ipc"
 
 export function createMainWindow() {
-  // Menu will be set in app.ts after window creation
-  // Don't set to null here as we want the menu to be visible
+  if (process.platform !== "darwin") {
+    // Need to set menu to null before creating the window
+    // See <https://github.com/electron/electron/issues/16521#issuecomment-458035634>
+    Menu.setApplicationMenu(null)
+  }
 
   const window = new BrowserWindow({
     width: 800,
@@ -35,8 +38,7 @@ export function createMainWindow() {
     }
   })
 
-  // Keep menu bar for better UX (user can access settings, etc.)
-  // window.removeMenu()
+  window.removeMenu()
 
   if (process.env.VITE_DEV_SERVER_URL) {
     window.loadURL(process.env.VITE_DEV_SERVER_URL)
