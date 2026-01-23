@@ -1,5 +1,4 @@
 import * as React from "react"
-import SvgIcon from "@mui/material/SvgIcon"
 
 interface Props {
   className?: string
@@ -10,7 +9,14 @@ interface Props {
 
 function QRReaderIcon(props: Props) {
   return (
-    <SvgIcon viewBox="0 0 24 20" {...props}>
+    <svg
+      viewBox="0 0 24 20"
+      className={props.className}
+      onClick={props.onClick}
+      role={props.role}
+      style={props.style}
+      fill="currentColor"
+    >
       <g stroke="none" strokeWidth="1" fillRule="evenodd">
         <g transform="translate(-731.000000, -346.000000)">
           <g transform="translate(35.000000, 241.000000)">
@@ -21,7 +27,7 @@ function QRReaderIcon(props: Props) {
           </g>
         </g>
       </g>
-    </SvgIcon>
+    </svg>
   )
 }
 

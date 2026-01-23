@@ -1,9 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import InputAdornment from "@mui/material/InputAdornment"
-import ListItemText from "@mui/material/ListItemText"
-import TextField from "@mui/material/TextField"
-import RestoreIcon from "@mui/icons-material/SettingsBackupRestore"
+import { HiArrowPath } from "react-icons/hi2"
+import TextField from "~Generic/components/TextField"
 import AccountSettingsItem from "~AccountSettings/components/AccountSettingsItem"
 import { QRReader } from "~Generic/components/FormFields"
 
@@ -26,11 +24,7 @@ function SecretKeyImport(props: SecretKeyImportProps) {
 
   const InputProps = React.useMemo(
     () => ({
-      endAdornment: (
-        <InputAdornment disableTypography position="end">
-          <QRReader onScan={onEnterSecretKey} />
-        </InputAdornment>
-      )
+      endAdornment: <QRReader onScan={onEnterSecretKey} />
     }),
     [onEnterSecretKey]
   )
@@ -66,7 +60,7 @@ function SecretKeyImport(props: SecretKeyImportProps) {
             inputProps={inputProps}
             InputProps={InputProps}
           />
-        </ListItemText>
+        </div>
       </AccountSettingsItem>
     </>
   )

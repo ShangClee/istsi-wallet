@@ -1,8 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Collapse from "@mui/material/Collapse"
-import ListItemText from "@mui/material/ListItemText"
-import Switch from "@mui/material/Switch"
+import Collapse from "~Generic/components/Collapse"
 import AccountSettingsItem from "~AccountSettings/components/AccountSettingsItem"
 import PasswordField from "~Generic/components/PasswordField"
 
@@ -23,22 +21,36 @@ function PasswordSetting(props: PasswordSettingProps) {
     <>
       <AccountSettingsItem
         caret={props.requiresPassword ? "down" : "right"}
-        icon={<Switch checked={props.requiresPassword} color="primary" onChange={props.onTogglePassword} />}
+        icon={
+          <button
+            role="switch"
+            aria-checked={props.requiresPassword}
+            onClick={props.onTogglePassword}
+            className={`${
+              props.requiresPassword ? "bg-blue-500" : "bg-gray-300"
+            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+          >
+            <span
+              className={`${
+                props.requiresPassword ? "translate-x-6" : "translate-x-1"
+              } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+            />
+          </button>
+        }
         onClick={props.onTogglePassword}
       >
-        <ListItemText
-          primary={t("create-account.options.password.label")}
-          secondary={
-            props.requiresPassword
+        <div className="ml-2">
+          <div className="text-base font-medium">{t("create-account.options.password.label")}</div>
+          <div className="text-sm text-gray-600">
+            {props.requiresPassword
               ? t("create-account.options.password.protected")
-              : t("create-account.options.password.unprotected")
-          }
-          style={{ marginLeft: 8 }}
-        />
+              : t("create-account.options.password.unprotected")}
+          </div>
+        </div>
       </AccountSettingsItem>
       <Collapse in={props.requiresPassword}>
         <AccountSettingsItem icon={null} subItem>
-          <ListItemText style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
+          <div className="ml-3 mr-14 -mt-2">
             <PasswordField
               error={Boolean(props.error)}
               fullWidth
@@ -58,7 +70,7 @@ function PasswordSetting(props: PasswordSettingProps) {
               placeholder={t("create-account.inputs.password-repeat.placeholder")}
               value={props.repeatedPassword}
             />
-          </ListItemText>
+          </div>
         </AccountSettingsItem>
       </Collapse>
     </>

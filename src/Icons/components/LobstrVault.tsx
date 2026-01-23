@@ -1,5 +1,4 @@
 import * as React from "react"
-import SvgIcon from "@mui/material/SvgIcon"
 
 function LobstrVaultIcon(props: {
   className?: string
@@ -8,7 +7,14 @@ function LobstrVaultIcon(props: {
   style?: React.CSSProperties
 }) {
   return (
-    <SvgIcon viewBox="0 0 67 96" {...props}>
+    <svg
+      viewBox="0 0 67 96"
+      className={props.className}
+      onClick={props.onClick}
+      role={props.role}
+      style={props.style}
+      fill="currentColor"
+    >
       <defs>
         <linearGradient id="linearGradient-1" x1="74.917%" x2="0%" y1="62.329%" y2="37.418%">
           <stop offset="0%"></stop>
@@ -63,7 +69,7 @@ function LobstrVaultIcon(props: {
           </g>
         </g>
       </g>
-    </SvgIcon>
+    </svg>
   )
 }
 

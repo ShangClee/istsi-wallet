@@ -1,9 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Divider from "@mui/material/Divider"
-import GroupIcon from "@mui/icons-material/Group"
-import RestoreIcon from "@mui/icons-material/SettingsBackupRestore"
-import WalletIcon from "@mui/icons-material/AccountBalanceWallet"
+import { HiUserGroup, HiArrowPath, HiWallet } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
@@ -51,7 +48,7 @@ const InitialSelection = React.memo(
             gutterBottom
             onClick={createAccount}
             variant="primary"
-            Icon={WalletIcon}
+            Icon={HiWallet}
           />
           <MainSelectionButton
             dense
@@ -59,16 +56,16 @@ const InitialSelection = React.memo(
             description={t("create-account.action-selection.import.description")}
             gutterBottom
             onClick={importAccount}
-            Icon={RestoreIcon}
+            Icon={HiArrowPath}
           />
-          <Divider style={{ marginBottom: 16 }} />
+          <hr className="my-4 border-gray-200" />
           <MainSelectionButton
             dense
             label={t("create-account.action-selection.join-shared.label")}
             description={t("create-account.action-selection.join-shared.description")}
             gutterBottom
             onClick={joinSharedAccount}
-            Icon={GroupIcon}
+            Icon={HiUserGroup}
           />
         </VerticalLayout>
       </VerticalLayout>

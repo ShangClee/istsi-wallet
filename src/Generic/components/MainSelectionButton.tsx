@@ -1,103 +1,7 @@
 import React from "react"
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-import makeStyles from "@mui/styles/makeStyles"
-import ArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
-import theme, { primaryBackgroundColor } from "~App/theme"
+import { HiChevronRight } from "react-icons/hi2"
 
-const useMainSelectionButtonStyles = makeStyles({
-  root: {
-    background: "white",
-    maxWidth: 380,
-    padding: "16px 24px",
-    position: "relative",
-    textAlign: "left",
-
-    "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.02)"
-    },
-    "&$primary:hover": {
-      backgroundColor: theme.palette.primary.main
-    }
-  },
-  primary: {
-    backgroundColor: primaryBackgroundColor,
-    borderColor: "rgba(255, 255, 255, 0.15)",
-    color: "white"
-  },
-  dense: {
-    // Only used in conjunction with other classes
-  },
-  buttonLabel: {
-    alignItems: "flex-start",
-    display: "flex",
-    flexDirection: "column",
-    textTransform: "initial"
-  },
-  description: {
-    fontSize: 16,
-    marginTop: 4,
-    paddingLeft: 48,
-
-    "$dense &": {
-      marginTop: 0
-    },
-    "$primary &": {
-      color: "white",
-      opacity: 0.95
-    },
-    "$root$primary:hover &": {
-      textShadow: "0 0 0.05em rgba(0, 0, 0, 0.25)"
-    }
-  },
-  gutterBottom: {
-    marginBottom: 16
-  },
-  heading: {
-    color: theme.palette.primary.dark,
-    fontSize: 18,
-    fontWeight: 500,
-    lineHeight: 1.4,
-    paddingLeft: 48,
-    transition: `color ${theme.transitions.duration.short}ms`,
-
-    "$primary &, $root$primary:hover &": {
-      color: "white"
-    },
-    "$root$primary:hover &": {
-      textShadow: "0 0 0.02em rgba(0, 0, 0, 0.5)"
-    },
-    "$root:hover &": {
-      color: primaryBackgroundColor
-    }
-  },
-  icon: {
-    position: "absolute",
-    top: "50%",
-    left: 16,
-    color: "rgba(0, 0, 0, 0.5)",
-    marginTop: -20,
-    opacity: 0.8,
-    transition: `color ${theme.transitions.duration.short}ms`,
-    height: 40,
-    width: 40,
-
-    "$primary &, $root$primary:hover &": {
-      background: "white",
-      borderRadius: "50%",
-      boxSizing: "border-box",
-      color: primaryBackgroundColor,
-      opacity: 1,
-      padding: 6
-    },
-    "$root:hover &": {
-      color: primaryBackgroundColor
-    },
-    "$root$primary:hover &": {
-      color: theme.palette.primary.main
-    }
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface MainSelectionButtonProps {
   className?: string
@@ -112,31 +16,47 @@ interface MainSelectionButtonProps {
 }
 
 function MainSelectionButton(props: MainSelectionButtonProps) {
-  const classes = useMainSelectionButtonStyles()
-  const Icon = props.Icon || ArrowRightIcon
+  const Icon = props.Icon || HiChevronRight
+  const isPrimary = props.variant === "primary"
+  
   return (
-    <Button
-      classes={{
-        root: [
-          classes.root,
-          props.className,
-          props.dense ? classes.dense : "",
-          props.gutterBottom ? classes.gutterBottom : "",
-          props.variant === "primary" ? classes.primary : ""
-        ].join(" ")
-      }}
+    <button
       onClick={props.onClick}
       style={props.style}
-      variant="outlined"
+      className={`
+        bg-white max-w-[380px] px-6 py-4 relative text-left
+        border border-gray-300 rounded
+        hover:bg-gray-50 transition-colors
+        ${isPrimary ? "bg-primary-gradient border-white/15 text-white hover:bg-brand-main" : ""}
+        ${props.gutterBottom ? "mb-4" : ""}
+        ${props.className || ""}
+      `.trim().replace(/\s+/g, " ")}
     >
-      <Icon className={classes.icon} />
-      <Typography className={classes.heading} variant="h6">
-        {props.label}
-      </Typography>
-      <Typography className={classes.description} color="textSecondary" variant="body1">
-        {props.description}
-      </Typography>
-    </Button>
+      <Icon
+        className={`
+          absolute top-1/2 left-4 -mt-5 w-10 h-10
+          text-gray-500 opacity-80 transition-colors
+          ${isPrimary ? "bg-white rounded-full p-1.5 text-primary-gradient opacity-100" : ""}
+          group-hover:text-brand-main
+        `.trim().replace(/\s+/g, " ")}
+      />
+      <div className="flex flex-col items-start pl-12">
+        <h6 className={`
+          text-lg font-medium leading-snug
+          ${isPrimary ? "text-white" : "text-brand-dark"}
+          transition-colors
+        `.trim().replace(/\s+/g, " ")}>
+          {props.label}
+        </h6>
+        <p className={`
+          text-base mt-1
+          ${props.dense ? "mt-0" : ""}
+          ${isPrimary ? "text-white/95" : "text-gray-600"}
+        `.trim().replace(/\s+/g, " ")}>
+          {props.description}
+        </p>
+      </div>
+    </button>
   )
 }
 

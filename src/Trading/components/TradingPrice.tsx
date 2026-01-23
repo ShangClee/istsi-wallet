@@ -4,7 +4,7 @@ import { Asset } from "stellar-sdk"
 import InputAdornment from "@mui/material/InputAdornment"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
-import TextField from "@mui/material/TextField"
+import TextField from "~Generic/components/TextField"
 
 interface TradingPriceProps {
   defaultPrice?: string

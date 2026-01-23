@@ -1,30 +1,11 @@
 import React from "react"
 import { Asset } from "stellar-sdk"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import MenuItem from "@mui/material/MenuItem"
-import TextField, { TextFieldProps } from "@mui/material/TextField"
-import makeStyles from "@mui/styles/makeStyles"
+import TextField, { TextFieldProps } from "./TextField"
 import AssetLogo from "~Assets/components/AssetLogo"
 import { BalanceLine } from "~Generic/lib/account"
 import { balancelineToAsset, stringifyAsset } from "../lib/stellar"
 
-const useAssetItemStyles = makeStyles(theme => ({
-  icon: {
-    [theme.breakpoints.up(600)]: {
-      minWidth: 48
-    }
-  },
-  logo: {
-    width: 32,
-    height: 32,
-
-    [theme.breakpoints.up(600)]: {
-      width: 28,
-      height: 28
-    }
-  }
-}))
+// Styles converted to Tailwind - see className usage below
 
 interface AssetItemProps {
   asset: Asset
@@ -36,37 +17,23 @@ interface AssetItemProps {
 }
 
 const AssetItem = React.memo(
-  React.forwardRef(function AssetItem(props: AssetItemProps, ref: React.Ref<HTMLLIElement>) {
-    const classes = useAssetItemStyles()
-    const { testnet, ...reducedProps } = props
+  React.forwardRef(function AssetItem(props: AssetItemProps, ref: React.Ref<HTMLOptionElement>) {
+    const { testnet } = props
 
     return (
-      <MenuItem {...reducedProps} key={props.key} ref={ref} value={props.value}>
-        <ListItemIcon className={classes.icon}>
-          <AssetLogo asset={props.asset} className={classes.logo} testnet={props.testnet} />
-        </ListItemIcon>
-        <ListItemText>{props.asset.getCode()}</ListItemText>
-      </MenuItem>
+      <option
+        key={props.key}
+        ref={ref}
+        value={props.value}
+        disabled={props.disabled}
+      >
+        {props.asset.getCode()}
+      </option>
     )
   })
 )
 
-const useAssetSelectorStyles = makeStyles({
-  helperText: {
-    maxWidth: 100,
-    whiteSpace: "nowrap"
-  },
-  input: {
-    minWidth: 72
-  },
-  select: {
-    fontSize: 18,
-    fontWeight: 400
-  },
-  unselected: {
-    opacity: 0.5
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface AssetSelectorProps {
   autoFocus?: TextFieldProps["autoFocus"]
@@ -90,7 +57,6 @@ interface AssetSelectorProps {
 
 function AssetSelector(props: AssetSelectorProps) {
   const { onChange } = props
-  const classes = useAssetSelectorStyles()
 
   const assets = React.useMemo(
     () => [
@@ -136,30 +102,23 @@ function AssetSelector(props: AssetSelectorProps) {
       style={{ flexShrink: 0, ...props.style }}
       value={props.value ? props.value.getCode() : ""}
       FormHelperTextProps={{
-        className: classes.helperText
+        className: "max-w-[100px] whitespace-nowrap"
       }}
       InputProps={{
-        classes: {
-          root: classes.input
-        },
+        className: "min-w-[72px]",
         style: {
           minWidth: props.minWidth
         }
       }}
       SelectProps={{
-        classes: {
-          root: props.value ? undefined : classes.unselected,
-          select: classes.select
-        },
-        displayEmpty: !props.value,
-        disableUnderline: props.disableUnderline,
-        renderValue: () => (props.value ? props.value.getCode() : "Select")
+        className: `text-lg font-normal ${props.value ? "" : "opacity-50"}`,
+        style: props.disableUnderline ? { borderBottom: "none" } : undefined
       }}
     >
       {props.value ? null : (
-        <MenuItem disabled value="">
+        <option disabled value="">
           Select an asset
-        </MenuItem>
+        </option>
       )}
       {props.showXLM ? (
         <AssetItem

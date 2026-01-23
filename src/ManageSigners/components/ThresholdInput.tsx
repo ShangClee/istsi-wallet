@@ -1,5 +1,4 @@
 import React from "react"
-import TextField from "@mui/material/TextField"
 import { getSignatureThreshold } from "../lib/editor"
 import { MultisigEditorContext } from "./MultisigEditorContext"
 
@@ -49,20 +48,13 @@ function ThresholdInput(props: ThresholdInputProps) {
   )
 
   return (
-    <TextField
-      inputProps={{
-        min: 1,
-        style: {
-          maxWidth: 32,
-          padding: "16px 14px",
-          textAlign: "center"
-        }
-      }}
-      inputRef={props.inputRef}
-      onChange={setThreshold}
+    <input
+      ref={props.inputRef}
       type="number"
+      min={1}
       value={value}
-      variant="outlined"
+      onChange={setThreshold}
+      className="border border-gray-300 rounded px-3.5 py-4 text-center max-w-[32px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
     />
   )
 }

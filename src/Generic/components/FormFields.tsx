@@ -1,14 +1,28 @@
 import React from "react"
-import IconButton from "@mui/material/IconButton"
-import { InputProps } from "@mui/material/Input"
-import InputAdornment from "@mui/material/InputAdornment"
-import TextField, { OutlinedTextFieldProps, TextFieldProps } from "@mui/material/TextField"
-import makeStyles from "@mui/styles/makeStyles"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import SearchIcon from "@mui/icons-material/Search"
+import { HiMagnifyingGlass } from "react-icons/hi2"
 import { trackError } from "~App/contexts/notifications"
 import QRImportDialog from "~Generic/components/QRImport"
 import QRReaderIcon from "~Icons/components/QRReader"
+import TextField, { TextFieldProps } from "./TextField"
+
+// useMediaQuery replacement
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
+
+// Export TextField types for compatibility
+export type { TextFieldProps }
+export type OutlinedTextFieldProps = TextFieldProps
 
 const desktopQRIconStyle: React.CSSProperties = { fontSize: 20 }
 const mobileQRIconStyle: React.CSSProperties = {}
@@ -36,9 +50,15 @@ export const QRReader = React.memo(function QRReader(props: Props) {
 
   return (
     <>
-      <IconButton onClick={openQRReader} tabIndex={99} size="large">
+      <button
+        onClick={openQRReader}
+        tabIndex={99}
+        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        type="button"
+        aria-label="QR Reader"
+      >
         <QRReaderIcon style={isTouchScreen ? mobileQRIconStyle : desktopQRIconStyle} />
-      </IconButton>
+      </button>
       <QRImportDialog open={isQRReaderOpen} onClose={closeQRReader} onError={trackError} onScan={handleQRScan} />
     </>
   )
@@ -52,26 +72,26 @@ type PriceInputProps = TextFieldProps & {
 
 export const PriceInput = React.memo(function PriceInput(props: PriceInputProps) {
   const { assetCode, assetStyle, readOnly, ...textfieldProps } = props
-  const InputField = readOnly ? ReadOnlyTextfield : TextField
   return (
-    <InputField
+    <TextField
       {...textfieldProps}
+      disabled={readOnly}
+      readOnly={readOnly}
       inputProps={{
         pattern: "[0-9]*",
-        inputMode: "decimal"
+        inputMode: "decimal",
+        ...textfieldProps.inputProps
       }}
       InputProps={{
         endAdornment: (
-          <InputAdornment
-            disableTypography
-            position="end"
+          <div
             style={{
               pointerEvents: typeof assetCode === "string" ? "none" : undefined,
               ...assetStyle
             }}
           >
             {assetCode}
-          </InputAdornment>
+          </div>
         ),
         ...textfieldProps.InputProps
       }}
@@ -83,41 +103,22 @@ export const PriceInput = React.memo(function PriceInput(props: PriceInputProps)
   )
 })
 
-const useReadOnlyTextfieldStyles = makeStyles({
-  root: {
-    "&:focus": {
-      outline: "none"
-    },
-    "&&, && > div": {
-      color: "inherit"
-    }
-  }
-})
-
 type ReadOnlyTextfieldProps = TextFieldProps & {
   disableUnderline?: boolean
   multiline?: boolean
 }
 
 export const ReadOnlyTextfield = React.memo(function ReadOnlyTextfield(props: ReadOnlyTextfieldProps) {
-  const { disableUnderline, multiline, ...textfieldProps } = props
-  const classes = useReadOnlyTextfieldStyles()
-
-  // tslint:disable-next-line no-shadowed-variable
-  const InputProps: InputProps = {
-    disableUnderline: disableUnderline === false ? false : true,
-    multiline,
-    disabled: true,
-    readOnly: true,
-    ...props.InputProps
-  }
+  const { disableUnderline, multiline, className = "", ...textfieldProps } = props
   return (
     <TextField
-      variant="standard"
+      variant={disableUnderline === false ? "standard" : "outlined"}
       {...textfieldProps}
-      className={`${classes.root} ${props.className || ""}`}
+      multiline={multiline}
+      disabled
+      readOnly
+      className={`focus:outline-none ${className}`}
       tabIndex={-1}
-      InputProps={InputProps}
     />
   )
 })
@@ -129,11 +130,7 @@ export const SearchField = React.memo(function SearchField(props: Omit<OutlinedT
       variant="outlined"
       {...props}
       InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <SearchIcon />
-          </InputAdornment>
-        ),
+        endAdornment: <HiMagnifyingGlass className="w-5 h-5 text-gray-400" />,
         ...props.InputProps
       }}
     />

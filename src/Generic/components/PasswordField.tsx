@@ -1,11 +1,8 @@
 import React from "react"
-import IconButton from "@mui/material/IconButton"
-import InputAdornment from "@mui/material/InputAdornment"
-import TextField, { StandardTextFieldProps } from "@mui/material/TextField"
-import Visibility from "@mui/icons-material/Visibility"
-import VisibilityOff from "@mui/icons-material/VisibilityOff"
+import { HiEye, HiEyeSlash } from "react-icons/hi2"
+import TextField, { TextFieldProps } from "./TextField"
 
-function PasswordField(props: Omit<StandardTextFieldProps, "type">) {
+function PasswordField(props: Omit<TextFieldProps, "type">) {
   const [showPassword, setShowPassword] = React.useState(false)
 
   const handleClickShowPassword = React.useCallback(() => {
@@ -16,17 +13,20 @@ function PasswordField(props: Omit<StandardTextFieldProps, "type">) {
     <TextField
       variant="standard"
       {...props}
+      type={showPassword ? "text" : "password"}
       InputProps={{
         ...props.InputProps,
         endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={handleClickShowPassword} size="large">
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
+          <button
+            type="button"
+            onClick={handleClickShowPassword}
+            className="p-1 rounded hover:bg-gray-100 transition-colors"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? <HiEyeSlash className="w-5 h-5 text-gray-600" /> : <HiEye className="w-5 h-5 text-gray-600" />}
+          </button>
         )
       }}
-      type={showPassword ? "text" : "password"}
     />
   )
 }

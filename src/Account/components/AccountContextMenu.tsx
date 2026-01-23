@@ -1,37 +1,20 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Divider from "@mui/material/Divider"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
-import makeStyles from "@mui/styles/makeStyles"
-import CallMadeIcon from "@mui/icons-material/CallMade"
-import CallReceivedIcon from "@mui/icons-material/CallReceived"
-import ListIcon from "@mui/icons-material/List"
-import MoneyIcon from "@mui/icons-material/AttachMoney"
-import SettingsIcon from "@mui/icons-material/Settings"
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
+import {
+  HiArrowRight,
+  HiArrowDownTray,
+  HiListBullet,
+  HiCurrencyDollar,
+  HiCog,
+  HiArrowsRightLeft
+} from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContextType } from "~App/contexts/settings"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import ContextMenu, { AnchorRenderProps } from "~Generic/components/ContextMenu"
 
-const useContextMenuItemStyles = makeStyles({
-  disabled: {
-    opacity: "1 !important" as any,
-
-    "& > *": {
-      opacity: "0.5 !important" as any
-    }
-  },
-  icon: {
-    flex: "0 0 24px",
-    minWidth: 24,
-    marginRight: 24
-  }
-})
+// Styles converted to Tailwind - see className usage below
 
 interface ItemProps {
   disabled?: boolean
@@ -42,17 +25,25 @@ interface ItemProps {
 }
 
 const AccountContextMenuItem = React.memo(
-  React.forwardRef((props: ItemProps, ref) => {
-    const classes = useContextMenuItemStyles()
-
+  React.forwardRef((props: ItemProps, ref: React.Ref<HTMLButtonElement>) => {
     if (props.hidden) {
       return null
     }
     return (
-      <MenuItem className={props.disabled ? classes.disabled : ""} disabled={props.disabled} onClick={props.onClick}>
-        <ListItemIcon className={classes.icon}>{props.icon}</ListItemIcon>
-        <ListItemText ref={ref}>{props.label}</ListItemText>
-      </MenuItem>
+      <button
+        ref={ref}
+        onClick={props.onClick}
+        disabled={props.disabled}
+        className={`
+          w-full text-left px-4 py-3 flex items-center gap-6
+          hover:bg-gray-50 active:bg-gray-100
+          transition-colors
+          ${props.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+        `.trim().replace(/\s+/g, " ")}
+      >
+        <span className="flex-shrink-0 w-6 min-w-[24px]">{props.icon}</span>
+        <span className="flex-1 text-base">{props.label}</span>
+      </button>
     )
   })
 )
@@ -86,26 +77,26 @@ function LiveAccountContextMenuItems(
     <>
       <AccountContextMenuItem
         disabled={!activated || !props.onTrade}
-        icon={<SwapHorizIcon style={{ transform: "scale(1.2)" }} />}
+        icon={<HiArrowsRightLeft className="w-6 h-6 scale-125" />}
         label={t("account.context-menu.trade.label")}
         onClick={closeAndCall(props.onTrade)}
       />
       <AccountContextMenuItem
         disabled={!isSigner || !props.onDeposit}
-        icon={<CallReceivedIcon />}
+        icon={<HiArrowDownTray className="w-6 h-6" />}
         label={t("account.context-menu.deposit.label")}
         onClick={closeAndCall(accountData.balances.length > 1 ? props.onDeposit : props.onPurchaseLumens)}
       />
       <AccountContextMenuItem
         disabled={!activated || !props.onWithdraw}
-        icon={<CallMadeIcon />}
+        icon={<HiArrowRight className="w-6 h-6" />}
         label={t("account.context-menu.withdraw.label")}
         onClick={closeAndCall(props.onWithdraw)}
       />
-      <Divider />
+      <hr className="my-1 border-gray-200" />
       <AccountContextMenuItem
         disabled={!activated || !props.onManageAssets}
-        icon={<MoneyIcon />}
+        icon={<HiCurrencyDollar className="w-6 h-6" />}
         label={t("account.context-menu.assets-and-balances.label")}
         onClick={closeAndCall(props.onManageAssets)}
       />

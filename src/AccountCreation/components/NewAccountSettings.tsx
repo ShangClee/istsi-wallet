@@ -81,7 +81,7 @@ function NewAccountSettings(props: NewAccountSettingsProps) {
         repeatedPassword={props.accountCreation.repeatedPassword}
         requiresPassword={props.accountCreation.requiresPassword}
       />
-    </List>
+    </div>
   )
 }
 

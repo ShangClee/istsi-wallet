@@ -1,13 +1,8 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Collapse from "@mui/material/Collapse"
-import InputAdornment from "@mui/material/InputAdornment"
-import ListItemText from "@mui/material/ListItemText"
-import Switch from "@mui/material/Switch"
-import TextField from "@mui/material/TextField"
-import Typography from "@mui/material/Typography"
-import GroupIcon from "@mui/icons-material/Group"
-import InfoIcon from "@mui/icons-material/InfoOutlined"
+import { HiUserGroup, HiInformationCircle } from "react-icons/hi2"
+import TextField from "~Generic/components/TextField"
+import Collapse from "~Generic/components/Collapse"
 import AccountSettingsItem from "~AccountSettings/components/AccountSettingsItem"
 import { QRReader } from "~Generic/components/FormFields"
 import { useIsMobile } from "~Generic/hooks/userinterface"
@@ -17,12 +12,12 @@ const FundingNote = React.memo(function FundingNote() {
   const { t } = useTranslation()
 
   return (
-    <Typography color="textSecondary" style={{ alignItems: "center", display: "flex", marginTop: 8 }} variant="body2">
-      <InfoIcon style={{ fontSize: "1.3em", marginLeft: "-1.4em", marginRight: "0.4em" }} />
+    <p className="text-gray-600 text-sm flex items-center mt-2">
+      <HiInformationCircle className="text-lg -ml-7 mr-2" />
       {isSmallScreen
         ? t("create-account.inputs.multisig-account.explanation-short")
         : t("create-account.inputs.multisig-account.explanation-long")}
-    </Typography>
+    </p>
   )
 })
 
@@ -48,11 +43,7 @@ function MultisigAccountPubKey(props: MultisigAccountPubKeyProps) {
 
   const InputProps = React.useMemo(
     () => ({
-      endAdornment: (
-        <InputAdornment disableTypography position="end">
-          <QRReader onScan={onEnter} />
-        </InputAdornment>
-      )
+      endAdornment: <QRReader onScan={onEnter} />
     }),
     [onEnter]
   )
@@ -68,27 +59,42 @@ function MultisigAccountPubKey(props: MultisigAccountPubKeyProps) {
     <>
       <AccountSettingsItem
         icon={
-          !props.onToggle ? <GroupIcon /> : <Switch checked={props.enabled} color="primary" onChange={props.onToggle} />
+          !props.onToggle ? (
+            <HiUserGroup className="w-6 h-6" />
+          ) : (
+            <button
+              role="switch"
+              aria-checked={props.enabled}
+              onClick={props.onToggle}
+              className={`${
+                props.enabled ? "bg-blue-500" : "bg-gray-300"
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            >
+              <span
+                className={`${
+                  props.enabled ? "translate-x-6" : "translate-x-1"
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </button>
+          )
         }
         onClick={props.onToggle}
       >
         {props.import ? (
-          <ListItemText
-            primary={t("create-account.options.cosigner-import.label")}
-            secondary={t("create-account.options.cosigner-import.description")}
-            style={{ marginLeft: 8 }}
-          />
+          <div className="ml-2">
+            <div className="text-base font-medium">{t("create-account.options.cosigner-import.label")}</div>
+            <div className="text-sm text-gray-600">{t("create-account.options.cosigner-import.description")}</div>
+          </div>
         ) : (
-          <ListItemText
-            primary={t("create-account.options.cosigner.label")}
-            secondary={t("create-account.options.cosigner.description")}
-            style={{ marginLeft: 8 }}
-          />
+          <div className="ml-2">
+            <div className="text-base font-medium">{t("create-account.options.cosigner.label")}</div>
+            <div className="text-sm text-gray-600">{t("create-account.options.cosigner.description")}</div>
+          </div>
         )}
       </AccountSettingsItem>
       <Collapse in={props.enabled}>
         <AccountSettingsItem icon={null} subItem>
-          <ListItemText style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
+          <div className="ml-3 mr-14 -mt-2">
             <TextField
               variant="standard"
               error={Boolean(props.error)}
@@ -103,7 +109,7 @@ function MultisigAccountPubKey(props: MultisigAccountPubKeyProps) {
               InputProps={InputProps}
             />
             {props.import ? null : <FundingNote />}
-          </ListItemText>
+          </div>
         </AccountSettingsItem>
       </Collapse>
     </>
