@@ -69,34 +69,74 @@ const FormControlLabel = ({ control, label, style }: any) => (
   </label>
 )
 
-const Menu = ({ anchorEl, open, onClose, children }: any) => {
-  if (!open || !anchorEl) return null
-  const rect = anchorEl.getBoundingClientRect()
+// Modern Sidebar Drawer Menu
+const DrawerMenu = ({ open, onClose, children }: { open: boolean; onClose: () => void; children: React.ReactNode }) => {
   return (
     <>
-      <div className="fixed inset-0 z-40" onClick={onClose} />
+      {/* Backdrop */}
       <div
-        className="fixed z-50 bg-white rounded shadow-lg py-1 min-w-[150px] ring-1 ring-black ring-opacity-5 focus:outline-none"
-        style={{ top: rect.bottom, left: rect.left }}
+        className={`fixed inset-0 bg-black/50 z-[9998] transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
+      {/* Drawer */}
+      <div
+        className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[9999] transform transition-transform duration-300 ease-in-out ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        {children}
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Menu</h2>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Close menu"
+            >
+              <svg
+                className="w-6 h-6 text-gray-600"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          {/* Menu Items */}
+          <div className="flex-1 overflow-y-auto py-4">{children}</div>
+        </div>
       </div>
     </>
   )
 }
 
-const MenuItem = ({ children, onClick }: any) => (
+const MenuItem = ({ children, onClick, icon }: { children: React.ReactNode; onClick: () => void; icon?: React.ReactNode }) => (
   <button
     onClick={onClick}
-    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+    className="w-full text-left px-6 py-4 text-base text-gray-700 hover:bg-gray-50 active:bg-gray-100 flex items-center gap-4 transition-colors border-b border-gray-100 last:border-b-0"
   >
-    {children}
+    {icon && <span className="text-gray-500">{icon}</span>}
+    <span className="flex-1">{children}</span>
+    <svg
+      className="w-5 h-5 text-gray-400"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path d="M9 5l7 7-7 7" />
+    </svg>
   </button>
 )
 
-const ListItemIcon = ({ children }: any) => <div className="inline-flex min-w-[36px] text-gray-500">{children}</div>
-
-const ListItemText = ({ primary }: any) => <span>{primary}</span>
 
 const Tooltip = ({ title, children }: any) => (
   <div className="group relative flex">
@@ -118,14 +158,14 @@ function AllAccountsPage() {
   const testnetAccounts = React.useMemo(() => accounts.filter(account => account.testnet), [accounts])
   const [isUpdateInProgress, setUpdateInProgress] = React.useState(false)
   const { t } = useTranslation()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [menuOpen, setMenuOpen] = React.useState(false)
 
-  const handleMenuOpen = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleMenuOpen = React.useCallback(() => {
+    setMenuOpen(true)
   }, [])
 
   const handleMenuClose = React.useCallback(() => {
-    setAnchorEl(null)
+    setMenuOpen(false)
   }, [])
 
   const isWidthMax450 = useMediaQuery("(max-width:450px)")
@@ -175,32 +215,13 @@ function AllAccountsPage() {
         hideBackButton
         onBack={() => undefined}
         leftAction={
-          <>
-            <IconButton
-              onClick={handleMenuOpen}
-              style={{ color: "inherit" }}
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem
-                onClick={() => {
-                  handleMenuClose()
-                  router.history.push(routes.settings())
-                }}
-              >
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t("app.menu.settings")} />
-              </MenuItem>
-            </Menu>
-          </>
+          <IconButton
+            onClick={handleMenuOpen}
+            style={{ color: "inherit" }}
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
         }
         actions={
           <Box style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
@@ -224,8 +245,6 @@ function AllAccountsPage() {
       />
     ),
     [
-      anchorEl,
-      handleMenuClose,
       handleMenuOpen,
       isUpdateInProgress,
       isWidthMax450,
@@ -254,6 +273,29 @@ function AllAccountsPage() {
           <AppNotificationPermission />
         </VerticalLayout>
       </DialogBody>
+      <DrawerMenu open={menuOpen} onClose={handleMenuClose}>
+        <MenuItem
+          onClick={() => {
+            handleMenuClose()
+            router.history.push(routes.settings())
+          }}
+          icon={<SettingsIcon />}
+        >
+          {t("app.menu.settings")}
+        </MenuItem>
+        {settings.showTestnet || networkSwitch === "testnet" || testnetAccounts.length > 0 ? (
+          <div className="px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <span className="text-base font-medium text-gray-700">{t("app.all-accounts.switch.label")}</span>
+              <Switch
+                checked={networkSwitch === "testnet"}
+                color="secondary"
+                onChange={toggleNetwork}
+              />
+            </div>
+          </div>
+        ) : null}
+      </DrawerMenu>
       <TermsAndConditions
         // Do not render T&Cs while loading settings; 99.9% chance we will unmount it immediately
         open={settings.initialized && !settings.agreedToTermsAt}
