@@ -1,10 +1,8 @@
 import React from "react"
 import { useTranslation, Trans } from "react-i18next"
-import Dialog from "@mui/material/Dialog"
-import Typography from "@mui/material/Typography"
+import { Dialog } from "~Generic/components/Dialog"
 import { Notification as NotificationType, NotificationsContext } from "~App/contexts/notifications"
 import { useOnlineStatus } from "~Generic/hooks/util"
-import { FullscreenDialogTransition } from "~App/theme"
 import DialogBody from "~Layout/components/DialogBody"
 import { DialogActionsBox, ActionButton } from "~Generic/components/DialogActions"
 import { Box } from "~Layout/components/Box"
@@ -34,11 +32,11 @@ const NotificationDetails = React.memo(function NotificationDetails(props: Notif
       }
     >
       <Box alignSelf="center" margin="24px auto 0" width="100%">
-        <Typography style={{ whiteSpace: "pre-wrap" }}>{message}</Typography>
+        <p className="whitespace-pre-wrap">{message}</p>
       </Box>
       {props.showSupportEmail ? (
         <Box alignSelf="center" margin="36px auto 0" width="100%">
-          <Typography align="center" color="textSecondary">
+          <p className="text-center text-gray-500">
             <Trans i18nKey="app.notification.details.support">
               Having an issue with the app?
               <br />
@@ -52,7 +50,7 @@ const NotificationDetails = React.memo(function NotificationDetails(props: Notif
             >
               hello@solarwallet.io
             </a>
-          </Typography>
+          </p>
         </Box>
       ) : null}
     </DialogBody>
@@ -140,7 +138,6 @@ function NotificationsContainer() {
         fullScreen
         open={Boolean(notificationInDialog)}
         onClose={closeNotificationDetails}
-        TransitionComponent={FullscreenDialogTransition}
       >
         <NotificationDetails
           notification={latestNotificationItem}

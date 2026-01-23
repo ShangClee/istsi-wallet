@@ -1,8 +1,5 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Grow from "@mui/material/Grow"
-import SnackbarContent from "@mui/material/SnackbarContent"
-import { useTheme } from "@mui/material/styles"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { NotificationsContext, trackError } from "~App/contexts/notifications"
 import {
@@ -20,7 +17,6 @@ interface PermissionNotificationProps {
 const PermissionNotification = React.memo(function PermissionNotification(props: PermissionNotificationProps) {
   const { onHide } = props
   const Notifications = React.useContext(NotificationsContext)
-  const theme = useTheme()
   const { t } = useTranslation()
 
   const requestPermission = React.useCallback(() => {
@@ -39,42 +35,21 @@ const PermissionNotification = React.memo(function PermissionNotification(props:
     })().catch(trackError)
   }, [Notifications, onHide, t])
 
+  if (!props.open) return null
+
   return (
-    <Grow in={props.open}>
-      <SnackbarContent
-        message={
-          <HorizontalLayout alignItems="center">
-            <NotificationsIcon />
-            <span style={{ ...theme.typography.button, marginLeft: 8 }}>
-              {t("app.notification.permission.app-notification.message")}
-            </span>
-          </HorizontalLayout>
-        }
-        onClick={requestPermission}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          background: "white",
-          color: theme.palette.text.primary,
-          cursor: "pointer",
-          flexGrow: 0,
-          justifyContent: "center"
-        }}
-      />
-    </Grow>
+    <div
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white text-gray-900 px-6 py-4 rounded-lg shadow-xl cursor-pointer flex items-center justify-center min-w-[300px] border border-gray-200"
+      onClick={requestPermission}
+    >
+      <HorizontalLayout alignItems="center">
+        <NotificationsIcon className="text-gray-600 mr-3" />
+        <span className="font-medium uppercase text-sm tracking-wide">
+          {t("app.notification.permission.app-notification.message")}
+        </span>
+      </HorizontalLayout>
+    </div>
   )
 })
 
-function AppNotificationPermission() {
-  const [showPermissionNotification, setShowPermissionNotification] = React.useState(false)
-
-  React.useEffect(() => {
-    hasPermissionToNotify().then(canNotify => setShowPermissionNotification(!canNotify))
-  }, [])
-
-  const hidePermissionNotification = React.useCallback(() => setShowPermissionNotification(false), [])
-
-  return <PermissionNotification onHide={hidePermissionNotification} open={showPermissionNotification} />
-}
-
-export default React.memo(AppNotificationPermission)
+export default PermissionNotification

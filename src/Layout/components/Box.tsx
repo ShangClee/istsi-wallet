@@ -11,10 +11,11 @@ export type BoxProps = BoxStyles & {
 
 const Box = React.forwardRef(function Box(props: BoxProps, ref: React.Ref<unknown>) {
   const { children, className, component, onClick, style, ...styleProps } = props
-  const inlineStyle = { ...createBoxStyle(styleProps), ...style }
+  const { className: boxClassName, style: boxStyle } = createBoxStyle(styleProps)
+  const inlineStyle = { ...boxStyle, ...style }
   const Component = ((component || "div") as any) as React.ComponentType<any>
   return (
-    <Component className={className} onClick={onClick} ref={ref} style={inlineStyle}>
+    <Component className={[boxClassName, className].filter(Boolean).join(" ")} onClick={onClick} ref={ref} style={inlineStyle}>
       {children}
     </Component>
   )
@@ -32,15 +33,16 @@ const HorizontalLayout = React.forwardRef(function HorizontalLayout(
   ref: React.Ref<HTMLDivElement>
 ) {
   const { children, className, inline, style, ...styleProps } = props
+  const { className: boxClassName, style: boxStyle } = createBoxStyle(styleProps)
   const effectiveStyle: React.CSSProperties = {
     display: inline ? "inline-flex" : "flex",
     flexDirection: "row",
     width: "100%",
-    ...createBoxStyle(styleProps),
+    ...boxStyle,
     ...style
   }
   return (
-    <div className={className} ref={ref} style={effectiveStyle}>
+    <div className={[boxClassName, className].filter(Boolean).join(" ")} ref={ref} style={effectiveStyle}>
       {children}
     </div>
   )
@@ -48,29 +50,31 @@ const HorizontalLayout = React.forwardRef(function HorizontalLayout(
 
 const VerticalLayout = React.forwardRef(function VerticalLayout(props: BoxLayoutProps, ref: React.Ref<HTMLDivElement>) {
   const { children, className, inline, style, ...styleProps } = props
+  const { className: boxClassName, style: boxStyle } = createBoxStyle(styleProps)
   const effectiveStyle: React.CSSProperties = {
     display: inline ? "inline-flex" : "flex",
     flexDirection: "column",
-    ...createBoxStyle(styleProps),
+    ...boxStyle,
     ...style
   }
   return (
-    <div className={className} ref={ref} style={effectiveStyle}>
+    <div className={[boxClassName, className].filter(Boolean).join(" ")} ref={ref} style={effectiveStyle}>
       {children}
     </div>
   )
 })
 
 function FloatingBox({ children, ...styleProps }: BoxStyles & { children: React.ReactNode }) {
+  const { className: boxClassName, style: boxStyle } = createBoxStyle(styleProps)
   const style: React.CSSProperties = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     zIndex: 1,
-    ...createBoxStyle(styleProps)
+    ...boxStyle
   }
-  return <div style={style}>{children}</div>
+  return <div className={boxClassName} style={style}>{children}</div>
 }
 
 // To circumvent TypeScript name inference bug: <https://github.com/Microsoft/TypeScript/issues/14127>

@@ -1,6 +1,6 @@
 import React from "react"
 import CircularProgress from "@mui/material/CircularProgress"
-import makeStyles from "@mui/styles/makeStyles"
+
 import { useIsMobile, RefStateObject } from "~Generic/hooks/userinterface"
 import { MobileKeyboardOpenedSelector } from "~App/theme"
 import { MainErrorBoundary } from "~Generic/components/ErrorBoundaries"
@@ -12,37 +12,15 @@ const isRefStateObject = (thing: any): thing is RefStateObject =>
 
 function Background(props: { children: React.ReactNode; opacity?: number }) {
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        opacity: 0.08,
-        textAlign: "center",
-        zIndex: -1
-      }}
-    >
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-[0.08] text-center -z-10">
       {props.children}
     </div>
   )
 }
 
-const useDialogBodyStyles = makeStyles({
-  actions: {
-    [MobileKeyboardOpenedSelector()]: {
-      display: "none !important"
-    }
-  }
-})
 
-const topStyle: React.CSSProperties = {
-  flexGrow: 0,
-  flexShrink: 0,
-  position: "relative",
-  width: "100%",
-  zIndex: 1
-}
+
+
 
 interface Props {
   actions?: React.ReactNode | RefStateObject
@@ -60,30 +38,39 @@ interface Props {
 }
 
 function DialogBody(props: Props) {
-  const classes = useDialogBodyStyles()
+
   const isSmallScreen = useIsMobile()
 
   const actionsPosition = isSmallScreen ? "bottom" : props.actionsPosition || "after-content"
   const excessWidth = props.excessWidth || 0
 
-  const topContent = React.useMemo(() => (props.top ? <Box style={topStyle}>{props.top}</Box> : null), [props.top])
+  const topContent = React.useMemo(() => (props.top ? <Box className="flex-none relative w-full z-10">{props.top}</Box> : null), [props.top])
 
   const actionsContent = React.useMemo(
     () =>
       props.actions ? (
-        <Box
-          basis={isSmallScreen && !props.preventActionsPlaceholder ? 80 : undefined}
-          className={classes.actions}
-          grow={0}
-          position="relative"
-          ref={isRefStateObject(props.actions) ? props.actions.update : undefined}
-          shrink={0}
-          width="100%"
-        >
-          {isRefStateObject(props.actions) ? null : props.actions}
-        </Box>
+        <>
+          <style>{`
+            ${MobileKeyboardOpenedSelector()} {
+              .dialog-body-actions {
+                display: none !important;
+              }
+            }
+          `}</style>
+          <Box
+            basis={isSmallScreen && !props.preventActionsPlaceholder ? 80 : undefined}
+            className="dialog-body-actions"
+            grow={0}
+            position="relative"
+            ref={isRefStateObject(props.actions) ? props.actions.update : undefined}
+            shrink={0}
+            width="100%"
+          >
+            {isRefStateObject(props.actions) ? null : props.actions}
+          </Box>
+        </>
       ) : null,
-    [classes.actions, isSmallScreen, props.actions, props.preventActionsPlaceholder]
+    [isSmallScreen, props.actions, props.preventActionsPlaceholder]
   )
 
   const background = React.useMemo(

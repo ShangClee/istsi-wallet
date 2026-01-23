@@ -2,8 +2,7 @@ import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Operation, Transaction } from "stellar-sdk"
-import Collapse from "@mui/material/Collapse"
-import Divider from "@mui/material/Divider"
+import Collapse from "~Generic/components/Collapse"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { useTheme } from "@mui/material/styles"
 import { Account, AccountsContext } from "~App/contexts/accounts"
@@ -123,7 +122,7 @@ function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
           transaction={props.transaction}
         />
       ))}
-      <Divider style={{ marginTop: 11, marginBottom: 11 }} />
+      <div className="border-t border-gray-200 my-[11px]" />
       <TransactionMemo memo={props.transaction.memo} style={noHPaddingStyle} />
       {props.showSigners ? (
         <Signers

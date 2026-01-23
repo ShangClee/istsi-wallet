@@ -1,47 +1,5 @@
 import React from "react"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
-import { breakpoints } from "~App/theme"
-
-const useButtonListItemStyles = makeStyles({
-  root: {
-    backgroundColor: "rgba(0, 0, 0, 0.08)",
-    borderRadius: 8,
-    boxShadow: "none",
-    height: 56,
-    marginTop: 0,
-    marginBottom: 0,
-
-    [breakpoints.down(600)]: {
-      height: 52
-    },
-    [breakpoints.down(350)]: {
-      height: 48
-    },
-
-    "&:hover, &:focus": {
-      "@media (hover: hover)": {
-        backgroundColor: "rgba(0, 0, 0, 0.12) !important"
-      },
-      "@media (hover: none)": {
-        backgroundColor: "rgba(0, 0, 0, 0.08) !important"
-      }
-    }
-  },
-  gutterBottom: {
-    marginBottom: 16
-  },
-  textTypography: {
-    alignItems: "center",
-    display: "flex",
-    justifyContent: "center",
-
-    [breakpoints.down(400)]: {
-      fontSize: 14
-    }
-  }
-})
+import { ListItem } from "~Layout/components/List"
 
 interface ButtonListItemProps {
   children: React.ReactNode
@@ -51,16 +9,24 @@ interface ButtonListItemProps {
 }
 
 function ButtonListItem(props: ButtonListItemProps) {
-  const classes = useButtonListItemStyles()
   return (
     <ListItem
       button
-      className={`${classes.root} ${props.gutterBottom ? classes.gutterBottom : ""}`}
+      className={`
+        bg-black/[0.08] rounded-lg shadow-none
+        h-12 sm:h-[52px] md:h-14
+        m-0 ${props.gutterBottom ? "mb-4" : ""}
+        hover:bg-black/[0.12] focus:bg-black/[0.12]
+        transition-colors
+      `}
       onClick={props.onClick}
       style={props.style}
-    >
-      <ListItemText classes={{ primary: classes.textTypography }}>{props.children}</ListItemText>
-    </ListItem>
+      primaryText={
+        <div className="flex items-center justify-center h-full w-full text-sm sm:text-base">
+          {props.children}
+        </div>
+      }
+    />
   )
 }
 

@@ -21,42 +21,10 @@ interface SizingStyles {
   padding?: React.CSSProperties["padding"]
 }
 
-const createSizingStyle = ({ width, height, minWidth, maxWidth, minHeight, maxHeight, padding }: SizingStyles) => {
-  return {
-    padding,
-    width,
-    height,
-    maxWidth,
-    minWidth,
-    maxHeight,
-    minHeight
-  }
-}
-
 interface FlexParentStyles {
   alignItems?: React.CSSProperties["alignItems"]
   justifyContent?: React.CSSProperties["justifyContent"] | "start" | "end"
   wrap?: React.CSSProperties["flexWrap"]
-}
-
-const createFlexParentStyle = ({ alignItems, justifyContent, wrap }: FlexParentStyles) => {
-  if (justifyContent === "start") {
-    justifyContent = "flex-start"
-  }
-  if (justifyContent === "end") {
-    justifyContent = "flex-end"
-  }
-  if (alignItems === "start") {
-    alignItems = "flex-start"
-  }
-  if (alignItems === "end") {
-    alignItems = "flex-end"
-  }
-  return {
-    alignItems,
-    justifyContent,
-    flexWrap: wrap
-  }
 }
 
 interface FlexChildStyles {
@@ -68,48 +36,10 @@ interface FlexChildStyles {
   shrink?: boolean | number
 }
 
-const createFlexChildStyle = ({ alignSelf, basis, fixed, grow, order, shrink }: FlexChildStyles) => {
-  const style: React.CSSProperties = {
-    flexBasis: basis
-  }
-
-  if (typeof grow === "boolean") {
-    style.flexGrow = grow ? 1 : 0
-  }
-  if (typeof grow === "number") {
-    style.flexGrow = grow
-  }
-  if (typeof order !== "undefined") {
-    style.order = order
-  }
-  if (typeof shrink === "boolean") {
-    style.flexShrink = shrink ? 1 : 0
-  }
-  if (typeof shrink === "number") {
-    style.flexShrink = shrink
-  }
-  if (fixed) {
-    style.flexGrow = 0
-    style.flexShrink = 0
-  }
-  if (alignSelf) {
-    style.alignSelf = alignSelf
-  }
-  return style
-}
-
 interface TextStyles {
   fontSize?: React.CSSProperties["fontSize"]
   fontWeight?: React.CSSProperties["fontWeight"]
   textAlign?: React.CSSProperties["textAlign"]
-}
-
-function createTextStyle({ fontSize, fontWeight, textAlign }: TextStyles) {
-  return {
-    fontSize,
-    fontWeight,
-    textAlign
-  }
 }
 
 export type BoxStyles = SizingStyles &
@@ -125,28 +55,65 @@ export type BoxStyles = SizingStyles &
     position?: React.CSSProperties["position"]
   }
 
-const createBoxStyle = (styleProps: BoxStyles) => {
-  const { hidden = false, margin, overflow = "visible", overflowX, overflowY } = styleProps
+const clsx = (...args: (string | undefined | null | false)[]) => args.filter(Boolean).join(" ")
 
-  const style = {
-    boxSizing: "border-box",
-    margin,
-    overflow,
-    overflowX,
-    overflowY,
-    ...(hidden ? { display: "none" } : {}),
-    ...createSizingStyle(styleProps),
-    ...createFlexParentStyle(styleProps),
-    ...createFlexChildStyle(styleProps),
-    ...createTextStyle(styleProps)
+const createBoxStyle = (styleProps: BoxStyles) => {
+  const { hidden = false, margin, overflow = "visible", overflowX, overflowY, display, position } = styleProps
+
+  const classNames: string[] = []
+  const inlineStyles: any = {}
+
+  // Layout & Visibility
+  if (hidden) classNames.push("hidden")
+  else if (display) inlineStyles.display = display
+
+  if (position) inlineStyles.position = position
+
+  // Sizing
+  if (styleProps.width) inlineStyles.width = styleProps.width
+  if (styleProps.height) inlineStyles.height = styleProps.height
+  if (styleProps.minWidth) inlineStyles.minWidth = styleProps.minWidth
+  if (styleProps.maxWidth) inlineStyles.maxWidth = styleProps.maxWidth
+  if (styleProps.minHeight) inlineStyles.minHeight = styleProps.minHeight
+  if (styleProps.maxHeight) inlineStyles.maxHeight = styleProps.maxHeight
+  if (styleProps.padding) inlineStyles.padding = styleProps.padding
+  if (margin) inlineStyles.margin = margin
+
+  // Overflow
+  if (overflow && overflow !== "visible") inlineStyles.overflow = overflow
+  if (overflowX) inlineStyles.overflowX = overflowX
+  if (overflowY) inlineStyles.overflowY = overflowY
+
+  // Flex Parent
+  if (styleProps.alignItems) inlineStyles.alignItems = styleProps.alignItems === "start" ? "flex-start" : styleProps.alignItems === "end" ? "flex-end" : styleProps.alignItems
+  if (styleProps.justifyContent) inlineStyles.justifyContent = styleProps.justifyContent === "start" ? "flex-start" : styleProps.justifyContent === "end" ? "flex-end" : styleProps.justifyContent
+  if (styleProps.wrap) inlineStyles.flexWrap = styleProps.wrap
+
+  // Flex Child
+  if (styleProps.alignSelf) inlineStyles.alignSelf = styleProps.alignSelf
+  if (styleProps.basis) inlineStyles.flexBasis = styleProps.basis
+  if (styleProps.order) inlineStyles.order = styleProps.order
+
+  if (typeof styleProps.grow !== "undefined") inlineStyles.flexGrow = typeof styleProps.grow === "boolean" ? (styleProps.grow ? 1 : 0) : styleProps.grow
+  if (typeof styleProps.shrink !== "undefined") inlineStyles.flexShrink = typeof styleProps.shrink === "boolean" ? (styleProps.shrink ? 1 : 0) : styleProps.shrink
+
+  if (styleProps.fixed) {
+    inlineStyles.flexGrow = 0
+    inlineStyles.flexShrink = 0
   }
-  if (styleProps.display) {
-    style.display = styleProps.display
+
+  // Text
+  if (styleProps.fontSize) inlineStyles.fontSize = styleProps.fontSize
+  if (styleProps.fontWeight) inlineStyles.fontWeight = styleProps.fontWeight
+  if (styleProps.textAlign) inlineStyles.textAlign = styleProps.textAlign
+
+  // Always use border-box
+  inlineStyles.boxSizing = "border-box"
+
+  return {
+    className: clsx(...classNames),
+    style: removeNullValueProps(inlineStyles)
   }
-  if (styleProps.position) {
-    style.position = styleProps.position
-  }
-  return removeNullValueProps(style)
 }
 
 export default createBoxStyle

@@ -1,57 +1,10 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
 import { Account } from "~App/contexts/accounts"
 import { AccountData } from "~Generic/lib/account"
-import { breakpoints } from "~App/theme"
 import { SingleBalance } from "~Account/components/AccountBalances"
-
-const useBreakdownItemStyles = makeStyles({
-  root: {
-    padding: 0
-  },
-  mainListItemText: {
-    flexShrink: 5
-  },
-  mainListItemTextIndent: {
-    marginLeft: 24,
-
-    [breakpoints.down(600)]: {
-      marginLeft: 12
-    }
-  },
-  mainListItemTextPrimaryTypography: {
-    fontSize: 18,
-    fontWeight: 300,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-
-    [breakpoints.down(400)]: {
-      fontSize: 16,
-      lineHeight: "20px"
-    }
-  },
-  mainListItemTextSecondaryTypography: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-
-    [breakpoints.down(400)]: {
-      fontSize: 14
-    },
-    [breakpoints.down(350)]: {
-      fontSize: 12
-    }
-  },
-  balanceListItem: {
-    marginLeft: 8,
-    textAlign: "right"
-  }
-})
+import { List, ListItem } from "~Layout/components/List"
 
 interface BreakdownItemProps {
   amount: string
@@ -65,65 +18,55 @@ interface BreakdownItemProps {
 
 function BreakdownItem(props: BreakdownItemProps) {
   const { variant = "deduction" } = props
-  const classes = useBreakdownItemStyles()
 
   if (props.hide) {
     return null
   }
+  
+  const indentClass = props.indent ? "ml-3 sm:ml-6" : ""
+
   return (
-    <ListItem className={classes.root} style={props.style}>
-      <ListItemText
-        classes={{
-          root: `${classes.mainListItemText} ${props.indent ? classes.mainListItemTextIndent : ""}`,
-          primary: classes.mainListItemTextPrimaryTypography,
-          secondary: classes.mainListItemTextSecondaryTypography
-        }}
-        primary={props.primary}
-        secondary={props.secondary}
-      />
-      <ListItemText
-        className={classes.balanceListItem}
-        primaryTypographyProps={{
-          style: { fontSize: "150%" }
-        }}
-      >
-        {variant === "deduction" ? "-" : variant === "gross" ? "" : "="}
-        &nbsp;
-        <SingleBalance assetCode="" balance={props.amount} />
-      </ListItemText>
-    </ListItem>
+    <ListItem
+      className="py-0"
+      style={props.style}
+      primaryText={
+        <span className={`block truncate text-base sm:text-lg font-light ${indentClass}`}>
+          {props.primary}
+        </span>
+      }
+      secondaryText={
+        props.secondary ? (
+          <span className={`block truncate text-xs sm:text-sm text-gray-500 ${indentClass}`}>
+            {props.secondary}
+          </span>
+        ) : null
+      }
+      rightIcon={
+        <div className="text-right text-xl font-light whitespace-nowrap ml-2">
+          {variant === "deduction" ? "-" : variant === "gross" ? "" : "="}
+          &nbsp;
+          <SingleBalance assetCode="" balance={props.amount} />
+        </div>
+      }
+    />
   )
 }
 
 const BreakdownHeadline = React.memo(function BreakdownHeadline(props: { left?: string; right?: string }) {
-  const classes = useBreakdownItemStyles()
-
   return (
-    <ListItem className={classes.root} style={{ borderBottom: "none" }}>
-      <ListItemText
-        classes={{
-          root: classes.mainListItemText,
-          primary: classes.mainListItemTextPrimaryTypography,
-          secondary: classes.mainListItemTextSecondaryTypography
-        }}
-        primary={props.left}
-      />
-      <ListItemText
-        className={classes.balanceListItem}
-        primaryTypographyProps={{
-          style: {
-            fontSize: "120%",
-            fontWeight: 300
-          }
-        }}
-        style={{
-          marginTop: 0,
-          marginBottom: 0
-        }}
-      >
-        {props.right}
-      </ListItemText>
-    </ListItem>
+    <ListItem
+      className="py-0 border-b-0"
+      primaryText={
+        <span className="block truncate text-base sm:text-lg font-light">
+          {props.left}
+        </span>
+      }
+      rightIcon={
+        <div className="text-right text-lg sm:text-xl font-light whitespace-nowrap my-0">
+          {props.right}
+        </div>
+      }
+    />
   )
 })
 
@@ -161,7 +104,7 @@ function SpendableBalanceBreakdown(props: Props) {
     .minus(sellingLiabilities)
 
   return (
-    <List style={{ padding: 0 }}>
+    <List style={{ padding: 0 }} className="p-0">
       <BreakdownHeadline right={t("account.balance-details.spendable-balances.headline")} />
       <BreakdownItem
         amount={rawBalance.toFixed(4)}

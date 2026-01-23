@@ -1,26 +1,40 @@
 import React from "react"
-import IconButton from "@mui/material/IconButton"
-import Typography, { TypographyProps } from "@mui/material/Typography"
-import ArrowBackIcon from "@mui/icons-material/KeyboardArrowLeft"
 import { useIsMobile } from "../hooks/userinterface"
 import { Box, HorizontalLayout } from "~Layout/components/Box"
 
+const ArrowBackIcon = (props: { className?: string; style?: React.CSSProperties }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    width="1em"
+    height="1em"
+    className={props.className}
+    style={props.style}
+  >
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+  </svg>
+)
+
 interface BackButtonProps {
+  className?: string
   onClick: () => void
   style?: React.CSSProperties
 }
 
 // React.memo()-ing, since for some reason re-rendering the KeyboardArrowLeft icon is slow
 const BackButton = React.memo(function BackButton(props: BackButtonProps) {
-  const style = {
-    padding: 6,
-    fontSize: 32,
-    ...props.style
-  }
   return (
-    <IconButton color="inherit" onClick={props.onClick} style={style} size="large">
-      <ArrowBackIcon style={{ fontSize: 32 }} />
-    </IconButton>
+    <button
+      type="button"
+      onClick={props.onClick}
+      className={`p-2 rounded-full hover:bg-black/5 transition-colors text-[32px] flex items-center justify-center ${
+        props.className || ""
+      }`}
+      style={{ color: "inherit", ...props.style }}
+    >
+      <ArrowBackIcon className="text-[32px]" />
+    </button>
   )
 })
 
@@ -33,7 +47,7 @@ interface Props {
   onBack: () => void
   style?: React.CSSProperties
   title: React.ReactNode
-  titleColor?: TypographyProps["color"]
+  titleColor?: string
   titleStyle?: React.CSSProperties
 }
 
@@ -41,16 +55,7 @@ function MainTitle(props: Props) {
   const isSmallScreen = useIsMobile()
   const isTitleOnSecondRow = isSmallScreen && props.actions && !props.hideBackButton
 
-  const backButtonStyle = React.useMemo(
-    () => ({
-      fontSize: 28,
-      flexGrow: 0,
-      flexShrink: 0,
-      marginLeft: isSmallScreen ? -12 : -4,
-      marginRight: 6
-    }),
-    [isSmallScreen]
-  )
+  const backButtonClassName = `text-[28px] flex-none shrink-0 mr-1.5 ${isSmallScreen ? "-ml-3" : "-ml-1"}`
 
   return (
     <HorizontalLayout
@@ -67,7 +72,7 @@ function MainTitle(props: Props) {
       {props.leftAction ? (
         props.leftAction
       ) : props.hideBackButton ? null : (
-        <BackButton onClick={props.onBack} style={backButtonStyle} />
+        <BackButton onClick={props.onBack} className={backButtonClassName} />
       )}
       <HorizontalLayout
         alignItems="center"
@@ -76,28 +81,17 @@ function MainTitle(props: Props) {
         maxWidth="100%"
         order={isTitleOnSecondRow ? 4 : undefined}
       >
-        <Typography
-          variant="h5"
-          color={props.titleColor}
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            fontSize: isSmallScreen ? 20 : 24,
-            height: 48,
-            lineHeight: "48px",
-            marginRight: 12,
-            minWidth: "40%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            ...props.titleStyle
-          }}
+        <h5
+          className={`flex-1 shrink text-[20px] h-[48px] leading-[48px] mr-3 min-w-[40%] truncate m-0 font-normal ${
+            !isSmallScreen ? "sm:text-[24px]" : ""
+          }`}
+          style={{ color: props.titleColor, ...props.titleStyle }}
         >
           {props.title}
-        </Typography>
+        </h5>
         {props.badges}
       </HorizontalLayout>
-      <Box grow={Boolean(props.actions)} style={{ textAlign: "right" }}>
+      <Box grow={Boolean(props.actions)} className="text-right">
         {props.actions}
       </Box>
     </HorizontalLayout>

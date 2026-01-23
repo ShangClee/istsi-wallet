@@ -1,15 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import IconButton from "@mui/material/IconButton"
-import InputAdornment from "@mui/material/InputAdornment"
-import TextField, { TextFieldProps } from "@mui/material/TextField"
-import Tooltip from "@mui/material/Tooltip"
-import makeStyles from "@mui/styles/makeStyles"
-import CheckIcon from "@mui/icons-material/Check"
-import ClearIcon from "@mui/icons-material/Clear"
-import EditIcon from "@mui/icons-material/Edit"
-import GroupIcon from "@mui/icons-material/Group"
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"
+import { CheckIcon, ClearIcon, EditIcon, GroupIcon, VerifiedUserIcon } from "~Generic/components/Icons"
 import { Account } from "~App/contexts/accounts"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
@@ -17,6 +8,7 @@ import { containsThirdPartySigner, ThirdPartySecurityService } from "~Generic/li
 import { primaryBackgroundColor } from "~App/theme"
 import { HorizontalLayout } from "~Layout/components/Box"
 import MainTitle from "~Generic/components/MainTitle"
+import Tooltip from "~Generic/components/Tooltip"
 
 function clearTextSelection() {
   const selection = window.getSelection()
@@ -24,6 +16,17 @@ function clearTextSelection() {
     selection.removeAllRanges()
   }
 }
+
+const IconButton = ({ children, onClick, style, size, className }: any) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`rounded-full p-2 hover:bg-white/10 transition-colors flex items-center justify-center text-inherit ${className || ""}`}
+    style={style}
+  >
+    {children}
+  </button>
+)
 
 function PasswordStatus(props: { safe: boolean; style?: React.CSSProperties }) {
   const { t } = useTranslation()
@@ -104,33 +107,14 @@ export const Badges = React.memo(function Badges(props: BadgesProps) {
   return <StaticBadges multisig={multisig} password={props.account.requiresPassword} testnet={props.account.testnet} />
 })
 
-const useTitleTextfieldStyles = makeStyles({
-  input: {
-    borderRadius: 0,
-    caretColor: "white",
-    "&::selection": {
-      background: "rgba(255, 255, 255, 0.2)",
-      color: "white"
-    }
-  },
-  underlined: {
-    "&:before": {
-      borderBottomColor: "rgba(255, 255, 255, 0.7)"
-    },
-    "&:hover:before": {
-      borderBottomColor: "rgba(255, 255, 255, 0.87) !important"
-    }
-  }
-})
-
 interface TitleTextFieldProps {
   actions?: React.ReactNode
   error?: string
   inputRef?: React.Ref<HTMLInputElement>
-  onChange: TextFieldProps["onChange"]
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClick?: () => void
-  onKeyDown?: TextFieldProps["onKeyDown"]
-  placeholder?: TextFieldProps["placeholder"]
+  onKeyDown?: (event: React.KeyboardEvent) => void
+  placeholder?: string
   preventClicks?: boolean
   mode: "editing" | "readonly"
   showEdit: boolean
@@ -139,49 +123,39 @@ interface TitleTextFieldProps {
 }
 
 function TitleTextField(props: TitleTextFieldProps) {
-  const classes = useTitleTextfieldStyles()
+  const isEditing = props.mode === "editing"
   const length = props.value.length || props.placeholder?.length || 0
+
   return (
-    <TextField
-      variant="standard"
-      error={Boolean(props.error)}
-      inputProps={{
-        className: classes.input,
-        onClick: props.onClick,
-        size: Math.max(length + 1, 4),
-        style: {
-          cursor: props.mode === "editing" ? "text" : "default",
-          height: 48,
-          padding: 0,
-          textOverflow: "ellipsis"
-        }
-      }}
-      inputRef={props.inputRef}
-      InputProps={{
-        className: props.mode === "editing" ? classes.underlined : "",
-        disableUnderline: props.mode === "readonly",
-        endAdornment: !props.showEdit ? null : (
-          <InputAdornment position="end" style={{ height: "auto" }}>
-            {props.actions}
-          </InputAdornment>
-        ),
-        readOnly: props.mode === "readonly",
-        style: {
-          color: "inherit",
-          font: "inherit",
-          height: 48, // Will otherwise jump when edit icon button appears
-          pointerEvents: props.preventClicks ? "none" : undefined
-        }
-      }}
-      onChange={props.onChange}
-      onKeyDown={props.onKeyDown}
-      placeholder={props.placeholder}
-      style={{
-        color: "inherit",
-        ...props.style
-      }}
-      value={props.value}
-    />
+    <div className="relative flex items-center h-12">
+      <input
+        ref={props.inputRef}
+        type="text"
+        className={`bg-transparent outline-none text-inherit font-inherit h-full p-0 transition-colors
+          ${isEditing ? "border-b border-white/70 focus:border-white/90" : "border-0"}
+          ${props.preventClicks ? "pointer-events-none" : ""}
+          placeholder-white/50
+        `}
+        style={{
+          cursor: isEditing ? "text" : "default",
+          textOverflow: "ellipsis",
+          width: `${Math.max(length + 1, 4)}ch`,
+          maxWidth: "100%",
+          ...props.style
+        }}
+        value={props.value}
+        onChange={props.onChange}
+        onKeyDown={props.onKeyDown}
+        placeholder={props.placeholder}
+        readOnly={!isEditing}
+        onClick={props.onClick}
+      />
+      {props.showEdit && props.actions && (
+        <div className="flex items-center ml-2 h-full text-inherit">
+          {props.actions}
+        </div>
+      )}
+    </div>
   )
 }
 

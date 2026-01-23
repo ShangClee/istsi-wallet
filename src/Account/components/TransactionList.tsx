@@ -3,50 +3,44 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import { Asset, FeeBumpTransaction, Horizon, Networks, Operation, Transaction, TransactionBuilder } from "stellar-sdk"
 import HumanTime from "react-human-time"
-import Collapse from "@mui/material/Collapse"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import ListSubheader from "@mui/material/ListSubheader"
-import makeStyles from "@mui/styles/makeStyles"
-import AddIcon from "@mui/icons-material/Add"
-import CallMadeIcon from "@mui/icons-material/CallMade"
-import CallReceivedIcon from "@mui/icons-material/CallReceived"
-import RemoveIcon from "@mui/icons-material/Remove"
-import SettingsIcon from "@mui/icons-material/Settings"
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
+import { AddIcon, CallMadeIcon, CallReceivedIcon, RemoveIcon, SettingsIcon, SwapHorizIcon } from "~Generic/components/Icons"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import * as routes from "~App/routes"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { getPaymentSummary, PaymentSummary } from "~Generic/lib/paymentSummary"
-import { breakpoints } from "~App/theme"
 import { ActionButton } from "~Generic/components/DialogActions"
 import { InlineErrorBoundary } from "~Generic/components/ErrorBoundaries"
 import { PublicKey } from "~Generic/components/PublicKey"
 import { formatBalance } from "~Generic/lib/balances"
 import { matchesRoute } from "~Generic/lib/routes"
 import { stringifyAssetToReadableString } from "~Generic/lib/stellar"
+import { List, ListItem, ListSubheader } from "~Layout/components/List"
 import MemoMessage from "~Transaction/components/MemoMessage"
 import TransactionReviewDialog from "~TransactionReview/components/TransactionReviewDialog"
 import { useOperationTitle } from "~TransactionReview/components/Operations"
 import { SingleBalance } from "./AccountBalances"
 
 const dedupe = <T extends any>(array: T[]): T[] => Array.from(new Set(array))
-const doNothing = () => undefined
 
 function sum(...amounts: Array<string | number | BigNumber>): BigNumber {
   return amounts.reduce<BigNumber>((total, amount) => total.add(amount), BigNumber(0))
 }
 
 function EntryAnimation(props: { children: React.ReactNode; animate: boolean }) {
-  return props.animate ? (
-    <Collapse appear enter={false} in timeout={{ enter: 1000 }}>
+  const [visible, setVisible] = React.useState(!props.animate)
+
+  React.useEffect(() => {
+    if (props.animate) {
+      const timer = setTimeout(() => setVisible(true), 50)
+      return () => clearTimeout(timer)
+    }
+  }, [props.animate])
+
+  return (
+    <div className={`transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
       {props.children}
-    </Collapse>
-  ) : (
-    <React.Fragment>{props.children}</React.Fragment>
+    </div>
   )
 }
 
@@ -155,16 +149,12 @@ function TransactionIcon(props: { paymentSummary: PaymentSummary; transaction: T
 interface TitleTextProps {
   accountPublicKey: string
   alwaysShowSource?: boolean
-  createdAt: string
   paymentSummary: PaymentSummary
   style?: React.CSSProperties
-  showMemo: boolean
   transaction: Transaction
 }
 
-// TODO: Re-use code of transaction summary operation heading
-// tslint:disable-next-line no-shadowed-variable
-const TransactionItemText = React.memo(function TransactionItemText(props: TitleTextProps) {
+const TransactionItemPrimary = React.memo(function TransactionItemPrimary(props: TitleTextProps) {
   const getOperationTitle = useOperationTitle()
   const { t } = useTranslation()
   const remotePublicKeys = props.paymentSummary.reduce(
@@ -173,109 +163,65 @@ const TransactionItemText = React.memo(function TransactionItemText(props: Title
   )
 
   const testnet = props.transaction.networkPassphrase === Networks.TESTNET
-
-  const secondary = React.useMemo(
-    () => (
-      <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>
-        <Time time={props.createdAt} />
-        {props.showMemo && props.transaction.memo.type !== "none" ? (
-          <>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <MemoMessage
-              prefix={<>{t("account.transactions.transaction-list.item.memo")}:&nbsp;</>}
-              memo={props.transaction.memo}
-            />
-          </>
-        ) : null}
-      </span>
-    ),
-    [props.createdAt, props.showMemo, props.transaction, t]
-  )
+  const className = `block overflow-hidden text-ellipsis whitespace-nowrap font-bold ${props.style?.fontSize ? "" : "text-base"}`
+  const style = props.style
 
   if (remotePublicKeys.length > 0 && props.paymentSummary.every(summaryItem => summaryItem.balanceChange.gt(0))) {
     return (
-      <ListItemText
-        primary={
-          <span>
-            {t("account.transactions.transaction-list.item.from")}&nbsp;
-            <RemotePublicKeys publicKeys={remotePublicKeys} short testnet={testnet} />
-          </span>
-        }
-        primaryTypographyProps={{ style: props.style }}
-        secondary={secondary}
-        style={props.style}
-      />
+      <span className={className} style={style}>
+        {t("account.transactions.transaction-list.item.from")}&nbsp;
+        <RemotePublicKeys publicKeys={remotePublicKeys} short testnet={testnet} />
+      </span>
     )
   } else if (
     remotePublicKeys.length > 0 &&
     props.paymentSummary.every(summaryItem => summaryItem.balanceChange.lt(0))
   ) {
     return (
-      <ListItemText
-        primary={
+      <span className={className} style={style}>
+        {t("account.transactions.transaction-list.item.to")}&nbsp;
+        <RemotePublicKeys publicKeys={remotePublicKeys} short testnet={testnet} />
+        {props.alwaysShowSource ? (
           <span>
-            {t("account.transactions.transaction-list.item.to")}&nbsp;
-            <RemotePublicKeys publicKeys={remotePublicKeys} short testnet={testnet} />
-            {props.alwaysShowSource ? (
-              <span>
-                &nbsp;{t("account.transactions.transaction-list.item.from")}&nbsp;
-                <PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />{" "}
-              </span>
-            ) : null}
+            &nbsp;{t("account.transactions.transaction-list.item.from")}&nbsp;
+            <PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />{" "}
           </span>
-        }
-        primaryTypographyProps={{ style: props.style }}
-        secondary={secondary}
-        style={props.style}
-      />
+        ) : null}
+      </span>
     )
   } else if (props.transaction.operations.length === 1 && props.transaction.operations[0].type === "changeTrust") {
     const operation = props.transaction.operations[0] as Operation.ChangeTrust
 
     return BigNumber(operation.limit).eq(0) ? (
-      <ListItemText
-        primary={
-          <span>
-            {t(
-              "account.transactions.transaction-list.item.trust.remove-trust",
-              `Remove trust in asset ${stringifyAssetToReadableString(operation.line)}`,
-              { asset: stringifyAssetToReadableString(operation.line) }
-            )}
-            {props.alwaysShowSource ? (
-              <>
-                {" "}
-                (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
-              </>
-            ) : null}
-          </span>
-        }
-        primaryTypographyProps={{ style: props.style }}
-        secondary={secondary}
-        style={props.style}
-      />
+      <span className={className} style={style}>
+        {t(
+          "account.transactions.transaction-list.item.trust.remove-trust",
+          `Remove trust in asset ${stringifyAssetToReadableString(operation.line)}`,
+          { asset: stringifyAssetToReadableString(operation.line) }
+        )}
+        {props.alwaysShowSource ? (
+          <>
+            {" "}
+            (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
+          </>
+        ) : null}
+      </span>
     ) : (
-      <ListItemText
-        primary={
-          <span>
-            {t(
-              "account.transactions.transaction-list.item.trust.add-trust",
-              `Trust asset ${stringifyAssetToReadableString(operation.line)}`,
-              {
-                asset: stringifyAssetToReadableString(operation.line)
-              }
-            )}
-            {props.alwaysShowSource ? (
-              <>
-                {" "}
-                (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
-              </>
-            ) : null}
-          </span>
-        }
-        primaryTypographyProps={{ style: props.style }}
-        secondary={secondary}
-        style={props.style}
-      />
+      <span className={className} style={style}>
+        {t(
+          "account.transactions.transaction-list.item.trust.add-trust",
+          `Trust asset ${stringifyAssetToReadableString(operation.line)}`,
+          {
+            asset: stringifyAssetToReadableString(operation.line)
+          }
+        )}
+        {props.alwaysShowSource ? (
+          <>
+            {" "}
+            (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
+          </>
+        ) : null}
+      </span>
     )
   } else if (
     props.transaction.operations.length === 1 &&
@@ -287,74 +233,46 @@ const TransactionItemText = React.memo(function TransactionItemText(props: Title
     if (String(operation.offerId) === "0") {
       // Create offer
       return (
-        <ListItemText
-          primary={
-            <span>
-              <OfferDescription {...operation} amount={amount} price={BigNumber(operation.price)} />
-              {props.alwaysShowSource ? (
-                <>
-                  {" "}
-                  (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
-                </>
-              ) : null}
-            </span>
-          }
-          primaryTypographyProps={{ style: props.style }}
-          secondary={secondary}
-          style={props.style}
-        />
+        <span className={className} style={style}>
+          <OfferDescription {...operation} amount={amount} price={BigNumber(operation.price)} />
+          {props.alwaysShowSource ? (
+            <>
+              {" "}
+              (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
+            </>
+          ) : null}
+        </span>
       )
     } else if (amount.eq(0)) {
       // Delete offer
       return (
-        <ListItemText
-          primary={
-            <span>
-              <OfferDescription {...operation} amount={BigNumber(0)} price={BigNumber(operation.price)} />
-              {props.alwaysShowSource ? (
-                <>
-                  {" "}
-                  (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
-                </>
-              ) : null}
-            </span>
-          }
-          primaryTypographyProps={{ style: props.style }}
-          secondary={secondary}
-          style={props.style}
-        />
+        <span className={className} style={style}>
+          <OfferDescription {...operation} amount={BigNumber(0)} price={BigNumber(operation.price)} />
+          {props.alwaysShowSource ? (
+            <>
+              {" "}
+              (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
+            </>
+          ) : null}
+        </span>
       )
     } else {
       // Update offer
       return (
-        <ListItemText
-          primary={
-            <span>
-              <OfferDescription {...operation} amount={amount} price={BigNumber(operation.price)} />
-              {props.alwaysShowSource ? (
-                <>
-                  {" "}
-                  (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
-                </>
-              ) : null}
-            </span>
-          }
-          primaryTypographyProps={{ style: props.style }}
-          secondary={secondary}
-          style={props.style}
-        />
+        <span className={className} style={style}>
+          <OfferDescription {...operation} amount={amount} price={BigNumber(operation.price)} />
+          {props.alwaysShowSource ? (
+            <>
+              {" "}
+              (<PublicKey publicKey={props.accountPublicKey} testnet={testnet} variant="short" />)
+            </>
+          ) : null}
+        </span>
       )
     }
   } else {
     const formattedOperations = props.transaction.operations.map(getOperationTitle)
-    return (
-      <ListItemText
-        primary={<span>{dedupe(formattedOperations).join(", ")}</span>}
-        primaryTypographyProps={{ style: props.style }}
-        secondary={secondary}
-        style={props.style}
-      />
-    )
+    return <span className={className} style={style}>{dedupe(formattedOperations).join(", ")}</span>
   }
 })
 
@@ -380,7 +298,7 @@ function TransactionListItemBalance(props: {
     : paymentSummary[0].balanceChange
 
   return (
-    <ListItemText primaryTypographyProps={{ align: "right" }} style={{ flexShrink: 0, ...props.style }}>
+    <div className="flex-shrink-0 text-right" style={props.style}>
       {paymentSummary.length === 0 ? null : (
         <SingleBalance
           assetCode={paymentSummary[0].asset.getCode()}
@@ -388,7 +306,7 @@ function TransactionListItemBalance(props: {
           style={isSmallScreen ? { fontSize: "1rem" } : { fontSize: "1.4rem" }}
         />
       )}
-    </ListItemText>
+    </div>
   )
 }
 
@@ -407,6 +325,7 @@ interface TransactionListItemProps {
 export const TransactionListItem = React.memo(function TransactionListItem(props: TransactionListItemProps) {
   const { hideMemos } = React.useContext(SettingsContext)
   const isSmallScreen = useIsMobile()
+  const { t } = useTranslation()
 
   const { onOpenTransaction } = props
   const restoredTransaction = React.useMemo(
@@ -420,33 +339,53 @@ export const TransactionListItem = React.memo(function TransactionListItem(props
   const paymentSummary = getPaymentSummary(props.accountPublicKey, transaction)
   const onOpen = onOpenTransaction ? () => onOpenTransaction(restoredTransaction.hash().toString("hex")) : undefined
 
+  const secondary = (
+    <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>
+      <Time time={props.createdAt} />
+      {(!hideMemos) && transaction.memo.type !== "none" ? (
+        <>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <MemoMessage
+            prefix={<>{t("account.transactions.transaction-list.item.memo")}:&nbsp;</>}
+            memo={transaction.memo}
+          />
+        </>
+      ) : null}
+    </span>
+  )
+
   return (
-    <ListItem button={Boolean(onOpen) as any} className={props.className || ""} onClick={onOpen} style={props.style}>
-      <ListItemIcon style={{ marginRight: isSmallScreen ? 0 : undefined }}>
-        {props.icon || <TransactionIcon paymentSummary={paymentSummary} transaction={transaction} />}
-      </ListItemIcon>
-      <TransactionItemText
-        accountPublicKey={props.accountPublicKey}
-        alwaysShowSource={props.alwaysShowSource}
-        createdAt={props.createdAt}
-        paymentSummary={paymentSummary}
-        showMemo={!hideMemos}
-        style={{
-          fontSize: isSmallScreen ? "0.8rem" : undefined,
-          fontWeight: "bold",
-          overflow: "hidden",
-          paddingRight: 0,
-          textOverflow: "ellipsis"
-        }}
-        transaction={transaction}
-      />
-      <TransactionListItemBalance
-        accountPublicKey={props.accountPublicKey}
-        paymentSummary={paymentSummary}
-        style={{ paddingRight: 0 }}
-        transaction={transaction}
-      />
-    </ListItem>
+    <ListItem
+      button={Boolean(onOpen)}
+      className={props.className || ""}
+      onClick={onOpen}
+      style={props.style}
+      leftIcon={props.icon || <TransactionIcon paymentSummary={paymentSummary} transaction={transaction} />}
+      primaryText={
+        <TransactionItemPrimary
+          accountPublicKey={props.accountPublicKey}
+          alwaysShowSource={props.alwaysShowSource}
+          paymentSummary={paymentSummary}
+          style={{
+            fontSize: isSmallScreen ? "0.8rem" : undefined,
+            fontWeight: "bold",
+            overflow: "hidden",
+            paddingRight: 0,
+            textOverflow: "ellipsis"
+          }}
+          transaction={transaction}
+        />
+      }
+      secondaryText={secondary}
+      rightIcon={
+        <TransactionListItemBalance
+          accountPublicKey={props.accountPublicKey}
+          paymentSummary={paymentSummary}
+          style={{ paddingRight: 0 }}
+          transaction={transaction}
+        />
+      }
+    />
   )
 })
 
@@ -460,30 +399,23 @@ const LoadMoreTransactionsListItem = React.memo(function LoadMoreTransactionsLis
 ) {
   const { t } = useTranslation()
   return (
-    <ListItem style={{ borderBottom: "none", height: 75 }}>
-      <ListItemText disableTypography style={{ textAlign: "center" }}>
-        <ActionButton
-          onClick={props.onClick}
-          loading={props.pending}
-          style={{ margin: "0 auto", paddingLeft: 16, paddingRight: 16 }}
-          variant="text"
-        >
-          {t("account.transactions.transaction-list.load-more.label")}
-        </ActionButton>
-      </ListItemText>
-    </ListItem>
+    <ListItem
+      style={{ borderBottom: "none", height: 75 }}
+      className="flex justify-center"
+      primaryText={
+        <div className="text-center w-full">
+          <ActionButton
+            onClick={props.onClick}
+            loading={props.pending}
+            style={{ margin: "0 auto", paddingLeft: 16, paddingRight: 16 }}
+            variant="text"
+          >
+            {t("account.transactions.transaction-list.load-more.label")}
+          </ActionButton>
+        </div>
+      }
+    />
   )
-})
-
-const useTransactionListStyles = makeStyles({
-  listItem: {
-    padding: "8px 24px",
-
-    [breakpoints.down(600)]: {
-      paddingLeft: 24,
-      paddingRight: 24
-    }
-  }
 })
 
 interface TransactionListProps {
@@ -498,7 +430,6 @@ interface TransactionListProps {
 }
 
 function TransactionList(props: TransactionListProps) {
-  const classes = useTransactionListStyles()
   const isSmallScreen = useIsMobile()
   const router = useRouter()
 
@@ -555,7 +486,7 @@ function TransactionList(props: TransactionListProps) {
               <TransactionListItem
                 key={transaction.hash}
                 accountPublicKey={props.account.publicKey}
-                className={classes.listItem}
+                className={isSmallScreen ? "px-6" : "px-6"}
                 createdAt={transaction.created_at}
                 onOpenTransaction={openTransaction}
                 testnet={props.account.testnet}
@@ -566,34 +497,35 @@ function TransactionList(props: TransactionListProps) {
         ))}
       </>
     ),
-    [props.transactions, props.account.publicKey, props.account.testnet, classes.listItem, openTransaction]
+    [props.transactions, props.account.publicKey, props.account.testnet, isSmallScreen, openTransaction]
   )
 
-  if (props.transactions.length === 0) {
-    return null
-  }
-
   return (
-    <List disablePadding={isSmallScreen} style={{ background: props.background }}>
-      <ListSubheader className={classes.listItem} disableSticky style={{ background: props.background }}>
-        {props.title}
-      </ListSubheader>
+    <List style={{ background: props.background || "transparent" }}>
+      {props.title ? (
+        <ListSubheader
+          style={{ background: "transparent", lineHeight: "18px", marginBottom: 8, paddingLeft: 24 }}
+        >
+          {props.title}
+        </ListSubheader>
+      ) : null}
       {transactionListItems}
       {props.olderTransactionsAvailable ? (
-        <LoadMoreTransactionsListItem pending={props.loadingMoreTransactions} onClick={props.onFetchMoreTransactions} />
+        <LoadMoreTransactionsListItem
+          onClick={props.onFetchMoreTransactions}
+          pending={props.loadingMoreTransactions}
+        />
       ) : null}
       <TransactionReviewDialog
-        open={openedTransaction !== null}
         account={props.account}
-        disabled={true}
-        showSource
+        onClose={closeTransaction}
+        onSubmitTransaction={() => Promise.resolve()}
+        open={Boolean(openedTransaction)}
         showSubmissionProgress={false}
         transaction={openedTransaction}
-        onClose={closeTransaction}
-        onSubmitTransaction={doNothing}
       />
     </List>
   )
 }
 
-export default React.memo(TransactionList)
+export default TransactionList

@@ -16,7 +16,7 @@ function TopOfTopSection(props: { background?: React.CSSProperties["background"]
     // Need to define a static CSS class for it, since `-webkit-app-region` in CSS-in-JS might lead to trouble
     return (
       <div className="mac-frameless-window-invisible-title-bar">
-        <div style={{ background: props.background, width: "100%", height: "200%" }} />
+        <div className="w-full h-[200%]" style={{ background: props.background }} />
       </div>
     )
   } else if (platform === "ios") {
@@ -34,7 +34,7 @@ function PageInset(props: { children: React.ReactNode }) {
   const isSmallScreen = useIsMobile()
   const padding = isSmallScreen ? "8px" : isFramelessWindow ? "16px 24px 8px" : "8px 16px"
   return (
-    <Box padding={padding} style={{ position: "relative" }}>
+    <Box padding={padding} className="relative">
       {props.children}
     </Box>
   )
@@ -52,30 +52,30 @@ interface SectionProps extends BoxProps {
 }
 
 const Section = React.memo(function Section(props: SectionProps) {
-  const background = props.brandColored ? primaryBackground : props.backgroundColor || "#fcfcfc"
   const isSmallScreen = useIsMobile()
+  const padding = props.noPadding ? 0 : props.padding !== undefined ? props.padding : 16
 
-  const padding: React.CSSProperties["padding"] = props.noPadding ? 0 : props.padding !== undefined ? props.padding : 16
+  const backgroundStyle = props.backgroundColor && !props.brandColored ? { backgroundColor: props.backgroundColor } : (!props.brandColored ? { backgroundColor: "#fcfcfc" } : {})
 
-  const style: React.CSSProperties = {
-    background,
-    color: props.brandColored ? "white" : undefined,
+  const additionalStyles: React.CSSProperties = {
     flexGrow: typeof props.grow === "number" ? props.grow : 1,
     flexShrink: typeof props.shrink === "number" ? props.shrink : undefined,
     minHeight: props.minHeight,
-    overflowY: "hidden",
-    position: "relative",
-    zIndex: props.top ? undefined : 1,
-    ...props.style
   }
 
   const MaybeInset = props.pageInset ? PageInset : React.Fragment
 
   return (
-    <Box {...props} component="section" padding={padding} style={style}>
-      {props.top ? <TopOfTopSection background={background} /> : null}
+    <Box
+      {...props}
+      component="section"
+      padding={padding}
+      className={`overflow-y-hidden relative ${props.brandColored ? "bg-primary-gradient text-white" : ""} ${props.top ? "" : "z-[1]"}`}
+      style={{ ...backgroundStyle, ...additionalStyles, ...props.style }}
+    >
+      {props.top ? <TopOfTopSection background={props.brandColored ? primaryBackground : props.backgroundColor || "#fcfcfc"} /> : null}
       {/* Add a little padding to the top if window is frameless */}
-      {props.top && !isSmallScreen ? <div style={{ width: "100%", padding: "4px 0 0", margin: 0 }} /> : null}
+      {props.top && !isSmallScreen ? <div className="w-full pt-1 m-0" /> : null}
       <MaybeInset>{props.children}</MaybeInset>
     </Box>
   )

@@ -1,22 +1,17 @@
 import React from "react"
-import Card, { CardProps } from "@mui/material/Card"
-import makeStyles from "@mui/styles/makeStyles"
 import { HorizontalLayout } from "./Box"
 
-const useCardStyles = makeStyles({
-  root: {
-    width: "47%",
-    minWidth: 250,
-    maxWidth: 500,
-    flexGrow: 1,
-    margin: "12px 1%",
-    borderRadius: 8
-  }
-})
-
-export function CardListCard(props: CardProps) {
-  const classes = useCardStyles()
-  return <Card classes={classes} {...props}></Card>
+export function CardListCard(props: React.HTMLAttributes<HTMLDivElement>) {
+  const { className, style, ...rest } = props
+  return (
+    <div
+      className={`w-[47%] min-w-[250px] max-w-[500px] grow m-[12px_1%] rounded-lg shadow-md bg-white ${
+        className || ""
+      }`}
+      style={style}
+      {...rest}
+    />
+  )
 }
 
 interface CardListProps {

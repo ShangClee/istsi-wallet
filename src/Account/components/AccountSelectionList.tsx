@@ -1,16 +1,22 @@
 import React from "react"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
-import Radio from "@mui/material/Radio"
-import Typography from "@mui/material/Typography"
 import { Account } from "~App/contexts/accounts"
 import InlineLoader from "~Generic/components/InlineLoader"
+import { List, ListItem } from "~Layout/components/List"
 import AccountBalances from "./AccountBalances"
 
 const isMobileDevice = process.env.PLATFORM === "android" || process.env.PLATFORM === "ios"
+
+const Radio = (props: { checked: boolean; disabled?: boolean }) => (
+  <div
+    className={`
+    w-5 h-5 rounded-full border-2 flex items-center justify-center
+    ${props.disabled ? "border-gray-300" : props.checked ? "border-gray-600" : "border-gray-500"}
+    transition-colors
+  `}
+  >
+    {props.checked && <div className={`w-2.5 h-2.5 rounded-full ${props.disabled ? "bg-gray-300" : "bg-gray-600"}`} />}
+  </div>
+)
 
 interface AccountSelectionListProps {
   accounts: Account[]
@@ -23,6 +29,7 @@ function AccountSelectionList(props: AccountSelectionListProps) {
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
   function handleListItemClick(event: React.MouseEvent, index: number) {
+    if (props.disabled) return
     setSelectedIndex(index)
     if (props.onChange) {
       props.onChange(props.accounts[index])
@@ -30,7 +37,7 @@ function AccountSelectionList(props: AccountSelectionListProps) {
   }
 
   return (
-    <List style={{ background: "transparent", paddingLeft: 0, paddingRight: 0 }}>
+    <List className="bg-transparent px-0">
       {props.accounts.map((account, index) => (
         <AccountSelectionListItem
           account={account}
@@ -41,25 +48,10 @@ function AccountSelectionList(props: AccountSelectionListProps) {
           selected={index === selectedIndex}
         />
       ))}
-      {props.accounts.length === 0 ? (
-        <Typography style={{ opacity: 0.7, textAlign: "center" }}>(No accounts)</Typography>
-      ) : null}
+      {props.accounts.length === 0 ? <div className="text-center opacity-70 mt-4">(No accounts)</div> : null}
     </List>
   )
 }
-
-const useAccountListItemStyles = makeStyles({
-  listItem: {
-    background: "#FFFFFF",
-    boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.1)",
-    "&:focus": {
-      backgroundColor: "#FFFFFF"
-    },
-    "&:hover": {
-      backgroundColor: isMobileDevice ? "#FFFFFF" : "rgb(232, 232, 232)"
-    }
-  }
-})
 
 interface AccountSelectionListItemProps {
   account: Account
@@ -73,27 +65,23 @@ interface AccountSelectionListItemProps {
 const AccountSelectionListItem = React.memo(
   // tslint:disable-next-line no-shadowed-variable
   function AccountSelectionListItem(props: AccountSelectionListItemProps) {
-    const classes = useAccountListItemStyles()
     return (
       <ListItem
-        button
-        className={classes.listItem}
-        disabled={props.disabled}
-        selected={props.selected}
+        button={!props.disabled}
+        className={`
+          bg-white shadow-[0_8px_16px_0_rgba(0,0,0,0.1)]
+          mb-2 rounded-lg
+          ${props.disabled ? "opacity-50 cursor-not-allowed" : isMobileDevice ? "" : "hover:bg-gray-100"}
+        `}
         onClick={event => props.onClick(event, props.index)}
-      >
-        <ListItemIcon style={{ marginRight: 0 }}>
-          <Radio checked={props.selected && !props.disabled} color="default" />
-        </ListItemIcon>
-        <ListItemText
-          primary={props.account.name}
-          secondary={
-            <React.Suspense fallback={<InlineLoader />}>
-              <AccountBalances publicKey={props.account.accountID} testnet={props.account.testnet} />
-            </React.Suspense>
-          }
-        />
-      </ListItem>
+        leftIcon={<Radio checked={props.selected && !props.disabled} disabled={props.disabled} />}
+        primaryText={props.account.name}
+        secondaryText={
+          <React.Suspense fallback={<InlineLoader />}>
+            <AccountBalances publicKey={props.account.accountID} testnet={props.account.testnet} />
+          </React.Suspense>
+        }
+      />
     )
   } as React.ComponentType<AccountSelectionListItemProps>
 )

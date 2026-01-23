@@ -1,19 +1,43 @@
 import React from "react"
 import { useTranslation, Trans } from "react-i18next"
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import Checkbox from "@mui/material/Checkbox"
-import Fade from "@mui/material/Fade"
-import { TransitionProps } from "@mui/material/transitions"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import FormGroup from "@mui/material/FormGroup"
-import Typography from "@mui/material/Typography"
 import { VerticalLayout } from "~Layout/components/Box"
 import { Section } from "~Layout/components/Page"
+import { Dialog } from "~Generic/components/Dialog"
 
-const Transition = React.forwardRef<unknown, TransitionProps & { children: React.ReactElement }>((props, ref) => (
-  <Fade ref={ref} {...props} appear={false} />
-))
+// --- Tailwind Helper Components ---
+
+const Checkbox = ({ checked, onChange, style }: any) => (
+  <input
+    type="checkbox"
+    checked={checked}
+    onChange={onChange}
+    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+    style={style}
+  />
+)
+
+const FormControlLabel = ({ control, label, style }: any) => (
+  <label className="flex items-start cursor-pointer" style={style}>
+    <div className="flex items-center h-5 mr-3">{control}</div>
+    <div className="text-sm select-none">{label}</div>
+  </label>
+)
+
+const Button = ({ disabled, onClick, children, className, style }: any) => (
+  <button
+    type="button"
+    disabled={disabled}
+    onClick={onClick}
+    className={`px-6 py-2 rounded text-white font-medium shadow-sm transition-colors
+      ${disabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}
+      ${className || ""}`}
+    style={style}
+  >
+    {children}
+  </button>
+)
+
+// --- End Helpers ---
 
 function CheckboxLabel(props: { children: React.ReactNode }) {
   return <span style={{ color: "white", fontSize: "120%" }}>{props.children}</span>
@@ -51,16 +75,16 @@ function TermsAndConditions(props: Props) {
   return (
     <Section brandColored top bottom style={{ display: "flex", flexDirection: "column" }}>
       <VerticalLayout grow={1} justifyContent="center" margin="0 auto" padding="3vh 4vw" maxWidth={800}>
-        <Typography color="inherit" variant="h4">
+        <h4 className="text-3xl font-normal text-inherit m-0">
           {t("app.terms-and-conditions.header")}
-        </Typography>
-        <FormGroup style={{ margin: "3em 0" }}>
+        </h4>
+        <div style={{ margin: "3em 0" }}>
           <FormControlLabel
             control={
               <Checkbox
                 checked={checkedNotes[0]}
                 onChange={() => toggleNoteChecked(0)}
-                style={{ alignSelf: "flex-start", color: "inherit", marginTop: -7 }}
+                style={{ color: "inherit", marginTop: -7 }}
               />
             }
             label={<CheckboxLabel>{t("app.terms-and-conditions.checkbox.1.label")}</CheckboxLabel>}
@@ -70,7 +94,7 @@ function TermsAndConditions(props: Props) {
               <Checkbox
                 checked={checkedNotes[1]}
                 onChange={() => toggleNoteChecked(1)}
-                style={{ alignSelf: "flex-start", color: "inherit", marginTop: -7 }}
+                style={{ color: "inherit", marginTop: -7 }}
               />
             }
             label={
@@ -86,13 +110,11 @@ function TermsAndConditions(props: Props) {
               marginTop: 16
             }}
           />
-        </FormGroup>
+        </div>
         <Button
           disabled={!allConfirmed}
           onClick={props.onConfirm}
-          size="large"
-          style={{ alignSelf: "center" }}
-          variant="contained"
+          className="text-lg py-3 px-8 self-center"
         >
           {t("app.terms-and-conditions.action.confirm")}
         </Button>
@@ -107,12 +129,6 @@ function TermsAndConditionsDialog(props: Props) {
     <Dialog
       open={props.open}
       fullScreen
-      PaperProps={{
-        // let the <Section> set the padding, so it will color the iPhone X top notch
-        style: { padding: 0 }
-      }}
-      TransitionComponent={Transition}
-      TransitionProps={{ unmountOnExit: true }}
     >
       <TermsAndConditions {...props} />
     </Dialog>

@@ -1,12 +1,8 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import Typography from "@mui/material/Typography"
-import makeStyles from "@mui/styles/makeStyles"
-import ExpandIcon from "@mui/icons-material/ExpandMore"
 import { HorizontalLayout } from "~Layout/components/Box"
 import { ReadOnlyTextfield } from "~Generic/components/FormFields"
+import { ListItem } from "~Layout/components/List"
 
 interface SummaryDetailsFieldProps {
   fullWidth?: boolean
@@ -58,63 +54,29 @@ function SummaryDetailsLine(props: SummaryDetailsLineProps) {
   return <HorizontalLayout style={summaryDetailsLineStyle}>{props.children}</HorizontalLayout>
 }
 
-const useSummaryItemStyles = makeStyles({
-  root: {
-    display: "flex",
-    alignItems: "flex-start",
-    borderBottom: "none",
-    flexDirection: "column",
-    padding: "1px 0"
-  },
-  heading: {
-    display: "block",
-    padding: "16px 0",
-    fontSize: 18,
-    fontWeight: 400,
-    lineHeight: "18px",
-    textAlign: "left"
-  },
-  noButton: {
-    background: "transparent",
-    boxShadow: "none !important"
-  }
-})
-
 interface SummaryItemProps {
   children: React.ReactNode
   heading?: React.ReactNode
 }
 
 export function SummaryItem(props: SummaryItemProps) {
-  const classes = useSummaryItemStyles()
   return (
-    <ListItem className={classes.root} component="div" disableGutters>
+    <div className="flex flex-col items-start border-none py-[1px] w-full">
       {props.heading ? (
-        <Typography color="textSecondary" className={classes.heading} variant="subtitle1">
+        <div className="block py-4 text-lg font-normal text-left text-gray-500 leading-[18px]">
           {props.heading}
-        </Typography>
+        </div>
       ) : null}
       <SummaryDetailsLine>{props.children}</SummaryDetailsLine>
-    </ListItem>
+    </div>
   )
 }
 
-const useShowMoreItemStyles = makeStyles({
-  root: {
-    border: "none",
-    margin: "-8px 0",
-    padding: "8px 0"
-  },
-  button: {
-    boxShadow: "none !important",
-    display: "flex",
-    margin: 0,
-
-    "&:not(:hover)": {
-      background: "transparent"
-    }
-  }
-})
+const ExpandIcon = () => (
+  <svg className="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+  </svg>
+)
 
 interface ShowMoreItemProps {
   onClick: () => void
@@ -122,22 +84,18 @@ interface ShowMoreItemProps {
 }
 
 export const ShowMoreItem = React.memo(function ShowMoreItem(props: ShowMoreItemProps) {
-  const classes = useShowMoreItemStyles()
   const { t } = useTranslation()
   return (
     <ListItem
       button
-      classes={{ root: classes.root, button: classes.button }}
-      component="div"
-      disableGutters
+      className="border-none -my-2 py-2 hover:bg-transparent"
       onClick={props.onClick}
       style={props.style}
-    >
-      <ListItemText disableTypography>
-        <Typography style={{ display: "flex", alignItems: "center", justifyContent: "center" }} variant="button">
+      primaryText={
+        <div className="flex items-center justify-center font-medium uppercase text-sm">
           {t("account.transaction-review.action.show-more")} <ExpandIcon />
-        </Typography>
-      </ListItemText>
-    </ListItem>
+        </div>
+      }
+    />
   )
 })

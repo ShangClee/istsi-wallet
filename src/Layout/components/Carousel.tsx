@@ -1,35 +1,4 @@
 import React from "react"
-import makeStyles from "@mui/styles/makeStyles"
-
-const useCarouselStyles = makeStyles({
-  root: {
-    display: "block",
-    height: "100%",
-    overflow: "auto",
-    width: "100%"
-  },
-  sledge: {
-    display: "flex",
-    height: "100%",
-    justifyContent: "flex-start",
-    overflowX: "hidden",
-    overflowY: "auto"
-  },
-  slide: {
-    flex: "0 0 100%",
-    opacity: 0.5,
-    overflow: "auto",
-    transition: "opacity .3s, transform .3s",
-    willChange: "opacity, transform",
-
-    "&$active": {
-      opacity: 1
-    }
-  },
-  active: {
-    // Only used in conjunction with `slide`
-  }
-})
 
 export interface CarouselProps {
   children: React.ReactNode[]
@@ -43,15 +12,15 @@ export interface CarouselProps {
  * https://github.com/satoshipay/solar/issues/1069)
  */
 function Carousel(props: CarouselProps) {
-  const classes = useCarouselStyles(props)
-
   return (
-    <div className={classes.root}>
-      <div className={classes.sledge}>
+    <div className="block h-full overflow-auto w-full">
+      <div className="flex h-full justify-start overflow-x-hidden overflow-y-auto">
         {props.children.map((content, index) => (
           <div
             key={index}
-            className={[classes.slide, index === props.current ? classes.active : ""].join(" ")}
+            className={`flex-[0_0_100%] overflow-auto transition-all duration-300 will-change-[opacity,transform] ${
+              index === props.current ? "opacity-100" : "opacity-50"
+            }`}
             style={{
               transform: `translateX(${-100 * props.current}%)`
             }}

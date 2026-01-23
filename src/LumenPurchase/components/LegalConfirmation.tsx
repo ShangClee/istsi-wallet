@@ -1,29 +1,10 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Dialog from "@mui/material/Dialog"
-import Fade from "@mui/material/Fade"
-import Typography from "@mui/material/Typography"
-import makeStyles from "@mui/styles/makeStyles"
 import { useDialogActions, useIsMobile } from "~Generic/hooks/userinterface"
-import { breakpoints, CompactDialogTransition } from "~App/theme"
+import { Dialog } from "~Generic/components/Dialog"
 import DialogBody from "~Layout/components/DialogBody"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import Portal from "~Generic/components/Portal"
-
-const useLegalConfirmationStyles = makeStyles({
-  root: {
-    [breakpoints.down(600)]: {
-      zIndex: 1400
-    }
-  },
-  dialogPaper: {
-    [breakpoints.down(600)]: {
-      alignSelf: "flex-end",
-      background: "rgba(255, 255, 255, 0.9)",
-      margin: "0 20px 120px"
-    }
-  }
-})
 
 interface Props {
   message: React.ReactNode
@@ -33,35 +14,29 @@ interface Props {
 }
 
 function LegalConfirmation(props: Props) {
-  const classes = useLegalConfirmationStyles()
   const dialogActionsRef = useDialogActions()
   const isSmallScreen = useIsMobile()
   const { t } = useTranslation()
 
   const actions = React.useMemo(
     () => (
-      <DialogActionsBox className={classes.root} smallDialog transparent>
-        <Fade enter={isSmallScreen} exit={isSmallScreen} in={props.open}>
-          <ActionButton onClick={props.onConfirm} type="primary">
-            {t("account.purchase-lumens.legal-confirmation.action.confirm")}
-          </ActionButton>
-        </Fade>
+      <DialogActionsBox className={isSmallScreen ? "z-[1400]" : ""} smallDialog transparent>
+        <ActionButton onClick={props.onConfirm} type="primary">
+          {t("account.purchase-lumens.legal-confirmation.action.confirm")}
+        </ActionButton>
       </DialogActionsBox>
     ),
-    [classes.root, isSmallScreen, props.onConfirm, props.open, t]
+    [isSmallScreen, props.onConfirm, t]
   )
 
   return (
     <Dialog
-      classes={{
-        paper: classes.dialogPaper
-      }}
+      className={isSmallScreen ? "!self-end !mb-[120px] !mx-5 bg-white/90" : ""}
       onClose={props.onClose}
       open={props.open}
-      TransitionComponent={CompactDialogTransition}
     >
       <DialogBody actions={dialogActionsRef} preventActionsPlaceholder preventNotchSpacing>
-        <Typography color="textSecondary">{props.message}</Typography>
+        <p className="text-gray-500 m-0">{props.message}</p>
       </DialogBody>
       <Portal target={isSmallScreen ? document.body : dialogActionsRef.element}>{actions}</Portal>
     </Dialog>

@@ -1,17 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import IconButton from "@mui/material/IconButton"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import makeStyles from "@mui/styles/makeStyles"
 import MenuIcon from "@mui/icons-material/Menu"
 import SettingsIcon from "@mui/icons-material/Settings"
-import Switch from "@mui/material/Switch"
-import Tooltip from "@mui/material/Tooltip"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import UpdateIcon from "@mui/icons-material/SystemUpdateAlt"
 import DialogBody from "~Layout/components/DialogBody"
 import { Box, VerticalLayout } from "~Layout/components/Box"
@@ -27,17 +17,98 @@ import * as routes from "../routes"
 import AccountList from "./AccountList"
 import TermsAndConditions from "./TermsAndConditionsDialog"
 
-const useStyles = makeStyles({
-  "@keyframes glowing": {
-    "0%": { filter: "drop-shadow(0 0 30px #ffffff)" },
-    "50%": { filter: "drop-shadow(0 0 0px #ffffff)" },
-    "100%": { filter: "drop-shadow(0 0 30px #ffffff)" }
-  },
+// --- Tailwind Helper Components ---
 
-  icon: {
-    animation: "$glowing 5000ms infinite"
-  }
-})
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false)
+  React.useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    const listener = () => setMatches(media.matches)
+    media.addEventListener("change", listener)
+    return () => media.removeEventListener("change", listener)
+  }, [query, matches])
+  return matches
+}
+
+const IconButton = ({ children, onClick, className, style, ...props }: any) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`p-2 rounded-full hover:bg-black/5 transition-colors ${className || ""}`}
+    style={style}
+    {...props}
+  >
+    {children}
+  </button>
+)
+
+const Switch = ({ checked, onChange, color }: any) => (
+  <button
+    role="switch"
+    aria-checked={checked}
+    onClick={onChange}
+    className={`${
+      checked ? (color === "secondary" ? "bg-pink-500" : "bg-blue-500") : "bg-gray-300"
+    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+  >
+    <span
+      className={`${
+        checked ? "translate-x-6" : "translate-x-1"
+      } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+    />
+  </button>
+)
+
+const FormControlLabel = ({ control, label, style }: any) => (
+  <label className="flex items-center cursor-pointer ml-3" style={style}>
+    {control}
+    <span className="ml-2 text-base font-medium text-gray-700">{label}</span>
+  </label>
+)
+
+const Menu = ({ anchorEl, open, onClose, children }: any) => {
+  if (!open || !anchorEl) return null
+  const rect = anchorEl.getBoundingClientRect()
+  return (
+    <>
+      <div className="fixed inset-0 z-40" onClick={onClose} />
+      <div
+        className="fixed z-50 bg-white rounded shadow-lg py-1 min-w-[150px] ring-1 ring-black ring-opacity-5 focus:outline-none"
+        style={{ top: rect.bottom, left: rect.left }}
+      >
+        {children}
+      </div>
+    </>
+  )
+}
+
+const MenuItem = ({ children, onClick }: any) => (
+  <button
+    onClick={onClick}
+    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+  >
+    {children}
+  </button>
+)
+
+const ListItemIcon = ({ children }: any) => <div className="inline-flex min-w-[36px] text-gray-500">{children}</div>
+
+const ListItemText = ({ primary }: any) => <span>{primary}</span>
+
+const Tooltip = ({ title, children }: any) => (
+  <div className="group relative flex">
+    {children}
+    <span className="absolute top-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 whitespace-nowrap z-50">
+      {title}
+    </span>
+  </div>
+)
+
+// --- End Helpers ---
+
 
 function AllAccountsPage() {
   const { accounts, networkSwitch, toggleNetwork } = React.useContext(AccountsContext)
@@ -57,7 +128,6 @@ function AllAccountsPage() {
     setAnchorEl(null)
   }, [])
 
-  const styles = useStyles()
   const isWidthMax450 = useMediaQuery("(max-width:450px)")
 
   const updater = getUpdater()
@@ -81,11 +151,9 @@ function AllAccountsPage() {
     <Tooltip title={t("app.all-accounts.update.tooltip")}>
       <IconButton
         onClick={startUpdate}
-        color="secondary"
         style={{ marginLeft: isWidthMax450 ? 0 : 8, marginRight: -12, color: "inherit" }}
-        size="large"
       >
-        <UpdateIcon className={styles.icon}></UpdateIcon>
+        <UpdateIcon className="animate-glowing"></UpdateIcon>
       </IconButton>
     </Tooltip>
   )
@@ -110,8 +178,8 @@ function AllAccountsPage() {
           <>
             <IconButton
               onClick={handleMenuOpen}
-              size="large"
-              style={{ marginLeft: -12, color: "inherit" }}
+              style={{ color: "inherit" }}
+              aria-label="menu"
             >
               <MenuIcon />
             </IconButton>
@@ -119,9 +187,13 @@ function AllAccountsPage() {
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
-              onClick={handleMenuClose}
             >
-              <MenuItem onClick={() => router.history.push(routes.settings())}>
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose()
+                  router.history.push(routes.settings())
+                }}
+              >
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
@@ -136,15 +208,14 @@ function AllAccountsPage() {
               ? networkSwitchButton
               : null}
             {settings.updateAvailable &&
-            !isUpdateInProgress &&
-            !updater.isUpdateStarted() &&
-            !updater.isUpdateDownloaded()
+              !isUpdateInProgress &&
+              !updater.isUpdateStarted() &&
+              !updater.isUpdateDownloaded()
               ? updateButton
               : null}
             <IconButton
               onClick={() => router.history.push(routes.settings())}
               style={{ marginLeft: isWidthMax450 ? 0 : 8, color: "inherit" }}
-              size="large"
             >
               <SettingsIcon />
             </IconButton>
@@ -171,7 +242,7 @@ function AllAccountsPage() {
   )
 
   return (
-    <Section bottom brandColored noPadding style={{ height: "100vh" }}>
+    <Section bottom brandColored noPadding className="h-screen">
       <DialogBody backgroundColor="unset" top={headerContent}>
         <VerticalLayout justifyContent="space-between" grow margin="16px 0 0">
           <AccountList

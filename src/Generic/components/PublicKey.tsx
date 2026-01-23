@@ -1,6 +1,4 @@
 import React from "react"
-import ButtonBase from "@mui/material/ButtonBase"
-import Typography from "@mui/material/Typography"
 import { AccountsContext } from "~App/contexts/accounts"
 import { useFederationLookup } from "../hooks/stellar"
 import { useClipboard } from "../hooks/userinterface"
@@ -43,6 +41,7 @@ interface PublicKeyProps {
   style?: React.CSSProperties
   showRaw?: boolean
   testnet: boolean
+  className?: string
 }
 
 // tslint:disable-next-line no-shadowed-variable
@@ -66,23 +65,23 @@ export const PublicKey = React.memo(function PublicKey(props: PublicKeyProps) {
   }
 
   if (props.publicKey.length !== 56) {
-    return <>{props.publicKey}</>
+    return <span className={props.className}>{props.publicKey}</span>
   } else if (!props.showRaw && matchingLocalAccount) {
     // Note: We don't check for mainnet/testnet here...
     return (
-      <Typography component="span" style={style}>
+      <span style={style} className={props.className}>
         {variant === "full"
           ? matchingLocalAccount.name
           : shortenName(matchingLocalAccount.name, digits.leading + digits.trailing + 6)}
-      </Typography>
+      </span>
     )
   } else {
     return (
-      <Typography component="span" style={style}>
+      <span style={style} className={props.className}>
         {props.variant === "full" || !props.variant
           ? props.publicKey
           : props.publicKey.substr(0, digits.leading) + "…" + props.publicKey.substr(-digits.trailing)}
-      </Typography>
+      </span>
     )
   }
 })
@@ -147,7 +146,11 @@ interface ClickableAddressProps extends AddressProps {
 // tslint:disable-next-line no-shadowed-variable
 export const ClickableAddress = React.memo(function ClickableAddress(props: ClickableAddressProps) {
   return (
-    <ButtonBase onClick={props.onClick} style={{ fontSize: "inherit", fontWeight: "inherit", textAlign: "inherit" }}>
+    <button
+      onClick={props.onClick}
+      style={{ fontSize: "inherit", fontWeight: "inherit", textAlign: "inherit" }}
+      className="bg-transparent border-none p-0 cursor-pointer text-inherit"
+    >
       <Address {...props} />
       {props.icon ? (
         <>
@@ -155,7 +158,7 @@ export const ClickableAddress = React.memo(function ClickableAddress(props: Clic
           {props.icon}
         </>
       ) : null}
-    </ButtonBase>
+    </button>
   )
 })
 

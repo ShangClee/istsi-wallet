@@ -1,13 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Badge, { BadgeProps } from "@mui/material/Badge"
-import CardActionArea from "@mui/material/CardActionArea"
-import CardContent from "@mui/material/CardContent"
-import makeStyles from "@mui/styles/makeStyles"
-import Tooltip from "@mui/material/Tooltip"
-import Typography from "@mui/material/Typography"
-import AddIcon from "@mui/icons-material/Add"
-import GroupIcon from "@mui/icons-material/Group"
+import { AddIcon, GroupIcon } from "~Generic/components/Icons"
 import AccountBalances from "~Account/components/AccountBalances"
 import { CardList, CardListCard } from "~Layout/components/CardList"
 import { Account } from "../contexts/accounts"
@@ -21,18 +14,29 @@ import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
 import * as routes from "../routes"
 
-const useCardStyles = makeStyles({
-  cardActionArea: {
-    width: "100%",
-    height: "100%"
-  },
-  content: {
-    boxSizing: "border-box",
-    width: "100%",
-    padding: "16px 24px",
-    textOverflow: "ellipsis"
-  }
-})
+// --- Tailwind Helper Components ---
+
+const Tooltip = ({ title, children }: any) => (
+  <div className="group relative flex">
+    {children}
+    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 whitespace-nowrap z-50 pointer-events-none">
+      {title}
+    </span>
+  </div>
+)
+
+const Badge = ({ badgeContent, children, className, style }: any) => (
+  <div className={`relative inline-flex ${className || ""}`} style={style}>
+    {children}
+    {badgeContent ? (
+      <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-xs text-white">
+        {badgeContent}
+      </span>
+    ) : null}
+  </div>
+)
+
+// --- End Helpers ---
 
 const StyledCard = (props: {
   children?: React.ReactNode
@@ -40,29 +44,21 @@ const StyledCard = (props: {
   onClick?: () => void
   style?: React.CSSProperties
 }) => {
-  const classes = useCardStyles()
   return (
-    <CardListCard elevation={props.elevation} onClick={props.onClick} style={props.style}>
-      <CardActionArea className={classes.cardActionArea} centerRipple>
-        <CardContent className={classes.content}>{props.children}</CardContent>
-      </CardActionArea>
+    <CardListCard onClick={props.onClick} style={props.style} className="cursor-pointer overflow-hidden transition-shadow hover:shadow-lg">
+      <div className="w-full h-full p-4 box-border relative">
+        {/* Ripple effect simulation or replacement could go here if strictly needed */}
+        {props.children}
+      </div>
     </CardListCard>
   )
 }
 
-const useBadgeStyles = makeStyles({
-  badge: {
-    marginTop: 4,
-    marginRight: -2
-  }
-})
-
-const StyledBadge = (props: BadgeProps) => {
-  const classes = useBadgeStyles()
+const StyledBadge = (props: any) => {
   return props.badgeContent ? (
     <Badge {...props} />
   ) : (
-    <div className={classes.badge} style={props.style}>
+    <div className="mt-1 -mr-0.5" style={props.style}>
       {props.children}
     </div>
   )
@@ -112,9 +108,9 @@ function AccountCard(props: AccountCardProps) {
         <VerticalLayout minHeight="100px" justifyContent="space-evenly" textAlign="left" width="100%">
           <InlineErrorBoundary>
             <HorizontalLayout margin="0 0 12px">
-              <Typography variant="h5" style={{ flexGrow: 1, fontSize: 20 }}>
+              <h5 style={{ flexGrow: 1, fontSize: 20, margin: 0, fontWeight: 400 }}>
                 {props.account.name}
-              </Typography>
+              </h5>
               <React.Suspense fallback={null}>
                 <Badges account={props.account} />
               </React.Suspense>

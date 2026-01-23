@@ -3,10 +3,22 @@ import react from "@vitejs/plugin-react"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
 import tsconfigPaths from "vite-tsconfig-paths"
 import { resolve } from "path"
+import tailwindcss from "tailwindcss"
+import autoprefixer from "autoprefixer"
 
 export default defineConfig({
   // Use parent directory as root to access index.html and src/
   root: resolve(__dirname, ".."),
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss({
+          config: resolve(__dirname, "../tailwind.config.js")
+        }),
+        autoprefixer()
+      ]
+    }
+  },
   plugins: [
     tsconfigPaths({
       root: resolve(__dirname, "..")
@@ -14,7 +26,7 @@ export default defineConfig({
     react(),
     nodePolyfills({
       // Exclude electron-specific modules for web build
-      exclude: ["electron"]
+      exclude: ["electron"] as any
     })
   ],
   resolve: {

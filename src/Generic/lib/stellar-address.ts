@@ -30,7 +30,7 @@ export async function lookupFederationRecord(
   let resolved: FederationRecord
   try {
     resolved = await netWorker.resolveStellarAddress(stellarAddress)
-  } catch (error) {
+  } catch (error: any) {
     if (error && error.request && !error.response) {
       throw CustomError(
         "StellarAddressRequestFailedError",

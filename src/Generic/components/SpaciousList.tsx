@@ -1,20 +1,23 @@
 import React from "react"
-import Divider from "@mui/material/Divider"
-import List, { ListProps } from "@mui/material/List"
+import { List } from "~Layout/components/List"
 
-type Props = ListProps & {
+const Divider = (props: { style?: React.CSSProperties; className?: string }) => (
+  <hr className={`border-t border-black/10 m-0 ${props.className || ""}`} style={props.style} />
+)
+
+type Props = React.HTMLAttributes<HTMLUListElement> & {
   fitHorizontal?: boolean
 }
 
 const SpaciousList = (props: Props) => {
-  const { fitHorizontal = false, ...listProps } = props
-  const children = React.Children.toArray(props.children).filter(child => child !== null)
+  const { fitHorizontal = false, style: styleProp, children: childrenProp, ...listProps } = props
+  const children = React.Children.toArray(childrenProp).filter(child => child !== null)
   const dividerStyle: React.CSSProperties = {
     margin: "1em 0",
     marginLeft: fitHorizontal ? 24 : 0
   }
   const style: React.CSSProperties = {
-    ...props.style,
+    ...styleProp,
     ...(fitHorizontal
       ? {
           marginLeft: -24

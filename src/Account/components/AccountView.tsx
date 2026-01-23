@@ -22,7 +22,7 @@ import ViewLoading from "~Generic/components/ViewLoading"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-import { warningColor, FullscreenDialogTransition } from "~App/theme"
+import { FullscreenDialogTransition } from "~App/theme"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useClipboard, useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { getLastArgumentFromURL } from "~Generic/lib/url"
@@ -89,15 +89,15 @@ const NotCosignerOnLedgerWarning = React.memo(function NotCosignerOnLedgerWarnin
   }
 
   return (
-    <VerticalLayout padding="16px" style={{ backgroundColor: warningColor, textAlign: "center" }}>
-      <Typography gutterBottom>{t("account.cosigner.not-cosigner-yet.note")}</Typography>
-      <Typography gutterBottom>{t("account.cosigner.not-cosigner-yet.label")}</Typography>
-      <ButtonBase onClick={handleClick} style={{ alignSelf: "center", width: "fit-content" }}>
-        <Typography align="center" style={{ textDecoration: "underline" }}>
+    <VerticalLayout className="p-4 bg-warning text-center">
+      <Typography className="mb-[0.35em]">{t("account.cosigner.not-cosigner-yet.note")}</Typography>
+      <Typography className="mb-[0.35em]">{t("account.cosigner.not-cosigner-yet.label")}</Typography>
+      <ButtonBase onClick={handleClick} className="self-center w-fit">
+        <Typography align="center" className="underline">
           <PublicKey
             publicKey={props.account.publicKey}
             showRaw
-            style={{ wordBreak: "break-word" }}
+            className="break-all"
             testnet={props.account.testnet}
           />
         </Typography>
@@ -158,10 +158,10 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
       ? 128
       : 120
     : isSmallScreen
-    ? 188
-    : showSendReceiveButtons
-    ? 272
-    : 184
+      ? 188
+      : showSendReceiveButtons
+        ? 272
+        : 184
 
   const navigateTo = React.useMemo(() => {
     const accountID = props.account?.id
@@ -211,7 +211,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
   )
 
   const createNewAccount = React.useCallback(() => {
-    ;(async () => {
+    ; (async () => {
       const account = await createAccount(accountCreation)
 
       if (!accountCreation.import && !props.testnet) {
@@ -334,14 +334,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
       {props.account?.cosignerOf ? <NotCosignerOnLedgerWarning account={props.account} /> : null}
       <Section
         bottom={!isSmallScreen}
-        style={{
-          backgroundColor: "#fcfcfc",
-          flexGrow: 1,
-          flexShrink: 1,
-          height: "100%",
-          padding: isSmallScreen ? 0 : "0 24px",
-          overflowY: "auto"
-        }}
+        className={`bg-[#fcfcfc] grow shrink h-full overflow-y-auto ${isSmallScreen ? "px-0" : "px-6"}`}
       >
         <InlineErrorBoundary>
           {showAccountCreation ? (
@@ -478,13 +471,13 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
 
 type AccountPageProps =
   | {
-      accountCreation?: undefined
-      accountID: string
-    }
+    accountCreation?: undefined
+    accountID: string
+  }
   | {
-      accountCreation: "pubnet" | "testnet"
-      accountID?: undefined
-    }
+    accountCreation: "pubnet" | "testnet"
+    accountID?: undefined
+  }
 
 function AccountPage(props: AccountPageProps) {
   const { accounts } = React.useContext(AccountsContext)
