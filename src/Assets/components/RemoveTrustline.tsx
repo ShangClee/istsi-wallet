@@ -1,7 +1,7 @@
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 import { Asset, Horizon, Operation } from "stellar-sdk"
-import { HiX } from "react-icons/hi2"
+import { ClearIcon } from "~Generic/components/Icons"
 import { Dialog, DialogContent, DialogTitle } from "~Generic/components/Dialog"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"

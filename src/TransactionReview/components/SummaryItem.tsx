@@ -14,28 +14,23 @@ interface SummaryDetailsFieldProps {
 
 /** Based on TextField */
 export const SummaryDetailsField = React.memo(function SummaryDetailsField(props: SummaryDetailsFieldProps) {
-  const InputComponent = React.useCallback(() => <>{props.value}</>, [props.value])
   return (
-    <ReadOnlyTextfield
-      disableUnderline
-      helperText={props.helperText}
-      label={props.label}
-      style={{ flex: props.fullWidth ? "0 0 100%" : "0 0 48%", marginBottom: "10px" }}
-      InputProps={{
-        inputComponent: InputComponent,
-        style: {
+    <div style={{ flex: props.fullWidth ? "0 0 100%" : "0 0 48%", marginBottom: "10px", ...props.style }}>
+      <label className="block text-sm font-medium mb-1 text-gray-700" style={{ whiteSpace: "nowrap" }}>
+        {props.label}
+      </label>
+      <div
+        className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100 text-gray-900"
+        style={{
           maxWidth: "100%",
           overflow: "hidden",
-          wordBreak: "break-word",
-          ...props.style
-        }
-      }}
-      InputLabelProps={{
-        style: {
-          whiteSpace: "nowrap"
-        }
-      }}
-    />
+          wordBreak: "break-word"
+        }}
+      >
+        {props.value}
+      </div>
+      {props.helperText && <p className="mt-1 text-sm text-gray-500">{props.helperText}</p>}
+    </div>
   )
 })
 

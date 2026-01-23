@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import MainTitle from "../src/Generic/components/MainTitle"
-import { ThemeProvider, createTheme } from "@mui/material/styles"
 
 // Mock IPC
 vi.mock("~Platform/ipc", () => ({
@@ -9,24 +8,18 @@ vi.mock("~Platform/ipc", () => ({
   subscribeToMessages: vi.fn(() => () => {})
 }))
 
-const theme = createTheme()
-
 describe("Task 12.1: Critical UI Components", () => {
   describe("MainTitle", () => {
     it("should render title correctly", () => {
       render(
-        <ThemeProvider theme={theme}>
-          <MainTitle title="Security Settings" onBack={() => {}} />
-        </ThemeProvider>
+        <MainTitle title="Security Settings" onBack={() => {}} />
       )
       expect(screen.getByText("Security Settings")).toBeDefined()
     })
 
     it("should not render back button when hideBackButton is true", () => {
       render(
-        <ThemeProvider theme={theme}>
-          <MainTitle title="Home" hideBackButton={true} onBack={() => {}} />
-        </ThemeProvider>
+        <MainTitle title="Home" hideBackButton={true} onBack={() => {}} />
       )
       // Check for back button icon or text existence - specific selector depends on implementation
       // Assuming ArrowBack icon is used

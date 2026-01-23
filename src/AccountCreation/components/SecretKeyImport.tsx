@@ -30,7 +30,7 @@ function SecretKeyImport(props: SecretKeyImportProps) {
   )
 
   const handleInput = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       onEnterSecretKey(event.target.value.trim())
     },
     [onEnterSecretKey]
@@ -38,15 +38,14 @@ function SecretKeyImport(props: SecretKeyImportProps) {
 
   return (
     <>
-      <AccountSettingsItem icon={<RestoreIcon />}>
-        <ListItemText
-          primary={t("create-account.options.import.label")}
-          secondary={t("create-account.options.import.description")}
-          style={{ marginLeft: 8 }}
-        />
+      <AccountSettingsItem icon={<HiArrowPath />}>
+        <div className="ml-2">
+          <div className="text-base">{t("create-account.options.import.label")}</div>
+          <div className="text-sm text-gray-600">{t("create-account.options.import.description")}</div>
+        </div>
       </AccountSettingsItem>
       <AccountSettingsItem icon={null} subItem>
-        <ListItemText style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
+        <div style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
           <TextField
             variant="standard"
             error={Boolean(props.error)}

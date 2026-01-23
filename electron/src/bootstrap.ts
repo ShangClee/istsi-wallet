@@ -13,7 +13,7 @@ process.emit = function (event: string | symbol, ...args: any[]) {
       return false
     }
   }
-  return originalEmit.apply(process, [event, ...args] as [string | symbol, ...any[]])
+  return originalEmit.apply(process, [event, ...args] as [string | symbol, ...any[]]) as boolean
 }
 
 // Quick-fix for "io.solarwallet.app" being shown in Mac app menu

@@ -70,12 +70,14 @@ type PriceInputProps = TextFieldProps & {
   readOnly?: boolean
 }
 
-export const PriceInput = React.memo(function PriceInput(props: PriceInputProps) {
-  const { assetCode, assetStyle, readOnly, ...textfieldProps } = props
-  return (
-    <TextField
-      {...textfieldProps}
-      disabled={readOnly}
+export const PriceInput = React.memo(
+  React.forwardRef<HTMLInputElement, PriceInputProps>(function PriceInput(props, ref) {
+    const { assetCode, assetStyle, readOnly, ...textfieldProps } = props
+    return (
+      <TextField
+        {...textfieldProps}
+        ref={ref}
+        disabled={readOnly}
       readOnly={readOnly}
       inputProps={{
         pattern: "[0-9]*",
@@ -101,7 +103,7 @@ export const PriceInput = React.memo(function PriceInput(props: PriceInputProps)
       }}
     />
   )
-})
+}))
 
 type ReadOnlyTextfieldProps = TextFieldProps & {
   disableUnderline?: boolean

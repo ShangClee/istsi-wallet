@@ -1,11 +1,24 @@
-import { afterEach } from "vitest"
-import { cleanup } from "@testing-library/react"
-import "@testing-library/jest-dom"
+import '@testing-library/jest-dom'
+import { vi } from 'vitest'
 
-// Cleanup after each test case (e.g., clearing jsdom)
-afterEach(() => {
-  cleanup()
+// Mock matchMedia for jsdom
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {}, // Deprecated
+    removeListener: () => {}, // Deprecated
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  }),
 })
 
-// Extend Vitest's expect with jest-dom matchers
-// This allows us to use matchers like toBeInTheDocument(), toHaveClass(), etc.
+// Mock ResizeObserver
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}))

@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Asset, Horizon, Operation, Transaction } from "stellar-sdk"
 import TextField from "~Generic/components/TextField"
-import { HiChevronDown, HiGavel } from "react-icons/hi2"
+import { HiChevronDown, HiPaperAirplane } from "react-icons/hi2"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 
@@ -249,7 +249,7 @@ function TradingForm(props: Props) {
           <TextField
             variant="standard"
             name="primaryAmountString"
-            inputRef={form.register({
+            ref={form.register({
               required: t<string>("trading.validation.primary-amount-missing"),
               validate: value => {
                 const amountInvalid = primaryAmount.lt(0) || (value.length > 0 && primaryAmount.eq(0))
@@ -398,7 +398,7 @@ function TradingForm(props: Props) {
         ) : null}
         <Portal target={props.dialogActionsRef?.element}>
           <DialogActionsBox desktopStyle={{ marginTop: 32 }}>
-            <ActionButton loading={pending} icon={<HiGavel className="w-5 h-5" />} onClick={form.handleSubmit(submitForm)} type="primary">
+            <ActionButton loading={pending} icon={<HiPaperAirplane className="w-5 h-5" />} onClick={form.handleSubmit(submitForm)} type="primary">
               {t("trading.action.submit")}
             </ActionButton>
           </DialogActionsBox>

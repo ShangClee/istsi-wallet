@@ -17,7 +17,7 @@ interface TradingPriceProps {
   style?: React.CSSProperties
 }
 
-const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceProps, ref: React.Ref<HTMLDivElement>) {
+const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceProps, ref: React.Ref<HTMLInputElement>) {
   const isDisabled = !props.primaryAsset || !props.secondaryAsset
   const { t } = useTranslation()
 
@@ -52,7 +52,7 @@ const TradingPrice = React.forwardRef(function TradingPrice(props: TradingPriceP
         min: "0.0000001"
       }}
       InputProps={{ endAdornment }}
-      inputRef={ref}
+      ref={ref}
       error={Boolean(props.inputError)}
       label={props.inputError || label}
       onBlur={props.onBlur}

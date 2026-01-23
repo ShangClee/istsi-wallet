@@ -154,8 +154,8 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
               value={metadata.redemption_instructions}
             />
           ) : null}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
       {stellarToml && stellarToml.DOCUMENTATION ? (
         <div className="bg-[#fbfbfb] rounded-lg my-3 -mx-2 overflow-y-auto">
           <div className="relative px-4 py-2">
@@ -254,8 +254,8 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
                 value={stellarToml.DOCUMENTATION.ORG_PHONE_NUMBER}
               />
             ) : null}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : null}
     </>
   )

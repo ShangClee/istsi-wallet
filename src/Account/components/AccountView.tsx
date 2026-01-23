@@ -376,12 +376,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
 
       {props.account ? (
         <>
-          <Dialog
-            open={showBalanceDetails || showAssetDetails}
-            fullScreen
-            onClose={closeDialog}
-            TransitionComponent={FullscreenDialogTransition}
-          >
+          <Dialog open={showBalanceDetails || showAssetDetails} fullScreen onClose={closeDialog}>
             <React.Suspense fallback={<ViewLoading />}>
               <BalanceDetailsDialog account={props.account} onClose={closeDialog} />
             </React.Suspense>

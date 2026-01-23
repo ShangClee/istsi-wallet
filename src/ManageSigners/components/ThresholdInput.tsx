@@ -2,11 +2,9 @@ import React from "react"
 import { getSignatureThreshold } from "../lib/editor"
 import { MultisigEditorContext } from "./MultisigEditorContext"
 
-interface ThresholdInputProps {
-  inputRef?: React.Ref<any>
-}
+interface ThresholdInputProps {}
 
-function ThresholdInput(props: ThresholdInputProps) {
+const ThresholdInput = React.forwardRef<HTMLInputElement, ThresholdInputProps>(function ThresholdInput(props, ref) {
   const { editorState, setEditorState } = React.useContext(MultisigEditorContext)
   const { preset } = editorState
 
@@ -49,7 +47,7 @@ function ThresholdInput(props: ThresholdInputProps) {
 
   return (
     <input
-      ref={props.inputRef}
+      ref={ref}
       type="number"
       min={1}
       value={value}
@@ -57,6 +55,6 @@ function ThresholdInput(props: ThresholdInputProps) {
       className="border border-gray-300 rounded px-3.5 py-4 text-center max-w-[32px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
     />
   )
-}
+})
 
 export default React.memo(ThresholdInput)

@@ -3,7 +3,7 @@ import { nanoid } from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { Transaction } from "stellar-sdk"
-import SendIcon from "@mui/icons-material/Send"
+import { SendIcon } from "~Generic/components/Icons"
 import {
   Deposit,
   Withdrawal,

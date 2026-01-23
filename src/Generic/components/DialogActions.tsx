@@ -7,7 +7,7 @@ import { setupRerenderListener } from "~Platform/keyboard-hack"
 import ButtonIconLabel from "~Generic/components/ButtonIconLabel"
 import { Dialog, DialogTitle, DialogContent, DialogActions } from "./Dialog"
 
-const closeIcon = <HiX className="w-5 h-5" />
+const closeIcon = <ClearIcon className="w-5 h-5" />
 
 interface MaybeIconProps {
   icon?: React.ReactNode

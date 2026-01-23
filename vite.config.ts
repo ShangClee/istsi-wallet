@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import electron from "vite-plugin-electron/simple"
@@ -7,6 +8,11 @@ import { resolve } from "path"
 import fs from "node:fs"
 
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./test/setup.ts"
+  },
   plugins: [
     tsconfigPaths(),
     react(),

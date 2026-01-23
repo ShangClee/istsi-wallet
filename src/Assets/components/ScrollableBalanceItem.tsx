@@ -1,7 +1,5 @@
 import React from "react"
-import makeStyles from "@mui/styles/makeStyles"
 import { balancelineToAsset } from "~Generic/lib/stellar"
-import { breakpoints } from "~App/theme"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import { BalanceLine } from "~Generic/lib/account"
 import AssetLogo from "./AssetLogo"
@@ -16,96 +14,6 @@ export function getBalanceItemMinMaxWidth() {
   }
 }
 
-const useBalanceItemStyles = makeStyles({
-  root: {
-    alignItems: "center",
-    display: "flex",
-    flex: "0 0 auto",
-    justifyContent: "flex-start",
-    minWidth: 130,
-    opacity: 0.9,
-    padding: "8px 16px",
-
-    [breakpoints.down(600)]: {
-      minWidth: 100
-    },
-    [breakpoints.down(350)]: {
-      minWidth: 90
-    }
-  },
-  compact: {
-    minWidth: 100,
-
-    [breakpoints.down(600)]: {
-      minWidth: 90
-    },
-    [breakpoints.down(350)]: {
-      minWidth: 80
-    }
-  },
-  clickable: {
-    borderRadius: 6,
-    cursor: "pointer",
-    opacity: 1,
-
-    "@media (hover: hover)": {
-      "&:hover": {
-        background: "rgba(255, 255, 255, 0.05)"
-      }
-    }
-  },
-  logo: {
-    boxShadow: "0 0 2px #fff",
-    boxSizing: "border-box",
-    margin: 0,
-    marginLeft: 0,
-    marginRight: 16,
-    pointerEvents: "none", // images are handled differently by web views
-    width: 40,
-    height: 40,
-
-    [breakpoints.down(400)]: {
-      width: 36,
-      height: 36
-    },
-
-    "$compact &": {
-      fontSize: 8,
-      marginRight: 10,
-      width: 24,
-      height: 24
-    }
-  },
-  balance: {
-    fontSize: 16,
-    lineHeight: "20px",
-    marginTop: 0,
-    textAlign: "left",
-
-    [breakpoints.down(600)]: {
-      fontSize: 14,
-      lineHeight: "18px"
-    },
-
-    "$compact &": {
-      fontSize: 16
-    },
-
-    "$compact & span": {
-      fontWeight: "300 !important" as any,
-      opacity: "1 !important" as any
-    }
-  },
-  assetCode: {
-    display: "block",
-    fontWeight: 700,
-
-    "$compact &": {
-      display: "none"
-    }
-  }
-})
-
 interface BalanceItemProps {
   balance: BalanceLine
   compact?: boolean
@@ -114,18 +22,39 @@ interface BalanceItemProps {
 }
 
 function BalanceItem(props: BalanceItemProps, ref: React.Ref<any>) {
-  const classes = useBalanceItemStyles()
   const asset = React.useMemo(() => balancelineToAsset(props.balance), [props.balance])
+  const compact = props.compact
+
+  const rootBase = "flex items-center flex-none justify-start opacity-90 px-4 py-2"
+  const rootMinW = compact
+    ? "min-w-[80px] min-[350px]:min-w-[90px] min-[600px]:min-w-[100px]"
+    : "min-w-[90px] min-[350px]:min-w-[100px] min-[600px]:min-w-[130px]"
+  const clickableClass = props.onClick ? "rounded-md cursor-pointer opacity-100 hover:bg-white/5" : ""
+  const rootClass = `${rootBase} ${rootMinW} ${clickableClass}`
+
+  const logoBase = "shadow-[0_0_2px_#fff] box-border m-0 mr-4 pointer-events-none"
+  const logoSize = compact
+    ? "text-[8px] !mr-2.5 w-6 h-6"
+    : "w-9 h-9 min-[400px]:w-10 min-[400px]:h-10"
+  const logoClass = `${logoBase} ${logoSize}`
+
+  const balanceBase = "mt-0 text-left"
+  const balanceText = compact
+    ? "text-base [&_span]:!font-light [&_span]:!opacity-100"
+    : "text-sm leading-[18px] min-[600px]:text-base min-[600px]:leading-5"
+  const balanceClass = `${balanceBase} ${balanceText}`
+
+  const assetCodeClass = `block font-bold ${compact ? "hidden" : ""}`
 
   return (
     <div
-      className={`${classes.root} ${props.compact ? classes.compact : ""} ${props.onClick ? classes.clickable : ""}`}
+      className={rootClass}
       onClick={props.onClick}
       ref={ref}
     >
-      <AssetLogo asset={asset} className={classes.logo} testnet={props.testnet} />
-      <div className={classes.balance}>
-        <span className={classes.assetCode}>
+      <AssetLogo asset={asset} className={logoClass} testnet={props.testnet} />
+      <div className={balanceClass}>
+        <span className={assetCodeClass}>
           {props.balance.asset_type === "native"
             ? "XLM"
             : props.balance.asset_type === "liquidity_pool_shares"

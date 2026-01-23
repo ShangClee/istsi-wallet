@@ -1,7 +1,7 @@
 import React from "react"
 
-export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
-  label?: string
+export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "onChange"> {
+  label?: React.ReactNode
   error?: boolean
   helperText?: React.ReactNode
   fullWidth?: boolean
@@ -9,10 +9,11 @@ export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInput
   rows?: number
   variant?: "outlined" | "standard" | "filled"
   InputProps?: {
-    startAdornment?: React.ReactNode
-    endAdornment?: React.ReactNode
-    className?: string
-  }
+      startAdornment?: React.ReactNode
+      endAdornment?: React.ReactNode
+      className?: string
+      style?: React.CSSProperties
+    }
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>
   InputLabelProps?: React.LabelHTMLAttributes<HTMLLabelElement>
   FormHelperTextProps?: React.HTMLAttributes<HTMLParagraphElement>
@@ -22,7 +23,7 @@ export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInput
   size?: "small" | "medium"
   value?: string | number
   defaultValue?: string | number
-  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+  onChange?: (event: React.ChangeEvent<any>) => void
   children?: React.ReactNode
 }
 

@@ -1,34 +1,4 @@
 import React from "react"
-import makeStyles from "@mui/styles/makeStyles"
-
-const useFaderStyles = makeStyles({
-  root: {
-    display: "block",
-    position: "relative",
-    height: "100%",
-    overflow: "auto",
-    width: "100%"
-  },
-  slide: {
-    display: "block",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: 0,
-    overflow: "auto",
-    transition: "opacity .3s",
-    willChange: "opacity",
-
-    "&$active": {
-      opacity: 1
-    }
-  },
-  active: {
-    // Only used in conjunction with `slide`
-  }
-})
 
 interface FaderProps {
   children: React.ReactNode[]
@@ -38,12 +8,14 @@ interface FaderProps {
 }
 
 function Fader(props: FaderProps) {
-  const classes = useFaderStyles()
+  const rootClass = "block relative h-full overflow-auto w-full"
+  const slideClass = "block absolute inset-0 opacity-0 overflow-auto transition-opacity duration-300 will-change-opacity"
+  const activeClass = "opacity-100"
 
   return (
-    <div className={`${classes.root} ${props.className || ""}`} style={props.style}>
+    <div className={`${rootClass} ${props.className || ""}`} style={props.style}>
       {props.children.map((child, index) => (
-        <div className={[classes.slide, index === props.current ? classes.active : ""].join(" ")} key={index}>
+        <div className={`${slideClass} ${index === props.current ? activeClass : ""}`} key={index}>
           {child}
         </div>
       ))}

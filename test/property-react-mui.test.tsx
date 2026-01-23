@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react"
 import fc from "fast-check"
 import { describe, it, vi } from "vitest"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 // Mock IPC to avoid platform errors
 vi.mock("~Platform/ipc", () => ({
@@ -13,16 +12,12 @@ vi.mock("~Platform/ipc", () => ({
 // Let's import MainTitle after mocks.
 import MainTitle from "../src/Generic/components/MainTitle"
 
-const theme = createTheme()
-
 describe("Property 4.4: React Component Rendering", () => {
   it("MainTitle should render with any valid title and back button state", () => {
     fc.assert(
       fc.property(fc.string(), fc.boolean(), (title, hideBackButton) => {
         render(
-          <ThemeProvider theme={theme}>
-            <MainTitle title={title} hideBackButton={hideBackButton} onBack={() => {}} />
-          </ThemeProvider>
+          <MainTitle title={title} hideBackButton={hideBackButton} onBack={() => {}} />
         )
         return true
       }),
@@ -42,9 +37,7 @@ describe("Property 5.4: MUI Component Styling", () => {
         }),
         style => {
           const { container } = render(
-            <ThemeProvider theme={theme}>
-              <MainTitle title="Styled Title" onBack={() => {}} style={style} />
-            </ThemeProvider>
+            <MainTitle title="Styled Title" onBack={() => {}} style={style} />
           )
           // Basic check that it didn't crash
           // We could check if style is applied but styles are often merged or applied to inner elements.

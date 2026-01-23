@@ -195,7 +195,7 @@ function SignersEditor(props: SignersEditorProps) {
               </div>
             </div>
             <div className="flex-1">
-              <ThresholdInput inputRef={thresholdInputRef} />
+              <ThresholdInput ref={thresholdInputRef} />
             </div>
           </div>
           <hr className="my-1 border-gray-200" />

@@ -5,25 +5,11 @@
 
 import React from "react"
 import { useTranslation } from "react-i18next"
-import makeStyles from "@mui/styles/makeStyles"
-import CheckIcon from "@mui/icons-material/Check"
+import { CheckIcon } from "~Generic/components/Icons"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
 import * as routes from "~App/routes"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
-import { useButtonStyles } from "~Account/components/AccountActions"
-
-const useAccountCreationStyles = makeStyles({
-  desktopBox: {
-    margin: "16px 0",
-    padding: "0 40px"
-  },
-  inlineButton: {
-    flexBasis: "auto",
-    flexGrow: 0,
-    padding: "10px 20px !important"
-  }
-})
 
 interface AccountCreationActionsProps {
   bottomOfScreen?: boolean
@@ -32,15 +18,17 @@ interface AccountCreationActionsProps {
 }
 
 function AccountCreationActions(props: AccountCreationActionsProps) {
-  const defaultClasses = useButtonStyles()
-  const customClasses = useAccountCreationStyles()
   const { t } = useTranslation()
-
-  const classes = { ...defaultClasses, ...customClasses }
   const router = useRouter()
 
-  const boxClassName = `${props.bottomOfScreen ? classes.mobile : `${classes.desktop} ${classes.desktopBox}`}`
-  const buttonClassName = `${classes.button} ${props.bottomOfScreen ? "" : classes.inlineButton}`
+  const buttonBaseClass = "border-none rounded-lg shadow-[0_8px_16px_0_rgba(0,0,0,0.1)] text-base flex-1 p-5"
+  const inlineButtonClass = "basis-auto grow-0 !px-5 !py-2.5"
+  
+  const boxClassName = props.bottomOfScreen 
+    ? "" 
+    : "pt-6 my-4 px-10 space-x-10"
+    
+  const buttonClassName = `${buttonBaseClass} ${props.bottomOfScreen ? "" : inlineButtonClass}`
 
   return (
     <DialogActionsBox className={boxClassName}>

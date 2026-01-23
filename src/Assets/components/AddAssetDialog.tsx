@@ -181,12 +181,6 @@ function createSearchResultRow(
   }
 }
 
-// Styles converted to Tailwind - see className usage below
-    paddingTop: 14,
-    paddingBottom: 14
-  }
-})
-
 interface AddAssetDialogProps {
   account: Account
   accountData: AccountData
@@ -260,7 +254,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
 
   const notYetAddedAssets = assets.filter(asset => !isAssetAlreadyAdded(asset))
 
-  const onSearchFieldChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onSearchFieldChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setSearchFieldValue(event.target.value)
   }, [])
 

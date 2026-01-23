@@ -1,7 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import AddIcon from "@mui/icons-material/Add"
-import RemoveIcon from "@mui/icons-material/Remove"
+import { AddIcon, RemoveIcon } from "~Generic/components/Icons"
 import MainSelectionButton from "~Generic/components/MainSelectionButton"
 import { HorizontalLayout } from "~Layout/components/Box"
 

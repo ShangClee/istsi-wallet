@@ -152,7 +152,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
     () => (
       <div className="flex items-center">
         <QRReader onScan={handleQRScan} />
-      </InputAdornment>
+      </div>
     ),
     [handleQRScan]
   )
@@ -170,7 +170,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
         InputProps={{
           endAdornment: qrReaderAdornment
         }}
-        inputRef={form.register({
+        ref={form.register({
           required: t<string>("payment.validation.no-destination"),
           validate: value =>
             isPublicKey(value) ||
@@ -213,7 +213,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
       <PriceInput
         assetCode={assetSelector}
         error={Boolean(form.errors.amount)}
-        inputRef={form.register({
+        ref={form.register({
           required: t<string>("payment.validation.no-price"),
           validate: value => {
             if (!isValidAmount(value) || FormBigNumber(value).eq(0)) {
@@ -252,7 +252,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
         label={form.errors.memoValue ? form.errors.memoValue.message : memoMetadata.label}
         margin="normal"
         name="memoValue"
-        inputRef={form.register({
+        ref={form.register({
           validate: {
             length: value => value.length <= 28 || t<string>("payment.validation.memo-too-long"),
             memoRequired: value =>

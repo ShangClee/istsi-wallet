@@ -1,43 +1,10 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import makeStyles from "@mui/styles/makeStyles"
-import SendIcon from "@mui/icons-material/Send"
+import { SendIcon } from "~Generic/components/Icons"
 import { Account } from "~App/contexts/accounts"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import QRCodeIcon from "~Icons/components/QRCode"
-
-export const useButtonStyles = makeStyles(theme => ({
-  desktop: {
-    margin: "0",
-    padding: "24px 0 0",
-
-    "& $button:last-child:not(:first-child)": {
-      marginLeft: 40
-    }
-  },
-  mobile: {},
-  hidden: {
-    paddingTop: 0
-  },
-  collapse: {
-    width: "100%",
-    zIndex: 1
-  },
-  button: {
-    border: "none",
-    borderRadius: 8,
-    boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.1)",
-    fontSize: "1rem",
-    flexBasis: 1,
-    flexGrow: 1,
-    padding: "20px !important"
-  },
-  secondaryButton: {
-    background: "white",
-    color: theme.palette.primary.dark
-  }
-}))
 
 interface AccountActionsProps {
   account: Account
@@ -49,15 +16,22 @@ interface AccountActionsProps {
 
 function AccountActions(props: AccountActionsProps) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
-  const classes = useButtonStyles()
-  const className = `${props.bottomOfScreen ? classes.mobile : classes.desktop} ${props.hidden ? classes.hidden : ""}`
+  
+  const buttonBaseClass = "border-none rounded-lg shadow-[0_8px_16px_0_rgba(0,0,0,0.1)] text-base flex-1 p-5"
+  const secondaryButtonClass = "bg-white text-[#0290c0]"
+  
+  const containerClass = [
+    props.bottomOfScreen ? "" : "m-0 pt-6 space-x-10",
+    props.hidden ? "!pt-0" : ""
+  ].filter(Boolean).join(" ")
+
   const isDisabled =
     accountData.balances.length === 0 || !accountData.signers.some(signer => signer.key === props.account.publicKey)
   const { t } = useTranslation()
   return (
-    <DialogActionsBox className={className} hidden={props.hidden}>
+    <DialogActionsBox className={containerClass} hidden={props.hidden}>
       <ActionButton
-        className={`${classes.button} ${classes.secondaryButton}`}
+        className={`${buttonBaseClass} ${secondaryButtonClass}`}
         icon={<QRCodeIcon style={{ fontSize: "110%" }} />}
         onClick={props.onReceivePayment}
         variant="contained"
@@ -65,7 +39,7 @@ function AccountActions(props: AccountActionsProps) {
         {t("account.action.receive")}
       </ActionButton>
       <ActionButton
-        className={classes.button}
+        className={buttonBaseClass}
         disabled={isDisabled}
         icon={<SendIcon style={{ fontSize: "110%" }} />}
         onClick={props.onCreatePayment}
