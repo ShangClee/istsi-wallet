@@ -260,7 +260,7 @@ function AllAccountsPage() {
 
   return (
     <Section bottom brandColored noPadding className="h-screen">
-      <DialogBody backgroundColor="unset" top={headerContent}>
+      <DialogBody backgroundColor="unset" top={headerContent} noMaxWidth>
         <VerticalLayout justifyContent="space-between" grow margin="16px 0 0">
           <AccountList
             accounts={accounts}

@@ -22,9 +22,7 @@ electronDebug({
 // Add context menu
 contextMenu()
 
-const appReady = new Promise(resolve => app.on("ready", resolve))
-
-app.on("ready", () => {
+const onReady = () => {
   const menu = createAppMenu()
 
   if (menu) {
@@ -32,7 +30,13 @@ app.on("ready", () => {
   }
 
   trackWindow(createMainWindow())
-})
+}
+
+if (app.isReady()) {
+  onReady()
+} else {
+  app.on("ready", onReady)
+}
 
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
@@ -46,7 +50,7 @@ app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (getOpenWindows().length === 0) {
-    appReady.then(() => {
+    app.whenReady().then(() => {
       trackWindow(createMainWindow())
     })
   }

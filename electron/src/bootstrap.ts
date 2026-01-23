@@ -1,5 +1,7 @@
 import { app } from "electron"
 
+app.commandLine.appendSwitch("no-sandbox")
+
 // Suppress punycode deprecation warning
 // The built-in punycode module is deprecated in Node.js, but some dependencies still use it.
 // We've added punycode to package.json overrides to ensure userland version is used where possible.

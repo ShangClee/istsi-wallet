@@ -5,7 +5,7 @@ export function CardListCard(props: React.HTMLAttributes<HTMLDivElement>) {
   const { className, style, ...rest } = props
   return (
     <div
-      className={`w-[47%] min-w-[250px] max-w-[500px] grow m-[12px_1%] rounded-lg shadow-md bg-white ${
+      className={`w-full h-full rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${
         className || ""
       }`}
       style={style}
@@ -22,11 +22,9 @@ interface CardListProps {
 }
 
 export function CardList(props: CardListProps) {
-  const { margin = "0 -1%", width = "102%" } = props
   return (
-    <HorizontalLayout justifyContent="space-evenly" wrap="wrap" margin={margin} width={width}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full max-w-7xl mx-auto">
       {props.children}
-      {props.addInvisibleCard ? <CardListCard style={{ visibility: "hidden" }} /> : null}
-    </HorizontalLayout>
+    </div>
   )
 }

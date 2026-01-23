@@ -5428,6 +5428,7 @@ function requireElectronSquirrelStartup() {
 }
 var electronSquirrelStartupExports = requireElectronSquirrelStartup();
 const electronSquirrelStartup = /* @__PURE__ */ getDefaultExportFromCjs(electronSquirrelStartupExports);
+app$1.commandLine.appendSwitch("no-sandbox");
 const originalEmit = process.emit;
 process.emit = function(event, ...args) {
   if (event === "warning") {
@@ -5490,7 +5491,7 @@ function emitURL(url) {
     urlEventQueue.push(url);
   }
 }
-const appReady$1 = new Promise(
+const appReady = new Promise(
   (resolve2) => app$1.on("ready", () => {
     if (process.platform === "win32" || process.platform === "linux") {
       if (process.argv) {
@@ -5507,7 +5508,7 @@ app$1.on("will-finish-launching", () => {
   app$1.on("open-url", (event, url) => {
     event.preventDefault();
     emitURL(url);
-    appReady$1.then(() => {
+    appReady.then(() => {
       if (getOpenWindows().length === 0) {
         trackWindow(createMainWindow());
       }
@@ -5516,11 +5517,12 @@ app$1.on("will-finish-launching", () => {
 });
 const gotSingleInstanceLock = app$1.requestSingleInstanceLock();
 if (!gotSingleInstanceLock) {
+  console.log("Failed to get single instance lock, quitting...");
   app$1.quit();
 } else {
   app$1.on("second-instance", (event, commandLine, workingDirectory) => {
     if (getOpenWindows().length === 0) {
-      appReady$1.then(() => {
+      appReady.then(() => {
         trackWindow(createMainWindow());
       });
     }
@@ -5579,7 +5581,7 @@ function createMainWindow() {
       // Required for security in Electron 28+
       nodeIntegrationInWorker: false,
       preload: path__default.join(__dirname$1, "../preload/preload.js"),
-      sandbox: true,
+      sandbox: false,
       webviewTag: false
     }
   });
@@ -6502,7 +6504,7 @@ if (!IS_WINDOWS) {
 if (IS_LINUX) {
   Signals.push("SIGIO", "SIGPOLL", "SIGPWR", "SIGSTKFLT");
 }
-class Interceptor {
+let Interceptor$1 = class Interceptor {
   /* CONSTRUCTOR */
   constructor() {
     this.callbacks = /* @__PURE__ */ new Set();
@@ -6539,9 +6541,9 @@ class Interceptor {
     };
     this.hook();
   }
-}
-const Interceptor$1 = new Interceptor();
-const whenExit = Interceptor$1.register;
+};
+const Interceptor2 = new Interceptor$1();
+const whenExit = Interceptor2.register;
 const Temp = {
   /* VARIABLES */
   store: {},
@@ -63121,14 +63123,18 @@ debug$1({
   showDevTools: false
 });
 contextMenu();
-const appReady = new Promise((resolve2) => app$1.on("ready", resolve2));
-app$1.on("ready", () => {
+const onReady = () => {
   const menu = createAppMenu();
   if (menu) {
     Menu.setApplicationMenu(menu);
   }
   trackWindow(createMainWindow());
-});
+};
+if (app$1.isReady()) {
+  onReady();
+} else {
+  app$1.on("ready", onReady);
+}
 app$1.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app$1.quit();
@@ -63136,7 +63142,7 @@ app$1.on("window-all-closed", () => {
 });
 app$1.on("activate", () => {
   if (getOpenWindows().length === 0) {
-    appReady.then(() => {
+    app$1.whenReady().then(() => {
       trackWindow(createMainWindow());
     });
   }

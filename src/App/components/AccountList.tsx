@@ -43,11 +43,11 @@ const StyledCard = (props: {
   elevation?: number
   onClick?: () => void
   style?: React.CSSProperties
+  className?: string
 }) => {
   return (
-    <CardListCard onClick={props.onClick} style={props.style} className="cursor-pointer overflow-hidden transition-shadow hover:shadow-lg">
-      <div className="w-full h-full p-4 box-border relative">
-        {/* Ripple effect simulation or replacement could go here if strictly needed */}
+    <CardListCard onClick={props.onClick} style={props.style} className={`cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${props.className || ""}`}>
+      <div className="w-full h-full p-6 box-border relative flex flex-col justify-center">
         {props.children}
       </div>
     </CardListCard>
@@ -103,50 +103,47 @@ function AccountCard(props: AccountCardProps) {
   const badgeContent = pendingSignatureRequests.length > 0 ? pendingSignatureRequests.length : null
 
   return (
-    <StyledCard elevation={5} onClick={onClick} style={{ background: "white", color: "black" }}>
+    <StyledCard onClick={onClick} className="bg-white text-gray-900 border border-transparent hover:border-blue-500/30">
       <StyledBadge badgeContent={badgeContent} color="secondary" style={{ width: "100%" }}>
-        <VerticalLayout minHeight="100px" justifyContent="space-evenly" textAlign="left" width="100%">
+        <div className="flex flex-col min-h-[100px] justify-between text-left w-full">
           <InlineErrorBoundary>
-            <HorizontalLayout margin="0 0 12px">
-              <h5 style={{ flexGrow: 1, fontSize: 20, margin: 0, fontWeight: 400 }}>
+            <div className="flex items-center mb-4">
+              <h5 className="flex-grow text-xl font-bold text-gray-800 tracking-tight m-0">
                 {props.account.name}
               </h5>
               <React.Suspense fallback={null}>
                 <Badges account={props.account} />
               </React.Suspense>
-            </HorizontalLayout>
-            <Box fontSize="120%">
+            </div>
+            <div className="text-lg text-gray-600 font-medium">
               <React.Suspense fallback={<InlineLoader />}>
                 <AccountBalances
                   publicKey={props.account.cosignerOf || props.account.publicKey}
                   testnet={props.account.testnet}
                 />
               </React.Suspense>
-            </Box>
+            </div>
           </InlineErrorBoundary>
-        </VerticalLayout>
+        </div>
       </StyledBadge>
     </StyledCard>
   )
 }
 
 function AddAccountCard(props: { onClick: () => any; style?: React.CSSProperties }) {
-  const style = {
-    ...props.style,
-    background: "transparent",
-    border: "2px solid white",
-    boxShadow: "none",
-    color: "white"
-  }
   const { t } = useTranslation()
   return (
-    <StyledCard onClick={props.onClick} style={style}>
-      <VerticalLayout height="100px" justifyContent="center" fontSize="1.3rem" textAlign="center">
-        <div>
-          <AddIcon style={{ fontSize: "200%" }} />
+    <StyledCard 
+        onClick={props.onClick} 
+        style={props.style} 
+        className="bg-white/10 backdrop-blur-md border border-white/40 hover:bg-white/20 text-white shadow-none hover:shadow-lg"
+    >
+      <div className="h-[100px] flex flex-col items-center justify-center text-center space-y-4">
+        <div className="p-3 rounded-full bg-white/20 transition-transform group-hover:scale-110">
+            <AddIcon className="text-3xl" />
         </div>
-        <div>{t("app.account-list.add-account-card.label")}</div>
-      </VerticalLayout>
+        <div className="font-medium text-lg tracking-wide opacity-90">{t("app.account-list.add-account-card.label")}</div>
+      </div>
     </StyledCard>
   )
 }

@@ -4,8 +4,7 @@ import { Translation, useTranslation } from "react-i18next"
 import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
 import { getErrorTranslation } from "../lib/errors"
 
-// tslint:disable-next-line
-const pkg = require("../../../package.json")
+import pkg from "../../../package.json"
 
 const buttonLabels = ["Oh no", "Drats!", "Nevermind", "Let's try this again", "Not my day"]
 

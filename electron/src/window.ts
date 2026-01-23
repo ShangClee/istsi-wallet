@@ -33,7 +33,7 @@ export function createMainWindow() {
       nodeIntegration: false, // Required for security in Electron 28+
       nodeIntegrationInWorker: false,
       preload: path.join(__dirname, "../preload/preload.js"),
-      sandbox: true,
+      sandbox: false,
       webviewTag: false
     }
   })
