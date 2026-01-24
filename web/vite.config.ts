@@ -3,22 +3,10 @@ import react from "@vitejs/plugin-react"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
 import tsconfigPaths from "vite-tsconfig-paths"
 import { resolve } from "path"
-import tailwindcss from "tailwindcss"
-import autoprefixer from "autoprefixer"
 
 export default defineConfig({
   // Use parent directory as root to access index.html and src/
   root: resolve(__dirname, ".."),
-  css: {
-    postcss: {
-      plugins: [
-        tailwindcss({
-          config: resolve(__dirname, "../tailwind.config.js")
-        }),
-        autoprefixer()
-      ]
-    }
-  },
   plugins: [
     tsconfigPaths({
       root: resolve(__dirname, "..")
@@ -57,5 +45,18 @@ export default defineConfig({
   server: {
     //port: 3000,
     //strictPort: false
+  },
+  optimizeDeps: {
+    include: [
+      "debug",
+      "jsonwebtoken",
+      "eventsource",
+      "lodash.throttle",
+      "p-queue",
+      "react",
+      "react-dom",
+      "react-i18next",
+      "stellar-sdk"
+    ]
   }
 })
