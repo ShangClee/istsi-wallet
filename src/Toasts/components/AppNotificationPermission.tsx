@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next"
 import { HiBell } from "react-icons/hi2"
 import { NotificationsContext, trackError } from "~App/contexts/notifications"
 import {
-  hasPermission as hasPermissionToNotify,
   requestPermission as requestPermissionToNotify,
   showNotification
 } from "~Platform/notifications"

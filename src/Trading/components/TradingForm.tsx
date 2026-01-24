@@ -38,7 +38,7 @@ import {
 } from "~Generic/lib/stellar"
 import { FormBigNumber, isValidAmount } from "~Generic/lib/form"
 import { createTransaction } from "~Generic/lib/transaction"
-import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
+import { HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
 import { bigNumberToInputValue, TradingFormValues, useCalculation } from "../hooks/form"
 import TradingPrice from "./TradingPrice"
 

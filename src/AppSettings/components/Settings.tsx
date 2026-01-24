@@ -21,10 +21,6 @@ interface SettingsToggleProps {
 function SettingsToggle(props: SettingsToggleProps) {
   const { checked, disabled, onChange } = props
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.checked)
-  }
-
   return (
     <button
       role="switch"

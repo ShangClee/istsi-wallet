@@ -27,10 +27,6 @@ const ListSubheader = (props: { children: React.ReactNode; className?: string; s
 
 const noop = () => undefined
 
-const IconDiv = (props: { children: React.ReactNode }) => {
-  return <div className="flex-none flex shrink-0 mr-3">{props.children}</div>
-}
-
 interface ListItemProps {
   primaryText: React.ReactNode
   secondaryText?: React.ReactNode | null

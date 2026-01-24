@@ -1,8 +1,6 @@
 import React from "react"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 
-const isMobileDevice = process.env.PLATFORM === "android" || process.env.PLATFORM === "ios"
-
 // Styles converted to Tailwind - see className usage below
 
 interface AppSettingsItemProps {

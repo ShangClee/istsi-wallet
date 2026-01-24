@@ -1,5 +1,4 @@
 import React from "react"
-import { HorizontalLayout } from "./Box"
 
 export function CardListCard(props: React.HTMLAttributes<HTMLDivElement>) {
   const { className, style, ...rest } = props

@@ -1,7 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { HorizontalLayout } from "~Layout/components/Box"
-import { ReadOnlyTextfield } from "~Generic/components/FormFields"
 import { ListItem } from "~Layout/components/List"
 
 interface SummaryDetailsFieldProps {

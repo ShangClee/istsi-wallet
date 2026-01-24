@@ -1,7 +1,6 @@
 import React from "react"
 import { HiChevronRight } from "react-icons/hi2"
 
-const isMobileDevice = process.env.PLATFORM === "android" || process.env.PLATFORM === "ios"
 
 // Styles converted to Tailwind - see className usage below
 

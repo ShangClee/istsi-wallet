@@ -11,7 +11,7 @@ import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { containsThirdPartySigner } from "~Generic/lib/third-party-security"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
-import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
+import { Box } from "~Layout/components/Box"
 import * as routes from "../routes"
 
 // --- Tailwind Helper Components ---

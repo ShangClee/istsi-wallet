@@ -1,7 +1,6 @@
 import React from "react"
 import { Asset } from "stellar-sdk"
 import TextField, { TextFieldProps } from "./TextField"
-import AssetLogo from "~Assets/components/AssetLogo"
 import { BalanceLine } from "~Generic/lib/account"
 import { balancelineToAsset, stringifyAsset } from "../lib/stellar"
 
@@ -18,8 +17,6 @@ interface AssetItemProps {
 
 const AssetItem = React.memo(
   React.forwardRef(function AssetItem(props: AssetItemProps, ref: React.Ref<HTMLOptionElement>) {
-    const { testnet } = props
-
     return (
       <option
         key={props.key}
