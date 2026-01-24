@@ -8,11 +8,16 @@
     content="default-src 'self'; child-src 'self' blob: file://*; connect-src *; img-src *; script-src 'self' blob: file://*; style-src 'self' 'unsafe-inline'; worker-src 'self' blob: file://*;" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Solar Wallet</title>
-  <link href="/src/App/css/fonts.css" rel="stylesheet" />
-  <link href="/src/App/css/base-styles.css" rel="stylesheet" />
 </head>
 
 <body>
+  <div id="splash">
+    <img src="/src/SplashScreen/static/splash-logo.svg" />
+    <div class="splash-caption">
+      <img src="/src/SplashScreen/static/splash-text.svg" />
+      <h3>by SatoshiPay</h3>
+    </div>
+  </div>
   <div id="app"></div>
   <script type="module" src="/src/polyfills.ts"></script>
   <script type="module" src="/src/bootstrap.ts"></script>

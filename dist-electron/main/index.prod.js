@@ -5518,7 +5518,6 @@ app$1.on("will-finish-launching", () => {
 const gotSingleInstanceLock = app$1.requestSingleInstanceLock();
 if (!gotSingleInstanceLock) {
   console.log("Failed to get single instance lock, quitting...");
-  app$1.quit();
 } else {
   app$1.on("second-instance", (event, commandLine, workingDirectory) => {
     if (getOpenWindows().length === 0) {
@@ -6504,7 +6503,7 @@ if (!IS_WINDOWS) {
 if (IS_LINUX) {
   Signals.push("SIGIO", "SIGPOLL", "SIGPWR", "SIGSTKFLT");
 }
-let Interceptor$1 = class Interceptor {
+class Interceptor {
   /* CONSTRUCTOR */
   constructor() {
     this.callbacks = /* @__PURE__ */ new Set();
@@ -6541,9 +6540,9 @@ let Interceptor$1 = class Interceptor {
     };
     this.hook();
   }
-};
-const Interceptor2 = new Interceptor$1();
-const whenExit = Interceptor2.register;
+}
+const Interceptor$1 = new Interceptor();
+const whenExit = Interceptor$1.register;
 const Temp = {
   /* VARIABLES */
   store: {},

@@ -68,7 +68,7 @@ const gotSingleInstanceLock = app.requestSingleInstanceLock()
 
 if (!gotSingleInstanceLock) {
   console.log("Failed to get single instance lock, quitting...")
-  app.quit()
+  // app.quit()
 } else {
   // will not be called on macOS except when application launched from CLI
   app.on("second-instance", (event, commandLine, workingDirectory) => {
