@@ -5501,7 +5501,7 @@ const appReady = new Promise(
         }
       }
     }
-    resolve2();
+    resolve2(void 0);
   })
 );
 app$1.on("will-finish-launching", () => {
@@ -59957,7 +59957,12 @@ expose(Messages.GetPrivateKeyData, function getPrivateKeyData(keyID, password) {
   return keystore.getPrivateKeyData(keyID, password);
 });
 expose(Messages.SaveKey, function saveKey(keyID, password, privateData, publicData) {
-  return keystore.saveKey(keyID, password, privateData, publicData);
+  return keystore.saveKey(
+    keyID,
+    password,
+    privateData,
+    publicData
+  );
 });
 expose(Messages.SavePublicKeyData, function saveKey2(keyID, publicData) {
   return keystore.savePublicKeyData(keyID, publicData);

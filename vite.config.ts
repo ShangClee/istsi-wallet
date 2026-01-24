@@ -69,5 +69,18 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true
+  },
+  optimizeDeps: {
+    include: [
+      "debug",
+      "jsonwebtoken",
+      "eventsource",
+      "lodash.throttle",
+      "p-queue",
+      "react",
+      "react-dom",
+      "react-i18next",
+      "stellar-sdk"
+    ]
   }
 })
