@@ -5,7 +5,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": false,
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["node"],
+    "strict": false
   },
   "include": ["src/**/*", "types/**/*", "shared/types/**/*"]
 }

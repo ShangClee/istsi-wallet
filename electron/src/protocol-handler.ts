@@ -45,7 +45,7 @@ const appReady = new Promise<void>(resolve =>
         }
       }
     }
-    resolve()
+    resolve(undefined as any)
   })
 )
 

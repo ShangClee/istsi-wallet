@@ -55,32 +55,37 @@ expose(Messages.GetKeyIDs, function getKeyIDs() {
 })
 
 expose(Messages.GetPublicKeyData, function getPublicKeyData(keyID) {
-  return keystore.getPublicKeyData(keyID)
+  return keystore.getPublicKeyData(keyID as string)
 })
 
 expose(Messages.GetPrivateKeyData, function getPrivateKeyData(keyID, password) {
-  return keystore.getPrivateKeyData(keyID, password)
+  return keystore.getPrivateKeyData(keyID as string, password as string)
 })
 
 expose(Messages.SaveKey, function saveKey(keyID, password, privateData, publicData?) {
-  return keystore.saveKey(keyID, password, privateData, publicData)
+  return keystore.saveKey(
+    keyID as string,
+    password as string,
+    privateData as PrivateKeyData,
+    publicData as PublicKeyData | undefined
+  )
 })
 
 expose(Messages.SavePublicKeyData, function saveKey(keyID, publicData) {
-  return keystore.savePublicKeyData(keyID, publicData)
+  return keystore.savePublicKeyData(keyID as string, publicData as PublicKeyData)
 })
 
 expose(Messages.RemoveKey, function removeKey(keyID) {
-  return keystore.removeKey(keyID)
+  return keystore.removeKey(keyID as string)
 })
 
 expose(Messages.SignTransaction, function signTransaction(internalAccountID, transactionXDR, password) {
   try {
-    const account = keystore.getPublicKeyData(internalAccountID)
+    const account = keystore.getPublicKeyData(internalAccountID as string)
     const networkPassphrase = account.testnet ? Networks.TESTNET : Networks.PUBLIC
-    const transaction = new Transaction(transactionXDR, networkPassphrase)
+    const transaction = new Transaction(transactionXDR as string, networkPassphrase)
 
-    const privateKey = keystore.getPrivateKeyData(internalAccountID, password).privateKey
+    const privateKey = keystore.getPrivateKeyData(internalAccountID as string, password as string).privateKey
 
     transaction.sign(Keypair.fromSecret(privateKey))
 
