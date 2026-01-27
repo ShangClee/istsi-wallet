@@ -50,6 +50,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
   },
   ref
 ) {
+  // Extract disableUnderline if it exists in props to prevent it from leaking to the DOM
+  // @ts-ignore
+  const { disableUnderline, ...otherProps } = props
   const baseInputClasses = `
     ${variant === "outlined" ? "border border-gray-300 rounded" : variant === "filled" ? "bg-gray-100 border-b-2 border-gray-300 rounded-t" : "border-b-2 border-gray-300"}
     ${error ? "border-red-500" : ""}
@@ -69,7 +72,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
       className={baseInputClasses}
       style={style}
       {...(inputProps as any)}
-      {...props}
+      {...otherProps}
     />
   ) : (
     <input
@@ -77,7 +80,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
       className={baseInputClasses}
       style={style}
       {...inputProps}
-      {...props}
+      {...otherProps}
     />
   )
 
@@ -107,7 +110,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
               defaultValue={props.defaultValue}
               onChange={props.onChange as any}
               {...SelectProps}
-              {...(props as any)}
+              {...(otherProps as any)}
             >
               {props.children}
             </select>

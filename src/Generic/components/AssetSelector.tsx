@@ -10,8 +10,7 @@ interface AssetItemProps {
   asset: Asset
   disabled?: boolean
   testnet: boolean
-  // key + value props are expected here from React/Material-ui validation mechanisms
-  key: string
+  // value prop is expected here from React/Material-ui validation mechanisms
   value: string
 }
 
@@ -19,7 +18,6 @@ const AssetItem = React.memo(
   React.forwardRef(function AssetItem(props: AssetItemProps, ref: React.Ref<HTMLOptionElement>) {
     return (
       <option
-        key={props.key}
         ref={ref}
         value={props.value}
         disabled={props.disabled}

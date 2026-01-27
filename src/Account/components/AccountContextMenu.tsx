@@ -12,6 +12,8 @@ import { Account } from "~App/contexts/accounts"
 import { SettingsContextType } from "~App/contexts/settings"
 import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
 import { useIsMobile } from "~Generic/hooks/userinterface"
+import { HideOnError } from "~Generic/components/ErrorBoundaries"
+import InlineLoader from "~Generic/components/InlineLoader"
 import ContextMenu, { AnchorRenderProps } from "~Generic/components/ContextMenu"
 
 // Styles converted to Tailwind - see className usage below
@@ -114,7 +116,7 @@ function AccountContextMenu(props: MenuProps) {
       menu={({ anchorEl, open, onClose, closeAndCall }) => (
         <div
           className={`
-            fixed z-50 bg-white shadow-lg rounded-lg min-w-[200px] py-2
+            fixed z-50 bg-white shadow-lg rounded-lg min-w-[200px] py-2 text-gray-900
             ${open ? "block" : "hidden"}
             ${isSmallScreen ? "bottom-0 left-0 right-0 rounded-b-none" : ""}
           `.trim().replace(/\s+/g, " ")}
@@ -123,17 +125,20 @@ function AccountContextMenu(props: MenuProps) {
               ? {}
               : anchorEl
                 ? {
-                    position: "absolute",
-                    top: anchorEl.getBoundingClientRect().bottom + window.scrollY,
-                    left: anchorEl.getBoundingClientRect().left + window.scrollX
+                    position: "fixed",
+                    top: anchorEl.getBoundingClientRect().bottom,
+                    left: anchorEl.getBoundingClientRect().right,
+                    transform: "translateX(-100%)"
                   }
                 : {}
           }
           onClick={e => e.stopPropagation()}
         >
-          <React.Suspense fallback={null}>
-            <LiveAccountContextMenuItems closeAndCall={closeAndCall} {...props} />
-          </React.Suspense>
+          <HideOnError>
+            <React.Suspense fallback={<InlineLoader />}>
+              <LiveAccountContextMenuItems closeAndCall={closeAndCall} {...props} />
+            </React.Suspense>
+          </HideOnError>
           {props.showingSettings ? (
             <AccountContextMenuItem
               disabled={!props.onAccountTransactions}

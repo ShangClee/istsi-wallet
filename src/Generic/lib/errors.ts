@@ -99,7 +99,12 @@ function toKebabCase(value: string) {
 }
 
 export function getErrorTranslation(error: Error, t: TFunction): string {
-  const key = `generic.error.${toKebabCase(error.name)}`
+  if (!error) {
+    return t("generic.error.unknown-error")
+  }
+  
+  const errorName = error.name || "Error"
+  const key = `generic.error.${toKebabCase(errorName)}`
   const params = CustomError.isCustomError(error) ? pick(error, error.__extraProps || []) : undefined
 
   let prefix = ""
