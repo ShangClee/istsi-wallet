@@ -43,6 +43,35 @@ function trimAccountRecord(record: AssetRecord) {
 }
 
 export async function fetchAllAssets(tickerURL: string): Promise<AssetRecord[]> {
+  // If we are using stellar.expert API
+  if (tickerURL.includes("api.stellar.expert")) {
+    const response = await fetch(tickerURL)
+
+    if (response.status >= 400) {
+      throw CustomError("BadResponseError", `Bad response (${response.status}) from stellar.expert server`, {
+        status: response.status,
+        server: "stellar.expert"
+      })
+    }
+
+    const json = await response.json()
+    // stellar.expert returns { _embedded: { records: [...] } } structure
+    const allAssets = (json._embedded?.records || []).map((record: any) => ({
+      code: record.asset.split("-")[0],
+      desc: record.desc || "",
+      issuer: record.asset.split("-")[1],
+      issuer_detail: {
+        name: record.domain || "",
+        url: record.domain ? `https://${record.domain}` : ""
+      },
+      name: record.asset.split("-")[0],
+      num_accounts: record.accounts || 0,
+      status: "live",
+      type: "credit_alphanum12" // simplified
+    }))
+    return allAssets.sort(byAccountCountSorter).map((record: any) => trimAccountRecord(record))
+  }
+
   const requestURL = new URL("/assets.json", tickerURL)
   const response = await fetch(String(requestURL))
 
