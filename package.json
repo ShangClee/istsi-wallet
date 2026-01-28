@@ -67,6 +67,7 @@
     "nanoid": "^3.1.31",
     "react-hook-form": "^5.0.3",
     "react-icons": "^5.5.0",
+    "qrcode.react": "^0.9.3",
     "stellar-sdk": "^11.3.0",
     "storybook": "^8.6.15"
   },
@@ -94,7 +95,6 @@
     "@types/lru-cache": "^5.1.0",
     "@types/nanoid": "^1.2.1",
     "@types/p-queue": "^3.2.1",
-    "@types/qrcode.react": "^0.8.2",
     "@types/qs": "^6.9.17",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
@@ -145,7 +145,6 @@
     "p-queue": "^6.2.0",
     "postcss": "^8.5.6",
     "prettier": "^3.4.2",
-    "qrcode.react": "^0.9.3",
     "qs": "^6.8.0",
     "react": "^18.3.1",
     "react-content-loader": "^7.0.2",
