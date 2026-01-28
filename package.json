@@ -1,6 +1,6 @@
 {
   "name": "istsiwallet",
-  "version": "29.2026.01.22",
+  "version": "29.2026.1.22-27",
   "description": "Modernization by ShangClee from Wallet for the Stellar payment network by SatoshiPay.",
   "license": "MIT",
   "private": true,
@@ -28,8 +28,8 @@
     "clean:dist": "rimraf dist/* dist-electron/*",
     "prebuild:electron": "npm run build",
     "build:linux": "PLATFORM=linux npm run prebuild:electron && electron-builder --linux --x64 --config ./electron-build.yml",
-    "build:mac": "PLATFORM=darwin npm run prebuild:electron && electron-builder --mac --x64 --config ./electron-build.yml",
-    "build:mac:signed": "source ./scripts/signing-env.sh mac && NOTARIZE=true npm run build:mac -- -c.forceCodeSigning=true",
+    "build:mac": "PLATFORM=darwin npm run prebuild:electron && electron-builder --mac --arm64 --config ./electron-build.yml",
+    "build:mac:signed": "source ./scripts/signing-env.sh mac && NOTARIZE=true npm run build:mac -- -c.forceCodeSigning=true -c.mac.hardenedRuntime=true",
     "build:win": "PLATFORM=win32 npm run prebuild:electron && electron-builder --win --ia32 --config ./electron-build.yml",
     "build:win:signed": "source ./scripts/signing-env.sh win && npm run build:win -- -c.forceCodeSigning=true",
     "dev": "vite",

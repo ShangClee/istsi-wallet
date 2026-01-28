@@ -100,7 +100,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
             {InputProps.startAdornment}
           </div>
         )}
-        <div className={InputProps?.startAdornment ? "pl-10" : InputProps?.endAdornment ? "pr-10" : ""}>
+        <div
+          className={`${InputProps?.startAdornment ? "pl-10" : InputProps?.endAdornment ? "pr-10" : ""} ${InputProps?.className || ""}`}
+        >
           {select ? (
             <select
               ref={ref as any}

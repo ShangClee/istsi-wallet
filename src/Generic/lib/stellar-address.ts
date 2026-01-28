@@ -10,10 +10,10 @@ type FederationRecord = {
   memo?: string
 }
 
-export const isPublicKey = (str: string) => Boolean(str.match(/^G[A-Z0-9]{55}$/))
-export const isMuxedAddress = (str: string) => Boolean(str.match(/^M[A-Z0-9]{68}$/))
+export const isPublicKey = (str: string) => Boolean(str && str.match(/^G[A-Z0-9]{55}$/))
+export const isMuxedAddress = (str: string) => Boolean(str && str.match(/^M[A-Z0-9]{68}$/))
 export const isStellarAddress = (str: string) =>
-  Boolean(str.match(/^[^\*> \t\n\r]+\*[^\*\.> \t\n\r]+\.[^\*> \t\n\r]+$/))
+  Boolean(str && str.match(/^[^\*> \t\n\r]+\*[^\*\.> \t\n\r]+\.[^\*> \t\n\r]+$/))
 
 export async function lookupFederationRecord(
   stellarAddress: string,

@@ -160,7 +160,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
   const destinationInput = React.useMemo(
     () => (
       <TextField
-        variant="standard"
+        variant="outlined"
         autoFocus={process.env.PLATFORM !== "ios"}
         error={Boolean(form.errors.destination)}
         fullWidth
@@ -212,6 +212,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
     () => (
       <PriceInput
         assetCode={assetSelector}
+        InputProps={{ className: "pr-24" }}
         error={Boolean(form.errors.amount)}
         ref={form.register({
           required: t<string>("payment.validation.no-price"),

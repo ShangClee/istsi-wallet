@@ -40,7 +40,6 @@ squirrelWindows:
   iconUrl: https://github.com/satoshipay/solar/blob/master/electron/build/icon.ico?raw=true
 
 mac:
-  hardenedRuntime: true
   entitlements: ./electron/build/entitlements.mac.inherit.plist
   # Required for Electron 28+ on macOS
   notarize: false
