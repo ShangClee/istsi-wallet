@@ -19,7 +19,7 @@ function KeyExportBox(props: Props) {
     <VerticalLayout alignItems="center" justifyContent="center">
       <VerticalLayout>
         <Box onClick={copyToClipboard} margin="0 auto" style={{ cursor: "pointer" }}>
-          <QRCode size={props.size} value={props.export} />
+          <QRCode size={props.size} value={props.export} includeMargin={false} renderAs="canvas" />
         </Box>
         <Box margin="16px auto">
           <p
